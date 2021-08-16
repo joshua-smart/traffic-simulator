@@ -1,19 +1,22 @@
 import Vector2 from "./vector2.js";
 import RoadNetwork from "./roadNetwork.js";
 
-type Transform = {scale: number, origin: Vector2};
-
 export default class Canvas {
 
-    private canvasRootElement: HTMLDivElement;
-    private transform: Transform;
+    private readonly canvasRootElement: HTMLDivElement;
+    public scale: number;
+    public origin: Vector2;
 
     constructor(parentElement: HTMLElement) {
         this.canvasRootElement = document.createElement('div');
         this.canvasRootElement.className = 'canvas';
         parentElement.appendChild(this.canvasRootElement);
 
-        this.transform = {scale: 2, origin: new Vector2(100, 100)};
+        // disable default right-click context menu to allow for later functionality
+        parentElement.addEventListener('contextmenu', event => event.preventDefault());
+
+        this.scale = 2;
+        this.origin = new Vector2(200, 200);
     }
 
     public draw(roadNetwork: RoadNetwork): void {
@@ -85,15 +88,14 @@ export default class Canvas {
     }
 
     private world_to_screen_position(worldPosition: Vector2): Vector2 {
-        return worldPosition.add(this.transform.origin)
-            .mult(this.transform.scale);
+        return worldPosition.mult(this.scale).add(this.origin);
+    }
+
+    public screen_to_world_position(screenPosition: Vector2): Vector2 {
+        return screenPosition.sub(this.origin).mult(1/this.scale);
     }
 
     public get_canvas_root_element(): HTMLDivElement {
         return this.canvasRootElement;
-    }
-
-    public move_origin(deltaPos: Vector2): void {
-        this.transform.origin = this.transform.origin.add(deltaPos.mult(1/this.transform.scale));
     }
 }

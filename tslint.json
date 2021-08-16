@@ -25,10 +25,11 @@
     "prefer-const": true,
     "class-name": true,
     "file-name-casing": [true, "camel-case"],
-    "newline-per-chained-call": true,
     "prefer-method-signature": true,
     "prefer-switch": true,
     "prefer-template": true,
-    "variable-name": true
+    "variable-name": true,
+    "no-unnecessary-type-assertion": true,
+    "no-inferrable-types": true
   }
 }

@@ -1,0 +1,26 @@
+{
+    "initialStateId": 0,
+    "rules": [
+        [0, 0, 1, -1],
+        [0, 1, 3, 3, "create-new-isolated-vertex"],
+        [0, 2, 5, -1],
+        [0, 3, 7, -1, "create-connected-vertex"],
+        [1, 5, 0, -1],
+        [1, 4, 2, 0, "move-canvas"],
+        [2, 5, 0, -1],
+        [2, 4, 2, 0,"move-canvas"],
+        [3, 5, 0, -1],
+        [3, 4, 4, -1, "create-connected-vertex"],
+        [4, 5, 0, -1],
+        [4, 4, 4, -1, "move-connected-vertex"],
+        [5, 5, 0, -1, "vertex-clicked"],
+        [5, 4, 6, 2, "move-vertex"],
+        [6, 5, 0, -1],
+        [6, 4, 6, 2, "move-vertex"],
+        [7, 5, 0, -1],
+        [7, 4, 8, -1, "move-connected-vertex"],
+        [8, 5, 0, -1],
+        [8, 4, 8, -1, "move-connected-vertex"],
+        [0, 6, 0, 1, "zoom"]
+    ]
+}

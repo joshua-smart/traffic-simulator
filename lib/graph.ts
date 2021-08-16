@@ -56,4 +56,8 @@ export default class Graph<Vertex, Edge> {
         }
         return this.adjacencyMatrix[srcId][dstId];
     }
+
+    public set_vertex(id: number, value: Vertex) {
+        this.vertices[id] = value;
+    }
 }

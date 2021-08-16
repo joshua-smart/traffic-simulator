@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "typescript": "^4.3.5",
     "tslint": "^6.1.3"
   }
 }
