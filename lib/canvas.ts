@@ -30,6 +30,8 @@ export default class Canvas {
         const canvasElement: HTMLCanvasElement = this.create_canvas_element();
         this.canvasRootElement.appendChild(canvasElement);
         const context: CanvasRenderingContext2D = canvasElement.getContext('2d');
+        context.lineWidth = 10;
+        context.strokeStyle = `#5e5e5e`;
         context.beginPath();
 
         const vertices: Vector2[] = roadNetwork.get_vertices();
@@ -51,8 +53,10 @@ export default class Canvas {
         const srcWorldPosition: Vector2 = roadNetwork.get_vertex(i);
         const dstWorldPosition: Vector2 = roadNetwork.get_vertex(j);
 
-        const srcScreenPosition: Vector2 = this.world_to_screen_position(srcWorldPosition);
-        const dstScreenPosition: Vector2 = this.world_to_screen_position(dstWorldPosition);
+        const offsetVector = dstWorldPosition.sub(srcWorldPosition).rotate(-Math.PI / 2).set_mag(6);
+
+        const srcScreenPosition: Vector2 = this.world_to_screen_position(srcWorldPosition).add(offsetVector);
+        const dstScreenPosition: Vector2 = this.world_to_screen_position(dstWorldPosition).add(offsetVector);
 
         context.moveTo(srcScreenPosition.x, srcScreenPosition.y);
         context.lineTo(dstScreenPosition.x, dstScreenPosition.y);
