@@ -1,7 +1,7 @@
 import Vector2 from "./vector2.js";
 import RoadNetwork from "./roadNetwork.js";
 
-export default class Canvas {
+export default class DrawManager {
 
     private readonly canvasRootElement: HTMLDivElement;
     public scale: number;

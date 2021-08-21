@@ -1,13 +1,13 @@
 import RoadNetwork from "./roadNetwork.js";
-import Canvas from "./canvas.js";
 import Vector2 from "./vector2.js";
 import FiniteStateMachine from "./finiteStateMachine.js";
+import DrawManager from './drawManager.js';
 
 export default class InteractionManager {
     private mouseInteractionFSM: FiniteStateMachine<MouseEvent | WheelEvent>;
     private selectedVertexId: number;
 
-    constructor(canvas: Canvas, roadNetwork: RoadNetwork) {
+    constructor(canvas: DrawManager, roadNetwork: RoadNetwork) {
         this.initialiseMouseInteraction(canvas, roadNetwork).then(() => {});
 
 
@@ -16,7 +16,7 @@ export default class InteractionManager {
         });
     }
 
-    private async initialiseMouseInteraction(canvas: Canvas, roadNetwork: RoadNetwork) {
+    private async initialiseMouseInteraction(canvas: DrawManager, roadNetwork: RoadNetwork) {
         const {initialStateId, rules} = await (await fetch('./assets/mouse_interaction_rules.json')).json();
         this.mouseInteractionFSM = new FiniteStateMachine<MouseEvent | WheelEvent>(initialStateId);
 
@@ -98,7 +98,7 @@ export default class InteractionManager {
         return new Vector2(event.x - element.offsetLeft, event.y - element.offsetTop);
     }
 
-    private static extract_world_mouse_position(event: MouseEvent, element: HTMLElement, canvas: Canvas): Vector2 {
+    private static extract_world_mouse_position(event: MouseEvent, element: HTMLElement, canvas: DrawManager): Vector2 {
         const screenPosition = InteractionManager.extract_screen_mouse_position(event, element);
         return canvas.screen_to_world_position(screenPosition);
     }

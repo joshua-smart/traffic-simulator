@@ -1,0 +1,55 @@
+\ProvidesPackage{preamble}
+
+\usepackage[utf8]{inputenc}
+
+% PAGE MARGINS
+\usepackage[a4paper, textwidth=6.5in, top=1in, bottom=1in]{geometry}
+
+% ADD BIBLIOGRAPHY
+\usepackage[sorting=none]{biblatex}
+\addbibresource{bibliography.bib}
+
+% LINK CONTENTS AND BIBLIOGRAPHY TO DOCUMENT
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    linkcolor=black,
+    citecolor=black
+}
+
+% CHAPTER STYLING
+\usepackage{titlesec, blindtext, color}
+\definecolor{gray75}{gray}{0.75}
+\newcommand{\hsp}{\hspace{20pt}}
+\titleformat{\chapter}[hang]{\Huge\bfseries}
+{\thechapter\hsp\textcolor{gray75}
+{$|$}\hsp}{0pt}{\Huge\bfseries}
+\titlespacing{\chapter}{0pt}{0pt}{40pt}
+
+% HEADER / FOOTER STYLING
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Joshua Smart}
+\lhead{\leftmark}
+\cfoot{\thepage}
+
+\fancypagestyle{plain}{
+    \fancyhead{}
+    \rhead{Joshua Smart}
+    \lhead{\leftmark}
+    \cfoot{\thepage}
+}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.5pt}
+
+% LOAD SVG IMAGES
+\usepackage{svg}
+\svgpath{assets}
+
+% IMAGE WRAPPING
+\usepackage{wrapfig}
+
+\newcommand{\lang}[1]{\textbf{#1}}

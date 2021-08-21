@@ -1,0 +1,35 @@
+\documentclass{report}
+\usepackage{preamble}
+\usepackage{import}
+
+\title{NEA: Traffic Simulator}
+\author{Joshua Smart}
+\date{June 2021 - June 2022}
+
+\begin{document}
+
+    \begin{titlepage}
+        \maketitle
+    \end{titlepage}
+
+    \tableofcontents
+
+    \chapter{Analysis}
+        \import{sections}{analysis.tex}
+
+    \chapter{Documented Design}
+        \import{sections}{documented_design.tex}
+
+    \chapter{Technical Solution}
+        % \import{sections/technical_solution}{@head.tex}
+
+    \chapter{Testing}
+        % \import{sections/testing}{@head.tex}
+
+    \chapter{Evaluation}
+        % \import{sections/evaluation}{@head.tex}
+
+    % \printbibliography
+    % \addcontentsline{toc}{chapter}{References}
+
+\end{document}
