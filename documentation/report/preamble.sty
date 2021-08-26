@@ -28,6 +28,12 @@
 {$|$}\hsp}{0pt}{\Huge\bfseries}
 \titlespacing{\chapter}{0pt}{0pt}{40pt}
 
+% PARAGRAPH STYLING
+\newcommand{\setparagraphstyling}{
+    \setlength{\parindent}{0em}
+    \setlength{\parskip}{1em}
+}
+
 % HEADER / FOOTER STYLING
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -45,11 +51,7 @@
 \renewcommand{\headrulewidth}{0.5pt}
 \renewcommand{\footrulewidth}{0.5pt}
 
-% LOAD SVG IMAGES
-\usepackage{svg}
-\svgpath{assets}
-
-% IMAGE WRAPPING
+% IMAGES
 \usepackage{wrapfig}
-
-\newcommand{\lang}[1]{\textbf{#1}}
+\usepackage{graphicx}
+\graphicspath{{./assets/}}

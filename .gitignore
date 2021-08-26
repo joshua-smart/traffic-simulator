@@ -1,2 +1,4 @@
 /node_modules/
 *.js
+/documentation/report/build/
+!/documentation/report/build/*.pdf

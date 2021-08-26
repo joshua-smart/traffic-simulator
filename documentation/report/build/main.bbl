@@ -16,5 +16,48 @@
   {}
 \endgroup
 
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{Spaghetti-Junction}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=f95e8679bf3071e22969b73a59ae1756}{%
+           family={{Wikipedia, the free encyclopedia}},
+           familyi={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{f95e8679bf3071e22969b73a59ae1756}
+      \strng{fullhash}{f95e8679bf3071e22969b73a59ae1756}
+      \strng{bibnamehash}{f95e8679bf3071e22969b73a59ae1756}
+      \strng{authorbibnamehash}{f95e8679bf3071e22969b73a59ae1756}
+      \strng{authornamehash}{f95e8679bf3071e22969b73a59ae1756}
+      \strng{authorfullhash}{f95e8679bf3071e22969b73a59ae1756}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Own work derived from File:Aerial view of M6A38 Spaghetti Junction.jpg, whose license permits such derivative work when properly credited, CC BY 2.0}
+      \field{title}{Highways Agency photo on flickr}
+      \field{year}{2008}
+      \verb{urlraw}
+      \verb https://commons.wikimedia.org/w/index.php?curid=19927460
+      \endverb
+      \verb{url}
+      \verb https://commons.wikimedia.org/w/index.php?curid=19927460
+      \endverb
+    \endentry
+    \entry{AnyLogic}{misc}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{title}{Road traffic simulation software}
+      \verb{urlraw}
+      \verb https://www.anylogic.com/road-traffic/
+      \endverb
+      \verb{url}
+      \verb https://www.anylogic.com/road-traffic/
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
 \endinput
 
