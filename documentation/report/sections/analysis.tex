@@ -59,6 +59,52 @@
 
 \section{Research}
 
+    The natural way to represent any kind of network (including road networks) programmatically is using a graph, so I will conduct some preliminary research into this topic.
+
+    \subsection{Graphs}
+
+        Graphs are an abstract data structure used to describe a set of vertices and the edges connecting them, both vertices and edges can have associated values. This is a very useful structure in computer science as it can be used to model a wide range of existing data such as power grids and social networks. Graphs also come with a wide range of existing algorithms for operating on them such as Dijkstra's shortest path algorithm or the A* search algorithm.
+
+        Described below are the three most common data structures used to describe graphs:
+
+        \begin{itemize}
+            \item \textbf{Adjacency list} - Vertices are stored as objects containing a list of it's own adjacent vertices.
+            \item \textbf{Adjacency matrix} - A two-dimensional matrix where each cell represents the edge (or lack of edge) from the vertex described by the row to the vertex described by the column.
+            \item \textbf{Incidence matrix} - A two-dimensional matrix where each cell represents the relationship between a vertex (row) and an edge (column).
+        \end{itemize}
+
+        Each implementation has its advantages and disadvantages \autoref{graph-time-complexities} shows the time complexity of each operation over these three structures.
+
+
+        \begin{table}
+            \begin{tabular}{|p{0.2\linewidth}|p{0.2\linewidth}|p{0.2\linewidth}|p{0.2\linewidth}|} \hline
+            & Adjacency list & Adjacency matrix & Incidence matrix \\ \hline
+            Store graph   & $O(|V|+|E|)$ & $O(|V|^2)$ & $O(|V|\cdot|E|)$ \\ \hline
+            Add vertex    & $O(1)$ & $O(|V|^2)$ & $O(|V|\cdot|E|)$ \\ \hline
+            Add edge      & $O(1)$ & $O(1)$ & $O(|V|\cdot|E|)$ \\ \hline
+            Remove vertex & $O(|E|)$ & $O(|V|^2)$ & $O(|V|\cdot|E|)$ \\ \hline
+            Remove edge   & $O(|V|)$ & $O(1)$ & $O(|V|\cdot|E|)$ \\ \hline
+            Check for adjacency between two vertices & $O(|V|)$ & $O(1)$ & $O(|E|)$ \\ \hline
+            \end{tabular}
+            \caption{Table showing time complexities of different graph implementations}
+            \label{graph-time-complexities}
+        \end{table}
+
+
+
+    \subsection{Traffic laws}
+
+        This project will be based off the UK Highway Code \cite{Highway-Code} as of the latest update (23 March 2021). This document contains all laws and regulations for driving in the UK. The relevant points include:
+
+        \begin{itemize}
+            \item Normal driving position is considered the leftmost lane of the road and should be assumed whenever possible
+            \item Right-of-way is given to the major road when emerging from a junction
+            \item When entering a roundabout, you must give way to vehicles on your right
+            \item Is it recommended to maintain a two second separation distance from the vehicle in front
+        \end{itemize}
+
+        These rules will be used to inform how the vehicles in the simulation operate in different circumstances. Although it may be noted that not all vehicles follow these laws strictly, so deviations may be added to account for this.
+
 \section{Proposed Solution}
 
 \section{Objectives}

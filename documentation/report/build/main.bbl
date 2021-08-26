@@ -57,6 +57,18 @@
       \verb https://www.anylogic.com/road-traffic/
       \endverb
     \endentry
+    \entry{Highway-Code}{misc}{}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labeltitlesource}{title}
+      \field{title}{The Highway Code - Guidance - GOV.UK}
+      \verb{urlraw}
+      \verb https://www.gov.uk/guidance/the-highway-code
+      \endverb
+      \verb{url}
+      \verb https://www.gov.uk/guidance/the-highway-code
+      \endverb
+    \endentry
   \enddatalist
 \endrefsection
 \endinput
