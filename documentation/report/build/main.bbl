@@ -57,9 +57,21 @@
       \verb https://www.anylogic.com/road-traffic/
       \endverb
     \endentry
-    \entry{Highway-Code}{misc}{}
+    \entry{graph-time-complexities}{misc}{}
       \field{sortinit}{3}
       \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labeltitlesource}{title}
+      \field{title}{Time and Space Complexity of Adjacency Matrix and List | Baeldung on Computer Science}
+      \verb{urlraw}
+      \verb https://www.baeldung.com/cs/adjacency-matrix-list-complexity
+      \endverb
+      \verb{url}
+      \verb https://www.baeldung.com/cs/adjacency-matrix-list-complexity
+      \endverb
+    \endentry
+    \entry{Highway-Code}{misc}{}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labeltitlesource}{title}
       \field{title}{The Highway Code - Guidance - GOV.UK}
       \verb{urlraw}
