@@ -72,9 +72,9 @@
 
         These rules will be used to inform how the vehicles in the simulation operate in different circumstances. Although it may be noted that not all vehicles follow these laws strictly, so deviations may be added to account for this.
 
-        The natural way to represent any kind of network (including road networks) programmatically is using a graph, so I will conduct some preliminary research into this topic.
-
     \subsection{Graphs}
+
+        The natural way to represent any kind of network (including road networks) programmatically is using a graph, so I will conduct some preliminary research into this topic.
 
         Graphs are an abstract data structure used to describe a set of vertices and the edges connecting them, both vertices and edges can have associated values. This is a very useful structure in computer science as it can be used to model a wide range of existing data such as power grids and social networks. Graphs also come with a wide range of existing algorithms for operating on them such as Dijkstra's shortest path algorithm or the A* search algorithm.
 
@@ -85,10 +85,10 @@
             \item \textbf{Adjacency matrix} - A two-dimensional matrix where each cell represents the edge (or lack of edge) from the vertex described by the row to the vertex described by the column.
         \end{itemize}
 
-        Each implementation has its advantages and disadvantages \autoref{graph-time-complexities} shows the time complexity of each operation over these three structures.
+        Each implementation has its advantages and disadvantages \autoref{graph-time-complexities} shows the time complexity of each operation over these two structures.
 
 
-        \begin{table}
+        \begin{table}[h]
             \centering
             \begin{tabular}{|p{0.2\linewidth}|p{0.2\linewidth}|p{0.2\linewidth}|} \hline
             & Adjacency list & Adjacency matrix \\ \hline
@@ -99,12 +99,31 @@
             Remove edge   & $O(|V|)$ & $O(1)$ \\ \hline
             Check for adjacency between two vertices & $O(|V|)$ & $O(1)$ \\ \hline
             \end{tabular}
-            \caption{Table showing time complexities of different graph implementations \cite{graph-time-complexities}}
+            \caption{Time complexities of different graph implementations \cite{graph-time-complexities}}
             \label{graph-time-complexities}
         \end{table}
 
-        There are two fields of graph algorithms I will need to explore for this project, graph traversal and graph drawing.
+        Since road networks are generally optimised for maximum throughput I will also research the graph maximum flow problem as this may be useful in evaluating the networks. Formally, the maximum flow problem is as follows \cite{citation needed}:
+
+        \begin{itemize}
+            \item Let $N = (V,E)$ be a network with $s, t \in V$, where $s$ is the source and $t$ is the sink.
+            \item The capacity of an edge is the maximum flow that can pass through it, the capacity from vertex $v$ to vertex $u$ is denoted as $c_{uv}$; and flow on the same edge as $f_{uv}$.
+            \item The flow network must satisfy two properties:
+            \begin{itemize}
+                \item Capacity constraint: The flow of an edge cannot exceed it's capacity. \[\forall (u, v) \in E : f_{uv} \leq c_{uv}\]
+                \item Conservation constraint: The flow into a vertex must equal the flow exiting a vertex (the source and sink are exceptions).
+                \[\forall v \in V \setminus \{s, t\} : \sum_{u : (u, v) \in E} f_{uv} = \sum_{u : (v, u) \in E} f_{vu}\]
+            \end{itemize}
+            \item The value of flow is the total amount of flow passing from the source to the sink, given by:
+            \[|f| = \sum_{v : (s, v) \in E} f_{sv}\]
+        \end{itemize}
+
+        The goal of the maximum flow problem is to route as much flow as possible from the source to the sink under these constraints. Many algorithms to compute $f_\text{max}$ have been found including but not limited to Linear Programming, the Ford-Fulkerson algorithm or the Edmonds-Karp algorithm.
+
+        The maximum flow of a road network could be a good indicator of the theoretical maximum efficiency.
 
 \section{Proposed Solution}
+
+    My proposed solution consists of a desktop app that allows the user to construct an arbitrary road network and test it using a set of 'car' agents that traverse the network.
 
 \section{Objectives}
