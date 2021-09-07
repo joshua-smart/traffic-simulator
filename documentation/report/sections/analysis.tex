@@ -17,7 +17,7 @@
     Computer modelling systems could be developed for any one of these areas, allowing users to prototype infrastructure designs before the costly process of constructing it. For this project I have chosen to focus on the Transportation sector, as it can include some of the most expensive forms of infrastructure.
 
     Naturally the major responsibility of transportation infrastructure goes towards the construction and maintenance of road networks, including but not limited to junctions, roundabouts, highways and traffic lights.
-    These networks can get very complicated and difficult to manage, for example the UK's so called "spaghetti junction" in Birmingham.
+    These networks can get very complicated and difficult to manage, for example the UK's so called "Spaghetti junction" in Birmingham.
 
     \begin{figure}[h]
         \includegraphics[width=0.5\textwidth]{Spaghetti-Junction.jpg}
@@ -25,11 +25,15 @@
         \caption{Birmingham's "Spaghetti junction" \cite{Spaghetti-Junction}}
     \end{figure}
 
+\newpage
+
 \section{The Problem}
 
-    Development of transportation is a very expensive and time consuming process, so being able to evaluate the efficiency and cost-effectiveness of road layouts beforehand would be very beneficial. This project aims to develop a road network simulator that can be used to evaluate the efficiency of inputted designs under a range of different traffic conditions.
+    Development of transportation infrastructure is a very expensive and time consuming process that comes with many challenges. First is the issue of safety, most road traffic accidents occur at low speeds. Many planning stages are required to ensure the build meets the required standards even before construction begins, taking a lot of time and manpower. Secondly, road networks be made reliable and maintainable, future development and expansion must be considered with roads designed to handle future predicted traffic patterns. Finally, roads need to be considered for financial viability, it is much cheaper to build the right road once than to keep fixing the wrong road.
 
     \subsection{End user}
+
+        The intended user of for this project would be someone in a position of urban development or planning. For this project I got in touch with \textbf{[insert contact here]}. Below is a transcript of the interview I conducted with them:
 
 \section{Current Systems}
 
@@ -122,8 +126,64 @@
 
         The maximum flow of a road network could be a good indicator of the theoretical maximum efficiency.
 
+    \subsection{Bezier curves}
+
+        Bezier curves are very popular in computer graphics due to their many useful properties, for this project Bezier curves could be used to model the road connections between vertices of the road network.
+
+        The definitions for linear (line), quadratic (3 points) and cubic (4 points) are as follows:
+
+        \begin{align*}
+            B_1(t) &= (1 - t)\mathbf{P_0} + t\mathbf{P_1}\\
+            B_2(t) &= (1 - t)^2\mathbf{P_0} + 2(1 - t)t\mathbf{P_1} + t^2\mathbf{P_2}\\
+            B_3(t) &= (1 - t)^3\mathbf{P_0} + 3(1 - t)^2t\mathbf{P_1} + 3(1 - t)t^2\mathbf{P_2} + t^3\mathbf{P_3}
+        \end{align*}
+
+        Where $t$ is an interpolation value where $0 \leq t \leq 1$, where $t=0$ is the start of the curve and $t=1$ is the end. $P$ is a set of control points that define the curve. A Bezier curve $B_n(t)$ can be formed for any order $n \in \mathbb{N}$. Bezier curves in this form are known as "Bernstein polynomial form" and is one of the easiest ways to work with these curves.
+
+        The properties of a Bezier curve include:
+        \begin{itemize}
+            \item The curve begins at $P_0$ and ends at $P_n$.
+            \item The curve is tangent to the line formed by the first 2 control points, and also the line formed by the last 2.
+            \item The curve can be interpolated continuously, meaning an arbitrarily precise point can be acquired.
+            \item The curve can be easily differentiated, allowing use of it's tangent and normal vectors.
+            \item There is also a method for finding the curvature of a Bezier curve at any point along it's length.
+        \end{itemize}
+
+        Differentiating a Bezier curve is as easy as differentiating each coefficient in it's "Bernstein polynomial form" with respect to $t$ as each control point can be considered a constant. Which for a cubic Bezier looks like this.
+
+        \begin{align*}
+            B_3(t) &= (1 - t)^3\mathbf{P_0} + 3(1 - t)^2t\mathbf{P_1} + 3(1 - t)t^2\mathbf{P_2} + t^3\mathbf{P_3}\\
+            \frac{d}{dt}B_3(t) &= \frac{d}{dt}\left[(1 - t)^3\mathbf{P_0} + 3(1 - t)^2t\mathbf{P_1} + 3(1 - t)t^2\mathbf{P_2} + t^3\mathbf{P_3}\right]\\
+            &= \frac{d}{dt}\left[(1 - t)^3\mathbf{P_0}\right] + \frac{d}{dt}\left[3(1 - t)^2t\mathbf{P_1}\right] + \frac{d}{dt}\left[3(1 - t)t^2\mathbf{P_2}\right] + \frac{d}{dt}\left[t^3\mathbf{P_3}\right]\\
+            &= \frac{d}{dt}\left[(1 - t)^3\right]\mathbf{P_0} + \frac{d}{dt}\left[3(1 - t)^2t\right]\mathbf{P_1} + \frac{d}{dt}\left[3(1 - t)t^2\right]\mathbf{P_2} + \frac{d}{dt}\left[t^3\right]\mathbf{P_3}\\
+            \frac{d}{dt}B_3(t) &= (-3t^2 + 6t - 3)\mathbf{P_0} + (9t^2 - 12t + 3)\mathbf{P_1} + (-9t^2 + 6t)\mathbf{P_2} + (3t^2)\mathbf{P_3}
+        \end{align*}
+
+        As shown the derivative of a Bezier curve is another linear combination of vectors which can be quickly and easily calculated, returning a vector tangent to the curve at that point. The normal vector can also be derived from this by rotating the tangent vector 90 degrees anti-clockwise.
+
 \section{Proposed Solution}
 
-    My proposed solution consists of a desktop app that allows the user to construct an arbitrary road network and test it using a set of 'car' agents that traverse the network.
+    My proposed solution consists of a desktop app that allows the user to construct an arbitrary road network and perform tests regarding safety and efficiency, in order to assist in the process of road network development.
 
 \section{Objectives}
+
+    \subsection{Network construction}
+
+    \begin{itemize}
+        \item The ability to save and load road networks.
+        \begin{itemize}
+            \item Graph and road network data should have export functionality to a common file type such as \texttt{.txt} or \texttt{.csv}
+            \item The same data should be capable of loading into a separate session of the program, restoring the same network from when it was saved.
+        \end{itemize}
+        \item
+    \end{itemize}
+
+    \subsection{Network testing}
+    \begin{itemize}
+        \item
+    \end{itemize}
+
+    \subsection{Graphical user interface}
+    \begin{itemize}
+        \item The ability to save and load GUI data along with road network data, loading a saved session should return the screen to the same state as it was left off.
+    \end{itemize}

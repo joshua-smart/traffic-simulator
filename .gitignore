@@ -3,4 +3,3 @@
 *.css
 *.css.map
 /documentation/report/build/
-!/documentation/report/build/*.pdf
