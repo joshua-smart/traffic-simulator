@@ -34,6 +34,7 @@
 \section{Current Systems}
 
     \subsection{AnyLogic - Road Traffic Simulation Software}
+    \label{anylogic}
 
         AnyLogic - Road Traffic Simulation Software \cite{AnyLogic} is an industry-level program used for analysing traffic patterns and behaviours, below are a couple images of the program. I chose this program as it would be beneficial to analyse a commercial grade example in order to inform my own project.
 
@@ -70,6 +71,7 @@
         }
 
     \subsection{Mini Motorways}
+    \label{mini-motorways}
 
     \begin{quote}
         "Mini Motorways is a game about drawing the roads that drive a growing city. Build a road network, one road at a time, to create a bustling metropolis. Redesign your city to keep the traffic flowing, and carefully manage upgrades to meet the changing demands."\cite{mini-motorways}
@@ -89,8 +91,15 @@
             \item The simple click and drag system for building road, along with a series of well established hotkeys and visual key press responses, make this system very intuitive and friendly for new users.
             \item Despite the very accessible interface the game contains a very short tutorial section that teaches the basics of the control scheme, ensuring that every user can use it effectively.
         \end{itemize}
+        \item Friendly and unobtrusive UI
+        \begin{itemize}
+            \item This game has a simple, almost cartoonish, style. While this does clash with traditional ideas of a "professional-looking" software, it makes for a simple and easy to understand gameplay experience where the scenery does not interfere with user interaction.
+        \end{itemize}
     }{
-        \item
+        \item Bespoke Simulation
+        \begin{itemize}
+            \item Given the nature of this program it is not surprising that the simulation is built to be a video game not a true-to-life simulation. The cars behave in very autonomous and predictable ways as well as abiding to a constant speed limit
+        \end{itemize}
     }
 
     \subsection{Eclipse SUMO}
@@ -115,6 +124,7 @@
         These rules will be used to inform how the vehicles in the simulation operate in different circumstances. Although it may be noted that not all vehicles follow these laws strictly, so deviations may be added to account for this.
 
     \subsection{Graphs}
+    \label{max-flow}
 
         The natural way to represent any kind of network (including road networks) programmatically is using a graph, so I will conduct some preliminary research into this topic.
 
@@ -165,6 +175,7 @@
         The maximum flow of a road network could be a good indicator of the theoretical maximum efficiency.
 
     \subsection{Bezier curves}
+    \label{bezier}
 
         Bezier curves are very popular in computer graphics due to their many useful properties, for this project Bezier curves could be used to model the road connections between vertices of the road network.
 
@@ -213,15 +224,30 @@
             \item Graph and road network data should have export functionality to a common file type such as \texttt{.txt} or \texttt{.csv}
             \item The same data should be capable of loading into a separate session of the program, restoring the same network from when it was saved.
         \end{itemize}
-        \item
+        \item Click-and-drag based graph builder.
+        \begin{itemize}
+            \item Based on the road building control scheme from Mini Motorways [section \ref{mini-motorways}], this program will allow the user to click and drag on the interface to connect and create roads.
+        \end{itemize}
     \end{itemize}
 
     \subsection{Network testing}
     \begin{itemize}
-        \item
+        \item Agent based traffic model.
+        \begin{itemize}
+            \item The program should include an agent based model to track traffic across the network. "Car" agents should be placed on the network and follow a series of rules as they "drive". Positions, density and timings of these agents can then be used to produce meaningful statistics.
+        \end{itemize}
+        \item Theory based approaches.
+        \begin{itemize}
+            \item Theoretical measures could also be used to evaluate a road network, such as the Maximum Graph Flow problem [section \ref{max-flow}], or by measuring the curvatures of road sections [section \ref{bezier}].
+        \end{itemize}
     \end{itemize}
 
     \subsection{Graphical user interface}
     \begin{itemize}
         \item The ability to save and load GUI data along with road network data, loading a saved session should return the screen to the same state as it was left off.
+        \item Simple and intuitive interface.
+        \begin{itemize}
+            \item The more stylised parts of the interface should not detract from the functional parts the user needs to access, I have found this to be detrimental to the user experience in my product evaluations [section \ref{anylogic}].
+            \item The UI should not become cluttered with too many interface components, they should instead be located in logically placed toolbars and menus.
+        \end{itemize}
     \end{itemize}
