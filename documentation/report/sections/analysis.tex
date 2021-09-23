@@ -19,7 +19,7 @@
     Naturally the major responsibility of transportation infrastructure goes towards the construction and maintenance of road networks, including but not limited to junctions, roundabouts, highways and traffic lights.
     These networks can get very complicated and difficult to manage, for example the UK's so called "Spaghetti junction" in Birmingham.
 
-    \begin{figure}[h]
+    \begin{figure}[ht]
         \includegraphics[width=0.5\textwidth]{Spaghetti-Junction.jpg}
         \centering
         \caption{Birmingham's "Spaghetti junction" \cite{Spaghetti-Junction}}
@@ -138,7 +138,7 @@
         Each implementation has its advantages and disadvantages \autoref{graph-time-complexities} shows the time complexity of each operation over these two structures.
 
 
-        \begin{table}[h]
+        \begin{table}[ht]
             \centering
             \begin{tabular}{|p{0.2\linewidth}|p{0.2\linewidth}|p{0.2\linewidth}|} \hline
             & Adjacency list & Adjacency matrix \\ \hline
@@ -241,6 +241,14 @@
     \end{itemize}
 
     \subsection{Graphical user interface}
+    \label{requirements-GUI}
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.6\textwidth]{concept-art.jpg}
+        \caption{Concept art for the user interface}
+    \end{figure}
+
     \begin{itemize}
         \item The ability to save and load GUI data along with road network data, loading a saved session should return the screen to the same state as it was left off.
         \item Simple and intuitive interface.
