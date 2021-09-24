@@ -217,6 +217,15 @@
     \subsection{Network construction}
 
     \begin{itemize}
+        \item 2D network model
+        \begin{itemize}
+            \item After exploring a 3D network model in my product investigation [section \ref{anylogic}] I have decided that it would be more effective to have a 2D model instead, as it is easier to visualise for the user and reduces the complexity. Reducing it to something more like Mini-Motorways [section \ref{mini-motorways}]
+        \end{itemize}
+        \item Constructing junctions, roundabouts and other isolated networks.
+        \begin{itemize}
+            \item This program should be developed with the intention of simulating isolated parts of larger road networks, such as a particularly complicated roundabout or intersection.
+            \item Lower node counts on the graphs will allow for a faster simulation, this program should at maximum be able to handle a graph with 50 nodes.
+        \end{itemize}
         \item The ability to save and load road networks.
         \begin{itemize}
             \item Graph and road network data should have export functionality to a common file type such as \texttt{.txt} or \texttt{.csv}
@@ -233,6 +242,8 @@
         \item Agent based traffic model.
         \begin{itemize}
             \item The program should include an agent based model to track traffic across the network. "Car" agents should be placed on the network and follow a series of rules as they "drive". Positions, density and timings of these agents can then be used to produce meaningful statistics.
+            \item The more agents there are to simulate the slower the program will run, this program should be able to handle at maximum 100 agents.
+            \item The efficiency of the agents is also affected by the size of the graph as I will need to implement a path-finding algorithm. Hence larger graphs will make this step take longer.
         \end{itemize}
         \item Theory based approaches.
         \begin{itemize}
