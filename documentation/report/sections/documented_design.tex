@@ -1,12 +1,20 @@
 \section{Languages and Frameworks}
 
-    I have chosen to develop this as a web app as this is the most accessible form of application that can run on any web browser. This also fulfils the requirement of a desktop-scale application [section \ref{requirements-GUI}], maintaining support for variable aspect ratios.
+    I have chosen to develop this as a web app as this is the most accessible form of application that can run on any web browser. This also fulfils the requirement of a desktop-scale application [\autoref{requirements-GUI}], maintaining support for variable aspect ratios.
 
     \subsection{JavaScript}
 
+        \begin{wrapfigure}{r}{0.10\textwidth}
+            \centering
+            \includegraphics[width=0.10\textwidth]{js-logo-512.png}
+        \end{wrapfigure}
 
+        JavaScript is a web native, interpreted language that runs directly in a browser. It is dynamically typed (which is rectified by the use of TypeScript [\autoref{typescript}], and has the capability to communicate directly with HTML/CSS environments [\autoref{html/css}]. JavaScript is the most popular framework for web development and is utilised in almost all websites.
+
+        Using JavaScript modules a program can be split into many distinct scripts, allowing for improved project management. In this way JavaScript has the capability to mimic the class structure of Java, a paradigm of OOP that I am very familiar with.
 
     \subsection{TypeScript}
+    \label{typescript}
 
         \begin{wrapfigure}{r}{0.10\textwidth}
             \centering
@@ -18,6 +26,12 @@
         TypeScript compiles into plain JavaScript code and this is what will be running in the browser when the program is loaded.
 
     \subsection{HTML/CSS}
+    \label{html/css}
+
+        \begin{wrapfigure}{r}{0.10\textwidth}
+            \centering
+            \includegraphics[width=0.10\textwidth]{html5-css-logo-512-1024.png}
+        \end{wrapfigure}
 
         The HTML and CSS framework will handle most of the GUI visuals and layout. This will interface directly with my JavaScript object code through DOM-manipulation statements. A few important ones are listed below:
 
@@ -46,7 +60,26 @@ This will be a vital part of my program, allowing code to respond to document ev
 
     \subsection{User Interaction}
 
+    As specified in my analysis section, the user input scheme will be based largely off of mouse interactions similar to that of the Mini Motorways computer game [\autoref{mini-motorways}]. The controls are listed in \autoref{user-interaction-specification}:
+
+    \begin{table}[ht]
+        \centering
+        \begin{tabular}{|p{0.4\textwidth}|p{0.4\textwidth}|}
+            \hline
+            \textbf{Input} & \textbf{Result}\\
+            \hline
+            Left-click on existing node and drag to another existing node & Connect a road between the two targeted vertices\\\hline
+            Left-click on existing node and drag to empty space & Create new node at the end point and connect with the existing node\\\hline
+            Shift-Left-click on empty space & Create new node at the selected point with no connections\\\hline
+            Shift-Left-click on existing node and drag & Move the targeted node along the path of the cursor until button is released\\\hline
+        \end{tabular}
+        \caption{User interactions with graph model}
+        \label{user-interaction-specification}
+    \end{table}
+
     \subsection{Graph Structure}
+
+        After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term.
 
     \subsection{GUI}
 
