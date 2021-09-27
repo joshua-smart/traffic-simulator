@@ -36,24 +36,17 @@
         The HTML and CSS framework will handle most of the GUI visuals and layout. This will interface directly with my JavaScript object code through DOM-manipulation statements. A few important ones are listed below:
 
         \begin{itemize}
-            \item \begin{lstlisting}
-document.querySelector(<string>);\end{lstlisting}
-To retrieve a reference to the specified element in the document.
-            \item \begin{lstlisting}
-element.style.<property>;\end{lstlisting}
-Allows access to an elements runtime CSS properties to be edited.
-            \item \begin{lstlisting}
-document.createElement(<tag>);\end{lstlisting}
-Creates an element with a specified HTML tag that can be subsequently added to the document.
-            \item \begin{lstlisting}
-element.appendChild(<childElement>);\end{lstlisting}
-Adds the child element as a sub-element of the parent.
-            \item \begin{lstlisting}
-element.innerHTML;\end{lstlisting}
-Accesses the raw HTML contained within the element as a string to be changed or reassigned.
-            \item \begin{lstlisting}
-element.addEventListener(<listener>);\end{lstlisting}
-This will be a vital part of my program, allowing code to respond to document events such as clicks, keypresses and scrolls.
+            \item \inlinecode{document.querySelector(<string>);} To retrieve a reference to the specified element in the document.
+            
+            \item \inlinecode{element.style.<property>;} Allows access to an elements runtime CSS properties to be edited.
+
+            \item \inlinecode{document.createElement(<tag>);} Creates an element with a specified HTML tag that can be subsequently added to the document.
+
+            \item \inlinecode{element.appendChild(<childElement>);} Adds the child element as a sub-element of the parent.
+
+            \item \inlinecode{element.innerHTML;} Accesses the raw HTML contained within the element as a string to be changed or reassigned.
+
+            \item \inlinecode{element.addEventListener(<listener>);} This will be a vital part of my program, allowing code to respond to document events such as clicks, keypresses and scrolls.
         \end{itemize}
 
 \section{Network Builder}
