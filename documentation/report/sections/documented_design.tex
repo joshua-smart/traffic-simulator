@@ -49,6 +49,21 @@
             \item \inlinecode{element.addEventListener(<listener>);} This will be a vital part of my program, allowing code to respond to document events such as clicks, keypresses and scrolls.
         \end{itemize}
 
+\section{Program overview}
+
+    This program will consist largely of three major components: A road network model; a framework for testing the road model; and a system to handle the display as well as user interaction.
+
+    By the nature of HTML, the front-end of this program will be event based, utilising JavaScript event listeners to respond to user interactions.
+
+    I will be using the model-view-controller design pattern to manage the interactions between these components, the basis of which is summarised in \autoref{model-view-controller}
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.4\textwidth]{model-view-controller.png}
+        \caption{}
+        \label{model-view-controller}
+    \end{figure}
+
 \section{Network Builder}
 
     \subsection{User Interaction}
@@ -57,7 +72,7 @@
 
     \begin{table}[ht]
         \centering
-        \begin{tabular}{|p{0.4\textwidth}|p{0.4\textwidth}|}
+        \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
             \hline
             \textbf{Input} & \textbf{Result}\\
             \hline
@@ -72,7 +87,32 @@
 
     \subsection{Graph Structure}
 
-        After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term.
+        After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term. The necessary fuctions that need to be included in this graph implementation are listed in \autoref{graph-functions}
+
+        \begin{table}[ht]
+            \centering
+            \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+                \hline
+                \textbf{Function definition} & \textbf{Description}\\
+                \hline
+                \inlinecode{add_vertex(vertex): integer} & Adds a new vertex to the graph with a specified vertex value, returning the index of the new vertex\\
+                \hline
+                \inlinecode{set_vertex(vertexId, value): void} & Sets the value of a vertex at a given vertex id, no return value\\
+                \hline
+                \inlinecode{get_vertex(vertexId): Vertex} & Returns the value of a vertex at a given vertex id\\
+                \hline
+                \inlinecode{remove_vertex(vertexId): Vertex} & Removes a vertex from the graph at a given vertex id, returning the value of the removed vertex\\
+                \hline
+                \inlinecode{set_edge(srcId, dstId, value): void} & Sets the value of the edge starting from the vertex at the source id and ending at the vertex at destination id\\
+                \hline
+                \inlinecode{get_edge(srcId, dstId): Edge} & Returns the value of an edge between the source vertex and destination vertex\\
+                \hline
+                \inlinecode{remove_edge(srcId, dstId): Edge} & Removes the edge between the source and destination vertices, returning the value of the edge\\
+                \hline
+            \end{tabular}
+            \caption{Specification for the graph implementation}
+            \label{graph-functions}
+        \end{table}
 
     \subsection{GUI}
 
