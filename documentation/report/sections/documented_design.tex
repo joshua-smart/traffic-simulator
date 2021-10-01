@@ -82,6 +82,15 @@
         \label{user-interaction-specification}
     \end{table}
 
+    This program will include undo/redo functionality on the network construction component specifically, this will be modelled using two stacks, one containing the user actions that have occured (the undo stack) and the other containing the actions that have been reapplied (the redo stack). \textbf{LINK DIAGRAM}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{undo-redo-diagram.jpg}
+        \caption{}
+        \label{undo-redo-diagram}
+    \end{figure}
+
     \subsection{Graph Structure}
 
         After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term. The necessary fuctions that need to be included in this graph implementation are listed in \autoref{graph-functions}
@@ -90,7 +99,7 @@
             \centering
             \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
                 \hline
-                \textbf{Function definition} & \textbf{Description}\\
+                \textbf{Method definition} & \textbf{Description}\\
                 \hline
                 \inlinecode{add_vertex(vertex): integer} & Adds a new vertex to the graph with a specified vertex value, returning the index of the new vertex\\
                 \hline
@@ -107,7 +116,7 @@
                 \inlinecode{remove_edge(srcId, dstId): Edge} & Removes the edge between the source and destination vertices, returning the value of the edge\\
                 \hline
             \end{tabular}
-            \caption{Specification for the graph implementation}
+            \caption{Specification for the graph class implementation}
             \label{graph-functions}
         \end{table}
 
