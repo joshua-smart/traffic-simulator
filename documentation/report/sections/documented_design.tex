@@ -82,12 +82,12 @@
         \label{user-interaction-specification}
     \end{table}
 
-    This program will include undo/redo functionality on the network construction component specifically, this will be modelled using two stacks, one containing the user actions that have occured (the undo stack) and the other containing the actions that have been reapplied (the redo stack). \textbf{LINK DIAGRAM}
+    This program will include undo/redo functionality on the network construction component specifically, this will be modelled using two stacks, one containing the user actions that have occurred (the previous states stack) and the other containing the actions that have been reapplied from the previous states stack (the future states stack). \autoref{undo-redo-diagram} shows a diagram of the undo-redo procedures, popping from one stack and pushing into the other. This behaviour, along with \textbf{CONTINUE HERE}
 
     \begin{figure}
         \centering
         \includegraphics[width=0.6\textwidth]{undo-redo-diagram.jpg}
-        \caption{}
+        \caption{Diagram showing the undo-redo procedures}
         \label{undo-redo-diagram}
     \end{figure}
 
