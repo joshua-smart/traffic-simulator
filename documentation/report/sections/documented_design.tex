@@ -9,9 +9,10 @@
             \includegraphics[width=0.10\textwidth]{js-logo-512.png}
         \end{wrapfigure}
 
-        JavaScript is a web native, interpreted language that runs directly in a browser. It is dynamically typed (which is rectified by the use of TypeScript [\autoref{typescript}], and has the capability to communicate directly with HTML/CSS environments [\autoref{html/css}]. JavaScript is the most popular framework for web development and is utilised in almost all websites.
+        JavaScript is a web native, interpreted language that runs directly in a browser. It is dynamically typed (which is rectified by the use of TypeScript [\autoref{typescript}]), and has the capability to communicate directly with HTML/CSS environments [\autoref{html/css}]. JavaScript is the most popular framework for web development and is utilised in almost all websites.
 
-        Using JavaScript modules a program can be split into many distinct scripts, allowing for improved project management. In this way JavaScript has the capability to mimic the class structure of Java, a paradigm of OOP that I am very familiar with.
+        Using JavaScript modules a program can be split into many distinct scripts, allowing for improved project management. In this way JavaScript has the capability to mimic the class structure of Java, a version of the OOP paragdim that I am very familiar with.
+
 
     \subsection{TypeScript}
     \label{typescript}
@@ -82,7 +83,7 @@
         \label{user-interaction-specification}
     \end{table}
 
-    This program will include undo/redo functionality on the network construction component specifically, this will be modelled using two stacks, one containing the user actions that have occurred (the previous states stack) and the other containing the actions that have been reapplied from the previous states stack (the future states stack). \autoref{undo-redo-diagram} shows a diagram of the undo-redo procedures, popping from one stack and pushing into the other. This behaviour, along with \textbf{CONTINUE HERE}
+    This program will include undo/redo functionality on the network construction component specifically, this will be modelled using two stacks, one containing the user actions that have occurred (the previous states stack) and the other containing the actions that have been reapplied from the previous states stack (the future states stack). \autoref{undo-redo-diagram} shows a diagram of the undo-redo procedures, popping from one stack and pushing into the other.
 
     \begin{figure}
         \centering
@@ -119,6 +120,51 @@
             \caption{Specification for the graph class implementation}
             \label{graph-functions}
         \end{table}
+
+    \subsection{Road geometry}
+
+    The roads will be moddeled using a series of Bezier curves, to allow for this the user must be able to adjust the control points of the curves. The edges of the graph will need to store a data structure containing 2 control points for the curve (the first and last points are defined by the source and destination nodes of the edge). This will make for cubic Bezier curves which will be controlled by their own \inlinecode{CubicBezier} class. One function of this will be a \inlinecode{get_point} method which will interpolate linearly along the length of the curve, return a point. This is not a trivial problem and my solution is documented below.
+
+    \paragraph{Linear interpolation of cubic Bezier curves}
+
+    Given a cubic Bezier curve with control points $\mathbf{P_0}$, $\mathbf{P_1}$, $\mathbf{P_2}$ and $\mathbf{P_3}$. We can define it as
+
+    \[B(t) = (1 - t)^3\mathbf{P_0} + 3(1 - t)^2t\mathbf{P_1} + 3(1 - t)t^2\mathbf{P_2} + t^3\mathbf{P_3} : 0 \leq t \leq 1\]
+
+    As shown in \autoref{non-linear-interpolated-bezier}, the $t$ parameter does not interpolate linearly across the curve. The distances between successive points is not constant. This is an issue as cars will need to move at a given speed along these curves.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.4\textwidth]{non-linear-interpolated-bezier.png}
+        \caption{Bezier curve with equally spaced points by $t$-value}
+        \label{non-linear-interpolated-bezier}
+    \end{figure}
+
+    In order to achieve this I will need to compute the arc length of the Bezier curve. Allowing me to take steps with respect to distance instead of $t$-value.
+
+    The arc length can be represented by summing many small steps along the curve, the distance along the curve to some $t = z$ can be represented in integral notation as:
+
+    \[\int_0^z\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}dt\]
+
+    It can be shown that a closed form solution does not exist \cite{no-closed-form-bezier} for Bezier curves of order greater than 2. So we must use an approximate method to compute these values. However square roots are very expensive computationally, so it would be inefficient to compute this many times for every call. My solution to this is to build a graph that maps distances to $t$-values using a sequence of samples, \autoref{t-against-distance}
+    \begin{algorithm}
+        \begin{algorithmic}
+            \Function{get\_arc\_length}{B, z}
+                \State distance $\gets 0$
+                \State $t \gets 0$
+                \While{$t < z$}
+                    \State $p \gets$ \Call{B.get\_point}{t}
+                    \State $t \gets t + 0.01$
+                    \State $q \gets$ \Call{B.get\_point}{t}
+
+                    \State distance $\gets$ distance $+ \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}$
+                \EndWhile
+                \State \textbf{return} distance
+            \EndFunction
+        \end{algorithmic}
+        \caption{Computing the arc length along a Bezier curve}
+        \label{numerical-integration}
+    \end{algorithm}
 
     \subsection{GUI}
 
