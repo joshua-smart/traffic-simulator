@@ -79,10 +79,18 @@
 \definecolor{codegreen}{rgb}{0,0.6,0}
 \definecolor{codegray}{rgb}{0.5,0.5,0.5}
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.90,0.90,0.90}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
 
 \lstdefinelanguage{javascript}{
-    morekeywords={document},
+    morekeywords={
+        document,
+        function,
+        new,
+        return,
+        const,
+        let,
+        var
+    },
     morecomment=[n]{<}{>}
 }
 
@@ -109,3 +117,5 @@
 \lstset{style=mystyle}
 
 \newcommand{\inlinecode}[1]{\colorbox{backcolour}{\lstinline!#1!}}
+\usepackage{algpseudocode}
+\usepackage{algorithm}
