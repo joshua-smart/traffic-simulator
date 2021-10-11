@@ -84,10 +84,14 @@
         \inlinecode{v.sqr_mag()},
         \inlinecode{v.dot(b)}
 
-        Each of these methods will be implemented with static and non-static variants, allowing for more flexible usages. I will be using \textbf{out-of-place [check]} methods which is a scheme I am more familiar with and allows for clearer syntax.
+        Each of these methods will be implemented with static and non-static variants, allowing for more flexible usages. I will be using methods that do not mutate their parameters which is a scheme I am more familiar with and allows for clearer syntax.
 
-        \paragraph{Bezier}
+        \paragraph{CubicBezier}
 
+        This class will store all of the computation needed to model cubic Bezier curves which I explored in \autoref{bezier}.
+        This class will contain the following methods:
+
+        \inlinecode{b.get_point(p)}, \inlinecode{b.get_normal(p)}, \inlinecode{b.get_curvature(p)}
 
 \section{Network Builder}
 
