@@ -62,6 +62,33 @@
 
     Note that in this framework the 'Model' includes both the Road network model and the testing component together, although these will be separately implemented.
 
+\section{Class structure}
+
+    \subsection{Utility classes}
+
+    \paragraph{Vector2}
+
+        This program is based in a 2D rendering environment so a general 2D Vector class will be required for many functions. This class will store an x and y numerical attribute as well as containing the following static methods:
+
+        \inlinecode{Vector2.add(a, b)},
+        \inlinecode{Vector2.sub(a, b)}, \inlinecode{Vector2.mult(v, x)},
+        \inlinecode{Vector2.mag(v)},\\
+        \inlinecode{Vector2.sqr_mag(v)},
+        \inlinecode{Vector2.dot(a, b)}
+
+        And their non-static counterparts:
+
+        \inlinecode{v.add(b)},
+        \inlinecode{v.sub(b)}, \inlinecode{v.mult(x)},
+        \inlinecode{v.mag()},
+        \inlinecode{v.sqr_mag()},
+        \inlinecode{v.dot(b)}
+
+        Each of these methods will be implemented with static and non-static variants, allowing for more flexible usages. I will be using \textbf{out-of-place [check]} methods which is a scheme I am more familiar with and allows for clearer syntax.
+
+        \paragraph{Bezier}
+
+
 \section{Network Builder}
 
     \subsection{User Interaction}
@@ -146,7 +173,7 @@
 
     \[\int_0^z\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}dt\]
 
-    It can be shown that a closed form solution does not exist \cite{no-closed-form-bezier} for Bezier curves of order greater than 2. So we must use an approximate method to compute these values. However square roots are very expensive computationally, so it would be inefficient to compute this many times for every call. My solution to this is to build a graph that maps distances to $t$-values using a sequence of samples, \autoref{t-against-distance}
+    It can be shown that a closed form solution does not exist \cite{no-closed-form-bezier} for Bezier curves of order greater than 2. So we must use an approximate method to compute these values. My solution is shown in Algorithm \ref{numerical-integration}.
     \begin{algorithm}
         \begin{algorithmic}
             \Function{get\_arc\_length}{B, z}
@@ -165,6 +192,8 @@
         \caption{Computing the arc length along a Bezier curve}
         \label{numerical-integration}
     \end{algorithm}
+
+    Using Algorithm \ref{numerical-integration} I can find the distance along the curve at any $t$-value. However it is a very expensive calculation given the large number of square root operations required. A much more efficient solution involves creating a polynomial approximation for the inverse function of $GET\_ARC\_LENGTH(z)$ that can then be used for the larger number of continuous calculations.
 
     \subsection{GUI}
 
