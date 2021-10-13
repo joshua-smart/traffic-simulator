@@ -62,20 +62,26 @@
 
     Note that in this framework the 'Model' includes both the Road network model and the testing component together, although these will be separately implemented.
 
-\section{Control flow}
-
-
-
 \section{Class structure}
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.8\textwidth]{composition-diagram-overview.png}
+        \caption{Composition diagram for the main program components}
+        \label{composition-diagram}
+    \end{figure}
+
+    \autoref{composition-diagram} outlines the compositions between the main objects in the program, further objects will need to be instantiated during the runtime of the program.
 
     \subsection{Utility classes}
 
-    \paragraph{Vector2}
+    \paragraph{Vector2 -}
 
         This program is based in a 2D rendering environment so a general 2D Vector class will be required for many functions. This class will store an x and y numerical attribute as well as containing the following static methods:
 
         \inlinecode{Vector2.add(a, b)},
-        \inlinecode{Vector2.sub(a, b)}, \inlinecode{Vector2.mult(v, x)},
+        \inlinecode{Vector2.sub(a, b)},
+        \inlinecode{Vector2.mult(v, x)},
         \inlinecode{Vector2.mag(v)},\\
         \inlinecode{Vector2.sqr_mag(v)},
         \inlinecode{Vector2.dot(a, b)}
@@ -83,21 +89,22 @@
         And their non-static counterparts:
 
         \inlinecode{v.add(b)},
-        \inlinecode{v.sub(b)}, \inlinecode{v.mult(x)},
+        \inlinecode{v.sub(b)},
+        \inlinecode{v.mult(x)},
         \inlinecode{v.mag()},
         \inlinecode{v.sqr_mag()},
         \inlinecode{v.dot(b)}
 
         Each of these methods will be implemented with static and non-static variants, allowing for more flexible usages. I will be using methods that do not mutate their parameters which is a scheme I am more familiar with and allows for clearer syntax.
 
-        \paragraph{CubicBezier}
+        \paragraph{CubicBezier -}
 
         This class will store all of the computation needed to model cubic Bezier curves which I explored in \autoref{bezier}.
         This class will contain the following methods:
 
         \inlinecode{b.get_point(p)}, \inlinecode{b.get_normal(p)}, \inlinecode{b.get_curvature(p)}
 
-        \paragraph{State Machine}
+        \paragraph{State Machine -}
 
         This classs represents a finite state machine model which utilises function callbacks, it will store a list of transitions and callbacks. When the \inlinecode{transition} method is called the state will change based on the appropriate transition and the callback assigned to it will be executed.
 
