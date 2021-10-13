@@ -53,7 +53,7 @@
 
     I will be using the model-view-controller design pattern to manage the interactions between these components, the basis of which is summarised in \autoref{model-view-controller}
 
-    \begin{figure}[ht]
+    \begin{figure}
         \centering
         \includegraphics[width=0.5\textwidth]{model-view-controller.png}
         \caption{Model-view-controller design pattern}
@@ -61,6 +61,10 @@
     \end{figure}
 
     Note that in this framework the 'Model' includes both the Road network model and the testing component together, although these will be separately implemented.
+
+\section{Control flow}
+
+
 
 \section{Class structure}
 
@@ -93,13 +97,22 @@
 
         \inlinecode{b.get_point(p)}, \inlinecode{b.get_normal(p)}, \inlinecode{b.get_curvature(p)}
 
+        \paragraph{State Machine}
+
+        This classs represents a finite state machine model which utilises function callbacks, it will store a list of transitions and callbacks. When the \inlinecode{transition} method is called the state will change based on the appropriate transition and the callback assigned to it will be executed.
+
+        The included methods are:
+
+        \inlinecode{sm.transition(e)}, \inlinecode{sm.add_rule(src, e, dst, cb)}
+
+
 \section{Network Builder}
 
     \subsection{User Interaction}
 
     As specified in my analysis section, the user input scheme will be based largely off of mouse interactions similar to that of the Mini Motorways computer game [\autoref{mini-motorways}]. The controls are listed in \autoref{user-interaction-specification}:
 
-    \begin{table}[ht]
+    \begin{table}
         \centering
         \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
             \hline
@@ -107,12 +120,23 @@
             \hline
             Left-click on existing node and drag to another existing node & Connect a road between the two targeted vertices\\\hline
             Left-click on existing node and drag to empty space & Create new node at the end point and connect with the existing node\\\hline
+            Left-click in empty space and drag & Pan the display along the path of the cursor\\\hline
             Shift-Left-click on empty space & Create new node at the selected point with no connections\\\hline
+            Shift-Left-click on node & Delete the node from the network\\\hline
             Shift-Left-click on existing node and drag & Move the targeted node along the path of the cursor until button is released\\\hline
         \end{tabular}
         \caption{User interactions with graph model}
         \label{user-interaction-specification}
     \end{table}
+
+    This behaviour can be moddeled by a finite state machine as shown in \autoref{network-builder-state-machine}, this will be implemented using the \inlinecode{StateMachine} utility class and encapsulated by the Controller component.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.5\textwidth]{network-builder-state-machine.jpg}
+        \caption{Details of the network builder controls state machine}
+        \label{network-builder-state-machine}
+    \end{figure}
 
     This program will include undo/redo functionality on the network construction component specifically, this will be modelled using two stacks, one containing the user actions that have occurred (the previous states stack) and the other containing the actions that have been reapplied from the previous states stack (the future states stack). \autoref{undo-redo-diagram} shows a diagram of the undo-redo procedures, popping from one stack and pushing into the other.
 
@@ -127,7 +151,7 @@
 
         After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term. The necessary fuctions that need to be included in this graph implementation are listed in \autoref{graph-functions}
 
-        \begin{table}[ht]
+        \begin{table}
             \centering
             \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
                 \hline
@@ -162,42 +186,58 @@
 
     \[B(t) = (1 - t)^3\mathbf{P_0} + 3(1 - t)^2t\mathbf{P_1} + 3(1 - t)t^2\mathbf{P_2} + t^3\mathbf{P_3} : 0 \leq t \leq 1\]
 
-    As shown in \autoref{non-linear-interpolated-bezier}, the $t$ parameter does not interpolate linearly across the curve. The distances between successive points is not constant. This is an issue as cars will need to move at a given speed along these curves.
+    The $t$ parameter does not interpolate linearly across the curve. The distances between successive points is not constant. This is an issue as cars will need to move at a given speed along these curves.
 
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.4\textwidth]{non-linear-interpolated-bezier.png}
-        \caption{Bezier curve with equally spaced points by $t$-value}
-        \label{non-linear-interpolated-bezier}
-    \end{figure}
+    In order to fix this problem I will need to compute a point along the curve at a specific proportionate distance. My propsed algorithm consists of two steps:
 
-    In order to achieve this I will need to compute the arc length of the Bezier curve. Allowing me to take steps with respect to distance instead of $t$-value.
+    First, in the constructor of the class, compute the total distance along the curve from start to end using a series of small steps, as shown in Algorithm \ref{total-distance-algorithm}.
 
-    The arc length can be represented by summing many small steps along the curve, the distance along the curve to some $t = z$ can be represented in integral notation as:
+    Secondly using a similar method, make a series of small steps along the curve until the target distance is reached, shown in Algorithm \ref{proportionate-distance-algorithm}.
 
-    \[\int_0^z\sqrt{\left(\frac{dx}{dt}\right)^2 + \left(\frac{dy}{dt}\right)^2}dt\]
-
-    It can be shown that a closed form solution does not exist \cite{no-closed-form-bezier} for Bezier curves of order greater than 2. So we must use an approximate method to compute these values. My solution is shown in Algorithm \ref{numerical-integration}.
     \begin{algorithm}
         \begin{algorithmic}
-            \Function{get\_arc\_length}{B, z}
+            \State totalDistance $\gets 0$
+            \State $t \gets 0$
+            \While{$t <= 1$}
+                \State $p \gets$ \Call{get\_t\_point}{$t$}
+                \State $t \gets t + 0.01$
+                \State $q \gets$ \Call{get\_t\_point}{$t$}
+
+                \State totalDistance $\gets$ totalDistance $+ \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}$
+            \EndWhile
+        \end{algorithmic}
+        \caption{Computing the total arc length of a cubic bezier curve}
+        \label{total-distance-algorithm}
+    \end{algorithm}
+
+    \begin{algorithm}
+        \begin{algorithmic}
+            \Function{get\_point}{B, p}
+                \State targetDistance $\gets$ B.totalDistance $*$ p
                 \State distance $\gets 0$
                 \State $t \gets 0$
-                \While{$t < z$}
-                    \State $p \gets$ \Call{B.get\_point}{t}
+                \While{distance $<$ targetDistance}
+                    \State $p \gets$ \Call{B.get\_t\_point}{$t$}
                     \State $t \gets t + 0.01$
-                    \State $q \gets$ \Call{B.get\_point}{t}
+                    \State $q \gets$ \Call{B.get\_t\_point}{$t$}
 
                     \State distance $\gets$ distance $+ \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}$
                 \EndWhile
-                \State \textbf{return} distance
+                \State \textbf{return} $t$
             \EndFunction
         \end{algorithmic}
-        \caption{Computing the arc length along a Bezier curve}
-        \label{numerical-integration}
+        \caption{Computing the $t$-value for a given proportionate distance along the curve}
+        \label{proportionate-distance-algorithm}
     \end{algorithm}
 
-    Using Algorithm \ref{numerical-integration} I can find the distance along the curve at any $t$-value. However it is a very expensive calculation given the large number of square root operations required. A much more efficient solution involves creating a polynomial approximation for the inverse function of $GET\_ARC\_LENGTH(z)$ that can then be used for the larger number of continuous calculations.
+    \autoref{bezier-interpolation-comparison} shows a comparison betwen points along the curve spaced equally by $t$-value (left image) and points spaced equally by distance using the aformentioned algorithms.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{bezier-interpolation-comparison.png}
+        \caption{}
+        \label{bezier-interpolation-comparison}
+    \end{figure}
 
     \subsection{GUI}
 
