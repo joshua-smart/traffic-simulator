@@ -11,7 +11,7 @@
 
         JavaScript is a web native, interpreted language that runs directly in a browser. It is dynamically typed (which is rectified by the use of TypeScript [\autoref{typescript}]), and has the capability to communicate directly with HTML/CSS environments [\autoref{html/css}]. JavaScript is the most popular framework for web development and is utilised in almost all websites.
 
-        Using JavaScript modules a program can be split into many distinct scripts, allowing for improved project management. In this way JavaScript has the capability to mimic the class structure of Java, a version of the OOP paragdim that I am very familiar with.
+        Using JavaScript modules a program can be split into many distinct scripts, allowing for improved project management. In this way JavaScript has the capability to mimic the class structure of Java, a version of the OOP paradigm that I am very familiar with.
 
 
     \subsection{TypeScript}
@@ -67,11 +67,11 @@
     \begin{figure}
         \centering
         \includegraphics[width=0.8\textwidth]{composition-diagram-overview.png}
-        \caption{Composition diagram for the main program components}
+        \caption{Composition diagram persistent program components}
         \label{composition-diagram}
     \end{figure}
 
-    \autoref{composition-diagram} outlines the compositions between the main objects in the program, further objects will need to be instantiated during the runtime of the program.
+    \autoref{composition-diagram} outlines the compositions between the persistent objects in the program, further objects will need to be instantiated during the runtime of the program.
 
     \subsection{Utility classes}
 
@@ -106,7 +106,7 @@
 
         \paragraph{State Machine -}
 
-        This classs represents a finite state machine model which utilises function callbacks, it will store a list of transitions and callbacks. When the \inlinecode{transition} method is called the state will change based on the appropriate transition and the callback assigned to it will be executed.
+        This class represents a finite state machine model which utilises function callbacks, it will store a list of transitions and callbacks. When the \inlinecode{transition} method is called the state will change based on the appropriate transition and the callback assigned to it will be executed.
 
         The included methods are:
 
@@ -136,7 +136,7 @@
         \label{user-interaction-specification}
     \end{table}
 
-    This behaviour can be moddeled by a finite state machine as shown in \autoref{network-builder-state-machine}, this will be implemented using the \inlinecode{StateMachine} utility class and encapsulated by the Controller component.
+    This behaviour can be modelled by a finite state machine as shown in \autoref{network-builder-state-machine}, this will be implemented using the \inlinecode{StateMachine} utility class and encapsulated by the Controller component.
 
     \begin{figure}
         \centering
@@ -156,7 +156,7 @@
 
     \subsection{Graph Structure}
 
-        After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term. The necessary fuctions that need to be included in this graph implementation are listed in \autoref{graph-functions}
+        After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term. The necessary functions that need to be included in this graph implementation are listed in \autoref{graph-functions}
 
         \begin{table}
             \centering
@@ -185,7 +185,7 @@
 
     \subsection{Road geometry}
 
-    The roads will be moddeled using a series of Bezier curves, to allow for this the user must be able to adjust the control points of the curves. The edges of the graph will need to store a data structure containing 2 control points for the curve (the first and last points are defined by the source and destination nodes of the edge). This will make for cubic Bezier curves which will be controlled by their own \inlinecode{CubicBezier} class. One function of this will be a \inlinecode{get_point} method which will interpolate linearly along the length of the curve, return a point. This is not a trivial problem and my solution is documented below.
+    The roads will be modelled using a series of Bezier curves, to allow for this the user must be able to adjust the control points of the curves. The edges of the graph will need to store a data structure containing 2 control points for the curve (the first and last points are defined by the source and destination nodes of the edge). This will make for cubic Bezier curves which will be controlled by their own \inlinecode{CubicBezier} class. One function of this will be a \inlinecode{get_point} method which will interpolate linearly along the length of the curve, return a point. This is not a trivial problem and my solution is documented below.
 
     \paragraph{Linear interpolation of cubic Bezier curves}
 
@@ -195,7 +195,7 @@
 
     The $t$ parameter does not interpolate linearly across the curve. The distances between successive points is not constant. This is an issue as cars will need to move at a given speed along these curves.
 
-    In order to fix this problem I will need to compute a point along the curve at a specific proportionate distance. My propsed algorithm consists of two steps:
+    In order to fix this problem I will need to compute a point along the curve at a specific proportionate distance. My proposed algorithm consists of two steps:
 
     First, in the constructor of the class, compute the total distance along the curve from start to end using a series of small steps, as shown in Algorithm \ref{total-distance-algorithm}.
 
@@ -213,7 +213,7 @@
                 \State totalDistance $\gets$ totalDistance $+ \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}$
             \EndWhile
         \end{algorithmic}
-        \caption{Computing the total arc length of a cubic bezier curve}
+        \caption{Computing the total arc length of a cubic Bezier curve}
         \label{total-distance-algorithm}
     \end{algorithm}
 
@@ -237,12 +237,10 @@
         \label{proportionate-distance-algorithm}
     \end{algorithm}
 
-    \autoref{bezier-interpolation-comparison} shows a comparison betwen points along the curve spaced equally by $t$-value (left image) and points spaced equally by distance using the aformentioned algorithms.
-
     \begin{figure}
         \centering
         \includegraphics[width=0.6\textwidth]{bezier-interpolation-comparison.png}
-        \caption{}
+        \caption{Points on the left diagram are spaced evenly by $t$-value, while ones on the right are spaced evenly by distance using the previous algorithms}
         \label{bezier-interpolation-comparison}
     \end{figure}
 
@@ -252,7 +250,32 @@
 
     \subsection{Traffic Behaviour Modelling}
 
+    In this simplified model the only variable the 'drivers' have access to is the acceleration of the vehicle. This parameter will be governed by a series of specific rules listed below:
+
+    \begin{itemize}
+        \item Agents will slow when a car in it's direction of travel is too close.
+
+        \item Agent's will attempt to maintain a speed proportional to the curvature of the road, travelling at reduced speeds along tighter bends.
+
+        \item corners
+        \item traffic lights
+        \item cars ahead slowing
+        \item speed limits
+        \item icy
+        \item other drivers
+        \item overtaking
+        \item poor visibility
+    \end{itemize}
+
     \subsection{Agent Structure}
+
+    In order to simulate real-world traffic the 'cars' (here out referred to as Agents) will need to encapsulate the following information:
+
+    \begin{itemize}
+        \item Speed - This will be used to update the Agent's position
+        \item Position - This will be a proportionate value representing the distance travelled along it's current edge
+        \item Route - This will be generated using a path finding algorithm and determines the direction the Agent will choose to go at a junction
+    \end{itemize}
 
     \subsection{Maximum Graph Flow}
 
