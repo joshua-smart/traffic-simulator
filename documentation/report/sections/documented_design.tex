@@ -253,18 +253,13 @@
     In this simplified model the only variable the 'drivers' have access to is the acceleration of the vehicle. This parameter will be governed by a series of specific rules listed below:
 
     \begin{itemize}
-        \item Agents will slow when a car in it's direction of travel is too close.
+        \item Agents will slow when a car in it's direction of travel is too close. Attempting to maintain a good separation distance from the Agent in front.
 
-        \item Agent's will attempt to maintain a speed proportional to the curvature of the road, travelling at reduced speeds along tighter bends.
+        \item Agents will attempt to maintain a speed proportional to the curvature of the road, travelling at reduced speeds along tighter bends.
 
-        \item corners
-        \item traffic lights
-        \item cars ahead slowing
-        \item speed limits
-        \item icy
-        \item other drivers
-        \item overtaking
-        \item poor visibility
+        \item When the road is clear and straight Agents will accelerate up to some reasonable maximum speed.
+
+        \item Agents will attempt to maintain a similar speed to the other Agents closest to them.
     \end{itemize}
 
     \subsection{Agent Structure}
