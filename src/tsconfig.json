@@ -1,8 +1,11 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
+    "outDir": "./dist/",
     "noImplicitAny": true,
-    "module": "esnext",
-    "target": "ES2021"
+    "module": "es6",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node"
   }
 }

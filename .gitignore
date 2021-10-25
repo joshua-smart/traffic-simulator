@@ -1,5 +1,6 @@
 /node_modules/
-*.js
+/src/build
+/src/node_modules
 *.css
 *.css.map
 /documentation/report/build/
