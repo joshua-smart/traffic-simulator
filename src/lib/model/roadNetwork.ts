@@ -3,7 +3,6 @@ import Vector2 from '../vector2';
 import Stack from '../stack';
 
 type Vertex = Vector2;
-type Edge = {srcTangent: Vector2, dstTangent: Vector2};
 type Edge = {p1: Vector2, p2: Vector2};
 
 export default class RoadNetwork extends Graph<Vertex, Edge>{
@@ -58,4 +57,21 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         return s;
     }
 }
+
+// TEMPORARY
+export function create_default_network() {
+    const roadNetwork = new RoadNetwork();
+    roadNetwork.add_vertex(new Vector2(0, 0));
+    roadNetwork.add_vertex(new Vector2(100, 100));
+    roadNetwork.add_vertex(new Vector2(50, 0));
+    roadNetwork.add_vertex(new Vector2(200, 150));
+    roadNetwork.add_vertex(new Vector2(300, -50));
+
+    roadNetwork.set_edge(0, 1, {p1: new Vector2(0, 0), p2: new Vector2(100, 100)});
+    roadNetwork.set_edge(1, 2, {p1: new Vector2(100, 100), p2: new Vector2(50, 0)});
+    roadNetwork.set_edge(1, 3, {p1: new Vector2(100, 100), p2: new Vector2(200, 150)});
+    roadNetwork.set_edge(1, 4, {p1: new Vector2(100, 100), p2: new Vector2(300, -50)});
+    roadNetwork.set_edge(4, 3, {p1: new Vector2(300, -50), p2: new Vector2(200, 150)});
+
+    return roadNetwork;
 }
