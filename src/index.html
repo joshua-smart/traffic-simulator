@@ -5,8 +5,24 @@
         <title></title>
         <link rel="stylesheet" href="style.compact.css"/>
         <script type="module" src="build/bundle.js" charset="utf-8"></script>
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     </head>
     <body>
-
+        <header>
+            <div class="header-icon-container" id="left-header-icons">
+                <div id="play-button" class="button"><i class="ri-play-fill"></i></i></div>
+                <div id="pause-button" class="button"><i class="ri-pause-fill"></i></i></div>
+                <div id="stop-button" class="button"><i class="ri-stop-fill"></i></i></div>
+                <div id="undo-button" class="button"><i class="ri-arrow-go-back-fill"></i></div>
+                <div id="redo-button" class="button"><i class="ri-arrow-go-forward-fill"></i></div>
+            </div>
+            <div class="header-icon-container" id="right-header-icons">
+                <div id="save-button" class="button"><i class="ri-save-2-fill"></i></div>
+                <div id="load-button" class="button"><i class="ri-upload-2-line"></i></i></div>
+            </div>
+        </header>
+        <main>
+            <canvas id="road-network-canvas"></canvas>
+        </main>
     </body>
 </html>
