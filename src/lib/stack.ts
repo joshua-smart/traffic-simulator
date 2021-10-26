@@ -5,15 +5,21 @@ export default class Stack<Element> {
         this.elements = [];
     }
 
-    push(element: Element): void {
+    public push(element: Element): void {
         this.elements.push(element);
     }
 
-    pop(): Element {
+    public pop(): Element {
         return this.elements.pop();
     }
 
-    is_empty(): boolean {
+    public is_empty(): boolean {
         return this.elements.length === 0;
+    }
+
+    public clear(): void {
+        while(!this.is_empty()) {
+            this.pop();
+        }
     }
 }
