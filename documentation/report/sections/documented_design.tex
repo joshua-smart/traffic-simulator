@@ -102,7 +102,8 @@
         This class will store all of the computation needed to model cubic Bezier curves which I explored in \autoref{bezier}.
         This class will contain the following methods:
 
-        \inlinecode{b.get_point(p)}, \inlinecode{b.get_normal(p)}, \inlinecode{b.get_curvature(p)}
+        \inlinecode{b.set_vertex(i, v)}, \inlinecode{b.interpolate(t)}, \inlinecode{b.get_point_at_distance(d)}, \inlinecode{b.get_normal(d)}, \\
+        \inlinecode{b.get_curvature(d)}
 
         \paragraph{State Machine -}
 
@@ -111,6 +112,18 @@
         The included methods are:
 
         \inlinecode{sm.transition(e)}, \inlinecode{sm.add_rule(src, e, dst, cb)}
+
+        \paragraph{Stack -}
+
+        I will also include a stack implementation to be used in the undo/redo procedures. Including:
+
+        \inlinecode{s.push(e)}, \inlinecode{s.pop()}, \inlinecode{s.is_empty()}, \inlinecode{s.clear()}
+
+        \paragraph{Queue -}
+
+        A queue structure will be used to model the routes followed by agents, this will require the following methods:
+
+        \inlinecode{q.enqueue(e)}, \inlinecode{q.dequeue()}, \inlinecode{q.is_empty()}
 
 
 \section{Network Builder}
@@ -185,7 +198,7 @@
 
     \subsection{Road geometry}
 
-    The roads will be modelled using a series of Bezier curves, to allow for this the user must be able to adjust the control points of the curves. The edges of the graph will need to store a data structure containing 2 control points for the curve (the first and last points are defined by the source and destination nodes of the edge). This will make for cubic Bezier curves which will be controlled by their own \inlinecode{CubicBezier} class. One function of this will be a \inlinecode{get_point} method which will interpolate linearly along the length of the curve, return a point. This is not a trivial problem and my solution is documented below.
+    The roads will be modelled using a series of Bezier curves, to allow for this the user must be able to adjust the control points of the curves. The edges of the graph will need to store a data structure containing 2 control points for the curve (the first and last points are defined by the source and destination nodes of the edge). This will make for cubic Bezier curves which will be controlled by their own \inlinecode{CubicBezier} class. One function of this will be a \inlinecode{get_point_at_distance} method which will interpolate linearly along the length of the curve, returning a point. This is not a trivial problem and my solution is documented below.
 
     \paragraph{Linear interpolation of cubic Bezier curves}
 
@@ -195,53 +208,58 @@
 
     The $t$ parameter does not interpolate linearly across the curve. The distances between successive points is not constant. This is an issue as cars will need to move at a given speed along these curves.
 
-    In order to fix this problem I will need to compute a point along the curve at a specific proportionate distance. My proposed algorithm consists of two steps:
+    In order to fix this problem I will need to compute a point along the curve at a specific distance. My proposed algorithm consists of two steps:
 
-    First, in the constructor of the class, compute the total distance along the curve from start to end using a series of small steps, as shown in Algorithm \ref{total-distance-algorithm}.
+    First, generate a map containing a series of length samples along the curve. This algorithm will approximate the curve as a series of small line segments and as the distance between sample points gets smaller, this approximation will improve. The pseudocode for this is shown in Algorithm \ref{generate-lookup-algorithm}
 
-    Secondly using a similar method, make a series of small steps along the curve until the target distance is reached, shown in Algorithm \ref{proportionate-distance-algorithm}.
+    Secondly, to get a point at a specific distance along the curve, iterate over the map to find the first value of $t$ such that $\text{map}(t) \geq \text{targetDistance}$. This algorithm is documented in Algorithm \ref{get-point-at-distance-algorithm}
 
     \begin{algorithm}
         \begin{algorithmic}
-            \State totalDistance $\gets 0$
+            \State distance $\gets 0$
             \State $t \gets 0$
             \While{$t <= 1$}
-                \State $p \gets$ \Call{get\_t\_point}{$t$}
-                \State $t \gets t + 0.01$
-                \State $q \gets$ \Call{get\_t\_point}{$t$}
-
-                \State totalDistance $\gets$ totalDistance $+ \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}$
-            \EndWhile
+                \State \Call{map.set}{$t$, distance}
+                \State $p \gets$ \Call{interpolate}{$t$}
+                \State $t \gets t + \text{interpolationResolution}$
+                \State $q \gets$ \Call{interpolate}{$t$}
+                \State distance $\gets$ distance $+ \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}$
+            \EndWhile{}
+            \State \textbf{return} map
         \end{algorithmic}
-        \caption{Computing the total arc length of a cubic Bezier curve}
-        \label{total-distance-algorithm}
+        \caption{Generating a distance lookup table for a Bezier curve}
+        \label{generate-lookup-algorithm}
     \end{algorithm}
 
     \begin{algorithm}
         \begin{algorithmic}
-            \Function{get\_point}{B, p}
-                \State targetDistance $\gets$ B.totalDistance $*$ p
-                \State distance $\gets 0$
-                \State $t \gets 0$
-                \While{distance $<$ targetDistance}
-                    \State $p \gets$ \Call{B.get\_t\_point}{$t$}
-                    \State $t \gets t + 0.01$
-                    \State $q \gets$ \Call{B.get\_t\_point}{$t$}
-
-                    \State distance $\gets$ distance $+ \sqrt{(p_x - q_x)^2 + (p_y - q_y)^2}$
-                \EndWhile
-                \State \textbf{return} $t$
+            \Function{get\_point}{B, targetDistance}
+                \For{$t$, distance \textbf{in} B.map}
+                    \If{distance $\geq$ targetDistance}
+                        \State \textbf{return} $t$
+                    \EndIf
+                \EndFor
+                \State \textbf{return} 1
             \EndFunction
         \end{algorithmic}
-        \caption{Computing the $t$-value for a given proportionate distance along the curve}
-        \label{proportionate-distance-algorithm}
+        \caption{Finding the $t$-value for a point at a specific distance along the curve}
+        \label{get-point-at-distance-algorithm}
     \end{algorithm}
+
+    Using these algorithms I generated \autoref{bezier-interpolation-comparison-graph} and \autoref{bezier-interpolation-comparison-on-curves}. \autoref{bezier-interpolation-comparison-graph} shows an extreme case with a relatively high value for the $\textbf{interpolationResolution}$ constant, however it is clear that this approximates the curve relatively well.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.6\textwidth]{LUT_bezier_interpolation.png}
+        \caption{Plot showing the lookup table approximation (blue) for points at a given distance}
+        \label{bezier-interpolation-comparison-graph}
+    \end{figure}
 
     \begin{figure}
         \centering
         \includegraphics[width=0.6\textwidth]{bezier-interpolation-comparison.png}
         \caption{Points on the left diagram are spaced evenly by $t$-value, while ones on the right are spaced evenly by distance using the previous algorithms}
-        \label{bezier-interpolation-comparison}
+        \label{bezier-interpolation-comparison-on-curves}
     \end{figure}
 
     \subsection{GUI}
