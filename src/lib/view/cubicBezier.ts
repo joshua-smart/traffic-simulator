@@ -28,6 +28,18 @@ export default class CubicBezier {
         );
     }
 
+    private tangent(t: number): Vector2 {
+        return new Vector2(0, 0).add(
+            this.vertices[0].mult(-3*t**2 + 6*t - 3)
+        ).add(
+            this.vertices[1].mult(9*t**2 - 12*t + 3)
+        ).add(
+            this.vertices[2].mult(-9*t**2 + 6*t)
+        ).add(
+            this.vertices[3].mult(3*t**2)
+        );
+    }
+
     private generate_lookup(): Map<number, number> {
         const map = new Map<number, number>();
         let distance = 0;
@@ -46,12 +58,17 @@ export default class CubicBezier {
         for(const [t, distance] of this.distanceLookup) {
             if (distance >= targetDistance) return t;
         }
-        return 1;
-
+        return null;
     }
 
     public get_point_at_distance(targetDistance: number) {
         const t = this.get_t_at_distance(targetDistance);
         return this.interpolate(t);
+    }
+
+    public get_tangent_at_distance(targetDistance: number) {
+        const t = this.get_t_at_distance(targetDistance);
+        if (t === null) return null;
+        return this.tangent(t);
     }
 }
