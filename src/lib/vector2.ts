@@ -7,6 +7,8 @@ export default class Vector2 {
         this.y = y;
     }
 
+    // All non-static methods are defined by calling the static method on the instance
+
     public static add(a: Vector2, b: Vector2): Vector2 {
         return new Vector2(a.x + b.x, a.y + b.y);
     }
@@ -47,5 +49,13 @@ export default class Vector2 {
     }
     public dot(other: Vector2): number {
         return Vector2.dot(this, other);
+    }
+
+    public static normalise(vector: Vector2): Vector2 {
+        const magnitude = vector.magnitude();
+        return new Vector2(vector.x / magnitude, vector.y / magnitude);
+    }
+    public normalise(): Vector2 {
+        return Vector2.normalise(this);
     }
 }
