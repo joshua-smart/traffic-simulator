@@ -12,6 +12,8 @@ export default class RoadNetworkController {
     private previousStates: Stack<RoadNetwork>;
     private futureStates: Stack<RoadNetwork>;
 
+    private targetedVertex: number;
+
     constructor(model: Model, view: View) {
         this.model = model;
         this.view = view;
@@ -66,6 +68,29 @@ export default class RoadNetworkController {
 
         this.view.zoom_display(center, factor);
     }
+
+    public finish_new_connection(e: Event): void {
+        let dstId;
+        if ((<HTMLElement>e.target).id === 'road-network-canvas') {
+            const worldPosition = this.get_relative_world_position(<MouseEvent>e);
+            dstId = this.model.add_vertex(worldPosition);
+        } else {
+            dstId = Number((<HTMLElement>e.target).getAttribute('vertexId'));
+        }
+        this.model.toggle_edge(this.targetedVertex, dstId);
+        this.targetedVertex = null;
+        this.view.remove_ghost_edge();
+        this.view.redraw();
+    }
+
+    public move_new_connection(e: Event): void {
+        const screenPosition = this.get_relative_screen_position(<MouseEvent>e);
+        this.view.set_ghost_edge(this.targetedVertex, screenPosition);
+        this.view.redraw();
+    }
+    public target_vertex(e: Event) {
+        this.targetedVertex = Number((<HTMLElement>e.target).getAttribute('vertexId'));
+    }
     private undo(): void {
         const currentState = this.model.copy_road_network();
         this.futureStates.push(currentState);
@@ -95,4 +120,8 @@ export default class RoadNetworkController {
         return new Vector2(x, y - this.view.get_canvas_offset());
     }
 
+    private get_relative_world_position(e: MouseEvent): Vector2 {
+        const screenPosition = this.get_relative_screen_position(e);
+        return this.view.to_world_space(screenPosition);
+    }
 }
