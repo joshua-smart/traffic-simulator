@@ -6,16 +6,17 @@ const interpolationResolution = 0.01;
 export default class CubicBezier {
     private vertices: Vector2[];
     private distanceLookup: Map<number, number>;
+    private arcLength: number;
 
     constructor(p0: Vector2, p1: Vector2, p2: Vector2, p3: Vector2) {
         this.vertices = [p0, p1, p2, p3];
-        this.distanceLookup = this.generate_lookup();
+        this.generate_lookup();
     }
 
     // Ensure the distanceLookup is re-generated every time the curve is changed
     public set_vertex(index: number, value: Vector2): void {
         this.vertices[index] = value;
-        this.distanceLookup = this.generate_lookup();
+        this.generate_lookup();
     }
 
     // Implementation of cubic bezier curve equation with respect to parameter t
@@ -45,7 +46,7 @@ export default class CubicBezier {
     }
 
     // Create distanceLookup by cumulatively evaluating small straight line distances
-    private generate_lookup(): Map<number, number> {
+    private generate_lookup(): void {
         const map = new Map<number, number>();
         let distance = 0;
         let t = 0;
@@ -57,7 +58,8 @@ export default class CubicBezier {
             // Straight line distance from p to q
             distance += Vector2.sub(p, q).magnitude();
         }
-        return map;
+        this.arcLength = distance;
+        this.distanceLookup = map;
     }
 
     // Find first t such that distance is greater than the target, else return null
@@ -80,5 +82,9 @@ export default class CubicBezier {
         const t = this.get_t_at_distance(targetDistance);
         if (t === null) return null;
         return this.tangent(t);
+    }
+
+    public get_arc_length(): number {
+        return this.arcLength;
     }
 }
