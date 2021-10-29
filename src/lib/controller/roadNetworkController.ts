@@ -1,6 +1,7 @@
 import Model from '../model/model';
 import RoadNetwork from '../model/roadNetwork';
 import Stack from '../stack';
+import Vector2 from '../vector2';
 import View from '../view/view';
 import StateMachine from './stateMachine';
 
@@ -51,6 +52,12 @@ export default class RoadNetworkController {
             stateMachine.transition(9, e);
         });
     }
+
+    public pan_display(e: Event): void {
+        const {movementX, movementY} = <MouseEvent>e;
+        this.view.pan_display(new Vector2(movementX, movementY));
+    }
+
     private undo(): void {
         const currentState = this.model.copy_road_network();
         this.futureStates.push(currentState);
