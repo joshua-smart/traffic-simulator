@@ -58,6 +58,14 @@ export default class RoadNetworkController {
         this.view.pan_display(new Vector2(movementX, movementY));
     }
 
+    public zoom_display(e: Event): void {
+        const zoomStrength = 1.2;
+        const {deltaY} = (<WheelEvent>e);
+        const center = this.get_relative_screen_position(<WheelEvent>e);
+        const factor = deltaY === 100 ? zoomStrength : 1/zoomStrength;
+
+        this.view.zoom_display(center, factor);
+    }
     private undo(): void {
         const currentState = this.model.copy_road_network();
         this.futureStates.push(currentState);
@@ -81,4 +89,10 @@ export default class RoadNetworkController {
         this.futureStates.clear();
         action();
     }
+
+    private get_relative_screen_position(e: MouseEvent): Vector2 {
+        const {x, y} = e;
+        return new Vector2(x, y - this.view.get_canvas_offset());
+    }
+
 }

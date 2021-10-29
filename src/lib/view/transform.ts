@@ -12,4 +12,13 @@ export default class Transform {
     public translate(delta: Vector2): void {
         this.position = this.position.add(delta);
     }
+
+    public zoom(center: Vector2, factor: number): void {
+        this.position = Vector2.add(
+            center.mult(1 - factor),
+            this.position.mult(factor)
+        );
+        this.scale *= factor;
+    }
+
 }

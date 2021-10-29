@@ -20,6 +20,11 @@ export default class View {
         this.redraw();
     }
 
+    public zoom_display(center: Vector2, factor: number): void {
+        this.transform.zoom(center, factor);
+        this.redraw();
+    }
+
 
     }
 }
