@@ -37,6 +37,7 @@ export default class Graph<Vertex, Edge> {
     public remove_vertex(vertexId: number): Vertex {
         this.check_vertex_index(vertexId);
         const removedVertex = this.vertices[vertexId];
+        this.vertices.splice(vertexId, 1);
         this.adjacencyMatrix.splice(vertexId, 1);
         this.adjacencyMatrix.forEach(row => row.splice(vertexId, 1));
         return removedVertex;
