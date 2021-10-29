@@ -21,7 +21,7 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         const dist: number[] = [];
         const prev: number[] = [];
 
-        for(let v = 0; v < this.get_size(); v++) {
+        for(let v = 0; v < this.size(); v++) {
             dist[v] = Infinity;
             prev[v] = undefined;
             q.push(v);
@@ -36,7 +36,7 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
                 return;
             }
 
-            for(let v = 0; v < this.get_size(); v++) {
+            for(let v = 0; v < this.size(); v++) {
                 if(this.get_edge(u, v) && q.includes(v)) {
                     const alt = dist[u] + this.get_edge_length(u, v);
                     if (alt < dist[v]) {
@@ -63,15 +63,15 @@ export function create_default_network() {
     const roadNetwork = new RoadNetwork();
     roadNetwork.add_vertex(new Vector2(0, 0));
     roadNetwork.add_vertex(new Vector2(100, 100));
-    roadNetwork.add_vertex(new Vector2(50, 0));
+    roadNetwork.add_vertex(new Vector2(50, -50));
     roadNetwork.add_vertex(new Vector2(200, 150));
     roadNetwork.add_vertex(new Vector2(300, -50));
 
-    roadNetwork.set_edge(0, 1, {p1: new Vector2(0, 0), p2: new Vector2(100, 100)});
-    roadNetwork.set_edge(1, 2, {p1: new Vector2(100, 100), p2: new Vector2(50, 0)});
-    roadNetwork.set_edge(1, 3, {p1: new Vector2(100, 100), p2: new Vector2(200, 150)});
-    roadNetwork.set_edge(1, 4, {p1: new Vector2(100, 100), p2: new Vector2(300, -50)});
-    roadNetwork.set_edge(4, 3, {p1: new Vector2(300, -50), p2: new Vector2(200, 150)});
+    roadNetwork.set_edge(0, 1, {p1: new Vector2(0, 0), p2: new Vector2(0, 0)});
+    roadNetwork.set_edge(1, 2, {p1: new Vector2(0, 0), p2: new Vector2(0, 0)});
+    roadNetwork.set_edge(1, 3, {p1: new Vector2(0, 0), p2: new Vector2(0, 0)});
+    roadNetwork.set_edge(1, 4, {p1: new Vector2(0, 0), p2: new Vector2(0, 0)});
+    roadNetwork.set_edge(4, 3, {p1: new Vector2(0, 0), p2: new Vector2(0, 0)});
 
     return roadNetwork;
 }
