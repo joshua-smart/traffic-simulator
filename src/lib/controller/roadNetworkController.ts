@@ -88,6 +88,13 @@ export default class RoadNetworkController {
         this.view.set_ghost_edge(this.targetedVertex, screenPosition);
         this.view.redraw();
     }
+
+    public create_isolated_vertex(e: Event): void {
+        const worldPosition = this.get_relative_world_position(<MouseEvent>e);
+        this.model.add_vertex(worldPosition);
+        this.view.redraw();
+    }
+
     public target_vertex(e: Event) {
         this.targetedVertex = Number((<HTMLElement>e.target).getAttribute('vertexId'));
     }

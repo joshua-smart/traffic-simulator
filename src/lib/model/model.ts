@@ -1,6 +1,20 @@
+import RoadNetwork, { create_default_network } from "./roadNetwork";
+import { cloneDeep } from 'lodash';
+import Vector2 from "../vector2";
+
 export default class Model {
+    private roadNetwork: RoadNetwork;
+
     constructor() {
-        
+        this.roadNetwork = create_default_network();
+    }
+
+    public get_road_network(): RoadNetwork {
+        return this.roadNetwork;
+    }
+    public add_vertex(position: Vector2): number {
+        return this.roadNetwork.add_vertex(position);
+    }
 
     public toggle_edge(srcId: number, dstId: number): void {
         // No self-connecting vertices
