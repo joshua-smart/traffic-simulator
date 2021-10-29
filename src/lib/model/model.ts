@@ -12,6 +12,15 @@ export default class Model {
     public get_road_network(): RoadNetwork {
         return this.roadNetwork;
     }
+
+    public copy_road_network(): RoadNetwork {
+        return cloneDeep(this.roadNetwork);
+    }
+
+    public apply_state(newState: RoadNetwork): void {
+        this.roadNetwork = newState;
+    }
+
     public add_vertex(position: Vector2): number {
         return this.roadNetwork.add_vertex(position);
     }
@@ -27,5 +36,11 @@ export default class Model {
         this.roadNetwork.set_edge(srcId, dstId, {p1: new Vector2(0, 0), p2: new Vector2(0, 0)});
     }
 
+    public set_vertex(vertexId: number, position: Vector2): void {
+        this.roadNetwork.set_vertex(vertexId, position);
+    }
+
+    public remove_vertex(vertexId: number) {
+        this.roadNetwork.remove_vertex(vertexId);
     }
 }

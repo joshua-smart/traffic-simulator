@@ -98,6 +98,18 @@ export default class RoadNetworkController {
     public target_vertex(e: Event) {
         this.targetedVertex = Number((<HTMLElement>e.target).getAttribute('vertexId'));
     }
+
+    public move_vertex(e: Event): void {
+        const worldPosition = this.get_relative_world_position(<MouseEvent>e);
+        this.model.set_vertex(this.targetedVertex, worldPosition);
+        this.view.redraw();
+    }
+
+    public remove_vertex(): void {
+        this.model.remove_vertex(this.targetedVertex);
+        this.view.redraw();
+    }
+
     private undo(): void {
         const currentState = this.model.copy_road_network();
         this.futureStates.push(currentState);
