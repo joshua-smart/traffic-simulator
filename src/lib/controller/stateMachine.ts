@@ -26,6 +26,6 @@ export default class StateMachine<Payload> {
         const {newStateId, callback} = this.transitions.get(transitionId);
 
         this.currentStateId = newStateId;
-        callback(payload);
+        if (callback) callback(payload);
     }
 }
