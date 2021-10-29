@@ -21,4 +21,15 @@ export default class Transform {
         this.scale *= factor;
     }
 
+    public to_screen_space(worldVector: Vector2): Vector2 {
+        return worldVector.mult(this.scale).add(this.position);
+    }
+
+    public to_world_space(screenVector: Vector2): Vector2 {
+        return screenVector.sub(this.position).mult(1/this.scale);
+    }
+
+    public get_scale(): number {
+        return this.scale;
+    }
 }
