@@ -4,6 +4,7 @@ import Stack from '../stack';
 import Vector2 from '../vector2';
 import View from '../view/view';
 import { E } from './controller';
+import IOManager from './ioManager';
 import StateMachine from './stateMachine';
 
 export default class RoadNetworkController {
@@ -52,6 +53,10 @@ export default class RoadNetworkController {
         document.querySelector('#undo-button').addEventListener('click', () => stateMachine.transition(E.undo, null));
         // redo: e11
         document.querySelector('#redo-button').addEventListener('click', () => stateMachine.transition(E.redo, null));
+        // save: e12
+        document.querySelector('#save-button').addEventListener('click', () => stateMachine.transition(E.save, null));
+        // load: e13
+        document.querySelector('#load-button').addEventListener('click', () => stateMachine.transition(E.load, null));
     }
 
     public pan_display(e: Event): void {
@@ -163,6 +168,19 @@ export default class RoadNetworkController {
         this.futureStates.clear();
         this.disable_redo_button();
         action();
+    }
+
+    public save(): void {
+        const roadNetwork = this.model.copy_road_network();
+        IOManager.save_road_network(roadNetwork);
+    }
+
+    public load(): void {
+        IOManager.load_road_network(roadNetwork => {
+            console.log(roadNetwork);
+            this.model.apply_state(roadNetwork);
+            this.view.redraw();
+        });
     }
 
     private get_relative_screen_position(e: MouseEvent): Vector2 {
