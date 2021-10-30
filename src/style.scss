@@ -37,16 +37,26 @@ header {
         border: 1px transparent solid;
         transition: 0.05s;
 
+        i {
+            height: 30px;
+        }
+
+        &:disabled {
+            opacity: 0.3;
+        }
+    }
+
+    .disabled {
+        opacity: 0.5;
+    }
+
+    .active {
         &:hover {
             border: #2C4054 1px solid;
         }
 
         &:active {
             background: #4A5E73;
-        }
-
-        i {
-            height: 30px;
         }
     }
 }

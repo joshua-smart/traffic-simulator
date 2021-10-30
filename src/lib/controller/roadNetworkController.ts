@@ -121,29 +121,46 @@ export default class RoadNetworkController {
     }
 
     public undo(): void {
+        // If no previous states, end function
         if (this.previousStates.is_empty()) return;
+        // Copy currentState
         const currentState = this.model.copy_road_network();
+        // Push currentState onto futureStates stack and enable redo
         this.futureStates.push(currentState);
+        this.enable_redo_button();
+        // Get latest state from previousStates stack and disable undo if it is now empty
         const newState = this.previousStates.pop();
+        if (this.previousStates.is_empty()) this.disable_undo_button();
+        // Apply new state and redraw
         this.model.apply_state(newState);
         this.view.redraw();
     }
 
     public redo(): void {
-        // Maybe alert or error message here...
+        // If no future states to redo, end function
         if (this.futureStates.is_empty()) return;
-
+        // Copy current state
         const currentState = this.model.copy_road_network();
+        // Push current state onto previousStates stack and enable undo
         this.previousStates.push(currentState);
+        this.enable_undo_button();
+        // Get latest state from futureStates and disable redo if it is now empty
         const newState = this.futureStates.pop();
+        if (this.futureStates.is_empty()) this.disable_redo_button();
+        // Apply new state and redraw
         this.model.apply_state(newState);
         this.view.redraw();
     }
 
     private user_action(action: () => void): void {
+        // Copy current roadNetwork
         const currentState = this.model.copy_road_network();
+        // Push currentState onto previousStates and enable undo
         this.previousStates.push(currentState);
+        this.enable_undo_button();
+        // Clear futureStates and disable redo
         this.futureStates.clear();
+        this.disable_redo_button();
         action();
     }
 
@@ -155,5 +172,22 @@ export default class RoadNetworkController {
     private get_relative_world_position(e: MouseEvent): Vector2 {
         const screenPosition = this.get_relative_screen_position(e);
         return this.view.to_world_space(screenPosition);
+    }
+
+    private disable_redo_button() {
+        document.querySelector('#redo-button').classList.remove('active');
+        document.querySelector('#redo-button').classList.add('disabled');
+    }
+    private enable_redo_button() {
+        document.querySelector('#redo-button').classList.remove('disabled');
+        document.querySelector('#redo-button').classList.add('active');
+    }
+    private disable_undo_button() {
+        document.querySelector('#undo-button').classList.remove('active');
+        document.querySelector('#undo-button').classList.add('disabled');
+    }
+    private enable_undo_button() {
+        document.querySelector('#undo-button').classList.remove('disabled');
+        document.querySelector('#undo-button').classList.add('active');
     }
 }
