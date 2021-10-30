@@ -30,7 +30,7 @@ export default class RoadNetworkController {
             if (e.buttons !== 1) return;
 
             const shift = e.shiftKey;
-            const emptyTarget = (<HTMLElement>e.target).id === 'road-network-canvas';
+            const emptyTarget = (<HTMLElement>e.target).id === 'main-canvas';
 
             // Left click (empty)
             if (!shift && emptyTarget) stateMachine.transition(3, e);
