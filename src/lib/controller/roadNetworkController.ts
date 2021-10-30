@@ -32,35 +32,25 @@ export default class RoadNetworkController {
             const shift = e.shiftKey;
             const emptyTarget = (<HTMLElement>e.target).id === 'main-canvas';
 
-            // Left click (empty)
+            // Left click (empty): e3
             if (!shift && emptyTarget) stateMachine.transition(3, e);
-            // shift-Left click (empty)
+            // shift-Left click (empty): e7
             if (shift && emptyTarget)  stateMachine.transition(7, e);
-            // Left click (vertex)
+            // Left click (vertex): e8
             if (!shift && !emptyTarget) stateMachine.transition(8, e);
-            // shift-Left click (vertex)
+            // shift-Left click (vertex): e6
             if (shift && !emptyTarget) stateMachine.transition(6, e);
         }, false);
-
-        element.addEventListener('mouseup', (e) => {
-            stateMachine.transition(4, e);
-        });
-
-        element.addEventListener('mousemove', (e) => {
-            stateMachine.transition(5, e);
-        });
-
-        element.addEventListener('wheel', (e) => {
-            stateMachine.transition(9, e);
-        });
-
-        document.querySelector('#undo-button').addEventListener('click', () => {
-            stateMachine.transition(10, null);
-        });
-
-        document.querySelector('#redo-button').addEventListener('click', () => {
-            stateMachine.transition(11, null);
-        });
+        // mousereleased: e4
+        element.addEventListener('mouseup', (e) => stateMachine.transition(4, e));
+        // mousemove: e5
+        element.addEventListener('mousemove', (e) => stateMachine.transition(5, e));
+        // scroll: e9
+        element.addEventListener('wheel', (e) => stateMachine.transition(9, e));
+        // undo: e10
+        document.querySelector('#undo-button').addEventListener('click', () => stateMachine.transition(10, null));
+        // redo: e11
+        document.querySelector('#redo-button').addEventListener('click', () => stateMachine.transition(11, null));
     }
 
     public pan_display(e: Event): void {
