@@ -20,10 +20,12 @@ export default class RoadNetworkController {
         this.model = model;
         this.view = view;
 
+        // Initialise empty stacks
         this.previousStates = new Stack<RoadNetwork>();
         this.futureStates = new Stack<RoadNetwork>();
     }
 
+    // Assign listeners to stateMachine transitions
     public assign_listeners(stateMachine: StateMachine<Event>) {
         const element = this.view.get_canvas_element();
 
@@ -42,7 +44,8 @@ export default class RoadNetworkController {
             if (!shift && !emptyTarget) stateMachine.transition(E.leftClickVertex, e);
             // shift-Left click (vertex): e6
             if (shift && !emptyTarget) stateMachine.transition(E.shiftLeftClickVertex, e);
-        }, false);
+        });
+
         // mousereleased: e4
         element.addEventListener('mouseup', (e) => stateMachine.transition(E.mouseUp, e));
         // mousemove: e5
@@ -59,44 +62,60 @@ export default class RoadNetworkController {
         document.querySelector('#load-button').addEventListener('click', () => stateMachine.transition(E.load, null));
     }
 
+    // Translate display by distance moved by mouse
     public pan_display(e: Event): void {
         const {movementX, movementY} = <MouseEvent>e;
         this.view.pan_display(new Vector2(movementX, movementY));
         this.view.redraw();
     }
 
+    // Zoom display by factor centered on mouse position
     public zoom_display(e: Event): void {
         const zoomStrength = 1.2;
         const {deltaY} = (<WheelEvent>e);
         const center = this.get_relative_screen_position(<WheelEvent>e);
+        // map (-100, 100) to (1/zoomStrength, zoomStrength)
         const factor = deltaY === 100 ? zoomStrength : 1/zoomStrength;
 
         this.view.zoom_display(center, factor);
         this.view.redraw();
     }
 
-    public finish_new_connection(e: Event): void {
-        this.user_action(() => {
-            let dstId;
-            if ((<HTMLElement>e.target).id === 'main-canvas') {
-                const worldPosition = this.get_relative_world_position(<MouseEvent>e);
-                dstId = this.model.add_vertex(worldPosition);
-            } else {
-                dstId = Number((<HTMLElement>e.target).getAttribute('vertexId'));
-            }
-            this.model.toggle_edge(this.targetedVertex, dstId);
-            this.targetedVertex = null;
-            this.view.remove_ghost_edge();
-            this.view.redraw();
-        });
+    // Set vertexTarget to id of vertex targeted by the mouse
+    public target_vertex(e: Event) {
+        this.targetedVertex = Number((<HTMLElement>e.target).getAttribute('vertexId'));
     }
 
+    // Draw ghost edge between targetedVertex and mouse position
     public move_new_connection(e: Event): void {
         const screenPosition = this.get_relative_screen_position(<MouseEvent>e);
         this.view.set_ghost_edge(this.targetedVertex, screenPosition);
         this.view.redraw();
     }
 
+    // If not targeting a vertex, create a new vertex and connect it, otherwise connect to new targeted vertex
+    public finish_new_connection(e: Event): void {
+        this.user_action(() => {
+            let dstId;
+            // If not targeting a vertex
+            if ((<HTMLElement>e.target).id === 'main-canvas') {
+                const worldPosition = this.get_relative_world_position(<MouseEvent>e);
+                // Create new vertex
+                dstId = this.model.add_vertex(worldPosition);
+            } else {
+                // Get index of targeted vertex
+                dstId = Number((<HTMLElement>e.target).getAttribute('vertexId'));
+            }
+            // Add edge
+            this.model.toggle_edge(this.targetedVertex, dstId);
+            // Unset targetedVertex and ghost edge
+            this.targetedVertex = null;
+            this.view.remove_ghost_edge();
+            this.view.redraw();
+        });
+    }
+
+    // Create new vertex with no connections
     public create_isolated_vertex(e: Event): void {
         this.user_action(() => {
             const worldPosition = this.get_relative_world_position(<MouseEvent>e);
@@ -105,20 +124,19 @@ export default class RoadNetworkController {
         });
     }
 
-    public target_vertex(e: Event) {
-        this.targetedVertex = Number((<HTMLElement>e.target).getAttribute('vertexId'));
-    }
-
+    // Move the targeted vertex to the mouse position
     public move_vertex(e: Event): void {
         const worldPosition = this.get_relative_world_position(<MouseEvent>e);
         this.model.set_vertex(this.targetedVertex, worldPosition);
         this.view.redraw();
     }
 
+    // Indicates the start of a vertex move event, for compatibility with undo/redo
     public start_move_vertex(): void {
         this.user_action(() => {});
     }
 
+    // Remove the targeted vertex from the road network
     public remove_vertex(): void {
         this.user_action(() => {
             this.model.remove_vertex(this.targetedVertex);
@@ -126,6 +144,7 @@ export default class RoadNetworkController {
         });
     }
 
+    // Undo last action
     public undo(): void {
         // If no previous states, end function
         if (this.previousStates.is_empty()) return;
@@ -142,6 +161,7 @@ export default class RoadNetworkController {
         this.view.redraw();
     }
 
+    // Reverse last undo
     public redo(): void {
         // If no future states to redo, end function
         if (this.futureStates.is_empty()) return;
@@ -158,6 +178,7 @@ export default class RoadNetworkController {
         this.view.redraw();
     }
 
+    // Wrapper for other event handlers, for compatibility with undo/redo
     private user_action(action: () => void): void {
         // Copy current roadNetwork
         const currentState = this.model.copy_road_network();
@@ -167,14 +188,17 @@ export default class RoadNetworkController {
         // Clear futureStates and disable redo
         this.futureStates.clear();
         this.disable_redo_button();
+        // Perform action
         action();
     }
 
+    // Save the current road network state to a local file
     public save(): void {
         const roadNetwork = this.model.copy_road_network();
         IOManager.save_road_network(roadNetwork);
     }
 
+    // Load a road network from a local file
     public load(): void {
         IOManager.load_road_network(roadNetwork => {
             console.log(roadNetwork);
@@ -183,16 +207,19 @@ export default class RoadNetworkController {
         });
     }
 
+    // Get the position of the mouse relative to top right of canvas inline with pixel scaling
     private get_relative_screen_position(e: MouseEvent): Vector2 {
         const {x, y} = e;
         return new Vector2(x, y - this.view.get_canvas_offset());
     }
 
+    // Get the position of the mouse relative to the view transform, in world space
     private get_relative_world_position(e: MouseEvent): Vector2 {
         const screenPosition = this.get_relative_screen_position(e);
         return this.view.to_world_space(screenPosition);
     }
 
+    // Methods for enabling/disabling the use of undo/redo buttons to indicate availability in the stacks
     private disable_redo_button() {
         this.disable_button(document.querySelector('#redo-button'));
     }
@@ -206,6 +233,7 @@ export default class RoadNetworkController {
         this.enable_button(document.querySelector('#undo-button'));
     }
 
+    // Helper methods for enabling/disabling buttons
     private enable_button(element: HTMLElement) {
         element.classList.remove('disabled');
         element.classList.add('active');
