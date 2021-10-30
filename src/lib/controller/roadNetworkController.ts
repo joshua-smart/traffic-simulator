@@ -3,6 +3,7 @@ import RoadNetwork from '../model/roadNetwork';
 import Stack from '../stack';
 import Vector2 from '../vector2';
 import View from '../view/view';
+import { E } from './controller';
 import StateMachine from './stateMachine';
 
 export default class RoadNetworkController {
@@ -33,24 +34,24 @@ export default class RoadNetworkController {
             const emptyTarget = (<HTMLElement>e.target).id === 'main-canvas';
 
             // Left click (empty): e3
-            if (!shift && emptyTarget) stateMachine.transition(3, e);
+            if (!shift && emptyTarget) stateMachine.transition(E.leftClickEmpty, e);
             // shift-Left click (empty): e7
-            if (shift && emptyTarget)  stateMachine.transition(7, e);
+            if (shift && emptyTarget)  stateMachine.transition(E.shiftLeftClickEmpty, e);
             // Left click (vertex): e8
-            if (!shift && !emptyTarget) stateMachine.transition(8, e);
+            if (!shift && !emptyTarget) stateMachine.transition(E.leftClickVertex, e);
             // shift-Left click (vertex): e6
-            if (shift && !emptyTarget) stateMachine.transition(6, e);
+            if (shift && !emptyTarget) stateMachine.transition(E.shiftLeftClickVertex, e);
         }, false);
         // mousereleased: e4
-        element.addEventListener('mouseup', (e) => stateMachine.transition(4, e));
+        element.addEventListener('mouseup', (e) => stateMachine.transition(E.mouseUp, e));
         // mousemove: e5
-        element.addEventListener('mousemove', (e) => stateMachine.transition(5, e));
+        element.addEventListener('mousemove', (e) => stateMachine.transition(E.mouseMove, e));
         // scroll: e9
-        element.addEventListener('wheel', (e) => stateMachine.transition(9, e));
+        element.addEventListener('wheel', (e) => stateMachine.transition(E.scroll, e));
         // undo: e10
-        document.querySelector('#undo-button').addEventListener('click', () => stateMachine.transition(10, null));
+        document.querySelector('#undo-button').addEventListener('click', () => stateMachine.transition(E.undo, null));
         // redo: e11
-        document.querySelector('#redo-button').addEventListener('click', () => stateMachine.transition(11, null));
+        document.querySelector('#redo-button').addEventListener('click', () => stateMachine.transition(E.redo, null));
     }
 
     public pan_display(e: Event): void {

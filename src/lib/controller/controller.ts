@@ -3,6 +3,35 @@ import View from '../view/view';
 import RoadNetworkController from './roadNetworkController';
 import StateMachine from './stateMachine';
 
+export enum S {
+    idle,
+    simuationActive,
+    simulationPaused,
+    panningDisplay,
+    vertexShiftClicked,
+    creatingEdge,
+    creatingIsolatedVertex,
+    vertexClicked,
+    movingVertex
+}
+
+export enum E {
+    start,
+    pause,
+    stop,
+    leftClickEmpty,
+    mouseUp,
+    mouseMove,
+    shiftLeftClickVertex,
+    shiftLeftClickEmpty,
+    leftClickVertex,
+    scroll,
+    undo,
+    redo,
+    save,
+    load
+}
+
 export default class Controller {
     private model: Model;
     private view: View;
@@ -23,30 +52,32 @@ export default class Controller {
 
     private initialise_state_machine(): void {
         // [previousStateId, eventId, nextStateId, callback]
-        const transitions: [number, number, number, (e: Event) => void][] = [
-            [0, 9, 0, e => this.roadNetworkController.zoom_display(e)],
-            [0, 10, 0, () => this.roadNetworkController.undo()],
-            [0, 11, 0, () => this.roadNetworkController.redo()],
-            [0, 0, 1, null/*start_simulation*/],
-            [0, 3, 3, null],
-            [0, 6, 4, e => this.roadNetworkController.target_vertex(e)],
-            [0, 7, 6, null],
-            [0, 8, 7, e => this.roadNetworkController.target_vertex(e)],
-            [1, 2, 0, null/*stop_simulation*/],
-            [1, 1, 2, null/*pause_simulation*/],
-            [2, 2, 0, null/*stop_simulation*/],
-            [2, 0, 1, null],
-            [3, 4, 0, null],
-            [3, 5, 3, e => this.roadNetworkController.pan_display(e)],
-            [4, 4, 0, () => this.roadNetworkController.remove_vertex()],
-            [4, 5, 5, e => this.roadNetworkController.target_vertex(e)],
-            [5, 4, 0, e => this.roadNetworkController.finish_new_connection(e)/*finish_new_connection*/],
-            [5, 5, 5, e => this.roadNetworkController.move_new_connection(e)/*move_new_connection*/],
-            [6, 4, 0, e => this.roadNetworkController.create_isolated_vertex(e)/*create_isolated_vertex*/],
-            [7, 4, 0, null],
-            [7, 5, 8, e => this.roadNetworkController.start_move_vertex()/*start_moving_vertex*/],
-            [8, 4, 0, null],
-            [8, 5, 8, e => this.roadNetworkController.move_vertex(e)/*move_vertex*/]
+        const transitions: [S, E, S, (e: Event) => void][] = [
+            [S.idle,                   E.scroll,               S.idle,                   e => this.roadNetworkController.zoom_display(e)],
+            [S.idle,                   E.undo,                 S.idle,                   () => this.roadNetworkController.undo()],
+            [S.idle,                   E.redo,                 S.idle,                   () => this.roadNetworkController.redo()],
+            [S.idle,                   E.save,                 S.idle,                   () => this.roadNetworkController.save()],
+            [S.idle,                   E.load,                 S.idle,                   () => this.roadNetworkController.load()],
+            [S.idle,                   E.start,                S.simuationActive,        null/*start_simulation*/],
+            [S.idle,                   E.leftClickEmpty,       S.panningDisplay,         null],
+            [S.idle,                   E.shiftLeftClickVertex, S.vertexShiftClicked,     e => this.roadNetworkController.target_vertex(e)],
+            [S.idle,                   E.shiftLeftClickEmpty,  S.creatingIsolatedVertex, null],
+            [S.idle,                   E.leftClickVertex,      S.vertexClicked,          e => this.roadNetworkController.target_vertex(e)],
+            [S.simuationActive,        E.stop,                 S.idle,                   null/*stop_simulation*/],
+            [S.simuationActive,        E.pause,                S.simulationPaused,       null/*pause_simulation*/],
+            [S.simulationPaused,       E.stop,                 S.idle,                   null/*stop_simulation*/],
+            [S.simulationPaused,       E.start,                S.simuationActive,        null],
+            [S.panningDisplay,         E.mouseUp,              S.idle,                   null],
+            [S.panningDisplay,         E.mouseMove,            S.panningDisplay,         e => this.roadNetworkController.pan_display(e)],
+            [S.vertexShiftClicked,     E.mouseUp,              S.idle,                   () => this.roadNetworkController.remove_vertex()],
+            [S.vertexShiftClicked,     E.mouseMove,            S.creatingEdge,           e => this.roadNetworkController.target_vertex(e)],
+            [S.creatingEdge,           E.mouseUp,              S.idle,                   e => this.roadNetworkController.finish_new_connection(e)],
+            [S.creatingEdge,           E.mouseMove,            S.creatingEdge,           e => this.roadNetworkController.move_new_connection(e)],
+            [S.creatingIsolatedVertex, E.mouseUp,              S.idle,                   e => this.roadNetworkController.create_isolated_vertex(e)],
+            [S.vertexClicked,          E.mouseUp,              S.idle,                   null],
+            [S.vertexClicked,          E.mouseMove,            S.movingVertex,           () => this.roadNetworkController.start_move_vertex()],
+            [S.movingVertex,           E.mouseUp,              S.idle,                   null],
+            [S.movingVertex,           E.mouseMove,            S.movingVertex,           e => this.roadNetworkController.move_vertex(e)]
         ];
 
         transitions.forEach(([previousStateId, eventId, nextStateId, callback]) => {
