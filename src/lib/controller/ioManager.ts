@@ -11,7 +11,8 @@ type JSONRoadNetwork = {
 
 export default class IOManager {
     public static save_road_network(roadNetwork: RoadNetwork): void {
-        var file = new File([JSON.stringify(roadNetwork)], 'my road network.json', {type: 'application/json;charset=utf-8'});
+        const json = JSON.stringify(roadNetwork)
+        var file = new File([json], 'my road network.json', {type: 'application/json;charset=utf-8'});
         saveAs(file);
     }
 
@@ -19,11 +20,15 @@ export default class IOManager {
         const fileInput = <HTMLInputElement>document.querySelector('#file-input')
         fileInput.click();
         fileInput.onchange = async () => {
-            const file = fileInput.files[0];
-            const json = <JSONRoadNetwork>JSON.parse(await file.text());
+            try {
+                const file = fileInput.files[0];
+                const json = <JSONRoadNetwork>JSON.parse(await file.text());
 
-            const roadNetwork = this.json_to_road_network(json);
-            callback(roadNetwork);
+                const roadNetwork = this.json_to_road_network(json);
+                callback(roadNetwork);
+            } catch {
+                alert('File could not be loaded');
+            }
         }
     }
 
