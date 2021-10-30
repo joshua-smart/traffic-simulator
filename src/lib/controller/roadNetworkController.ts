@@ -58,6 +58,7 @@ export default class RoadNetworkController {
     public pan_display(e: Event): void {
         const {movementX, movementY} = <MouseEvent>e;
         this.view.pan_display(new Vector2(movementX, movementY));
+        this.view.redraw();
     }
 
     public zoom_display(e: Event): void {
@@ -67,6 +68,7 @@ export default class RoadNetworkController {
         const factor = deltaY === 100 ? zoomStrength : 1/zoomStrength;
 
         this.view.zoom_display(center, factor);
+        this.view.redraw();
     }
 
     public finish_new_connection(e: Event): void {

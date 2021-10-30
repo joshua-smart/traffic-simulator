@@ -30,12 +30,10 @@ export default class View {
 
     public pan_display(delta: Vector2): void {
         this.transform.translate(delta);
-        this.redraw();
     }
 
     public zoom_display(center: Vector2, factor: number): void {
         this.transform.zoom(center, factor);
-        this.redraw();
     }
 
     public to_world_space(vector: Vector2): Vector2 {
