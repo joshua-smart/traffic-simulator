@@ -176,19 +176,24 @@ export default class RoadNetworkController {
     }
 
     private disable_redo_button() {
-        document.querySelector('#redo-button').classList.remove('active');
-        document.querySelector('#redo-button').classList.add('disabled');
+        this.disable_button(document.querySelector('#redo-button'));
     }
     private enable_redo_button() {
-        document.querySelector('#redo-button').classList.remove('disabled');
-        document.querySelector('#redo-button').classList.add('active');
+        this.enable_button(document.querySelector('#redo-button'));
     }
     private disable_undo_button() {
-        document.querySelector('#undo-button').classList.remove('active');
-        document.querySelector('#undo-button').classList.add('disabled');
+        this.disable_button(document.querySelector('#undo-button'));
     }
     private enable_undo_button() {
-        document.querySelector('#undo-button').classList.remove('disabled');
-        document.querySelector('#undo-button').classList.add('active');
+        this.enable_button(document.querySelector('#undo-button'));
+    }
+
+    private enable_button(element: HTMLElement) {
+        element.classList.remove('disabled');
+        element.classList.add('active');
+    }
+    private disable_button(element: HTMLElement) {
+        element.classList.remove('active');
+        element.classList.add('disabled');
     }
 }
