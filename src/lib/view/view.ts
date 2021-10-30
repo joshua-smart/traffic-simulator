@@ -1,23 +1,27 @@
 import Model from '../model/model';
 import Vector2 from '../vector2';
-import RoadNetworkCanvas from './roadNetworkCanvas';
+import Canvas from './canvas';
+import RoadNetworkPainter from './roadNetworkPainter';
 import Transform from './transform';
 
 export default class View {
     private model: Model;
-    private roadNetworkCanvas: RoadNetworkCanvas;
+    private canvas: Canvas;
+    private roadNetworkPainter: RoadNetworkPainter;
     private transform: Transform;
 
     constructor(model: Model) {
         this.model = model;
-        this.roadNetworkCanvas = new RoadNetworkCanvas();
+        const canvasElement = <HTMLCanvasElement>document.querySelector('#main-canvas');
+        this.canvas = new Canvas(canvasElement);
+        this.roadNetworkPainter = new RoadNetworkPainter(this.canvas);
         this.transform = new Transform(new Vector2(100, 200), 2);
 
         this.redraw();
     }
 
     public redraw(): void {
-        this.roadNetworkCanvas.draw(this.model.get_road_network(), this.transform);
+        this.roadNetworkPainter.draw(this.model.get_road_network(), this.transform);
     }
 
     public get_canvas_element(): HTMLElement {
@@ -25,7 +29,7 @@ export default class View {
     }
 
     public get_canvas_offset(): number {
-        return this.roadNetworkCanvas.get_dom_element().getBoundingClientRect().top;
+        return this.canvas.get_dom_element().getBoundingClientRect().top;
     }
 
     public pan_display(delta: Vector2): void {
@@ -41,10 +45,10 @@ export default class View {
     }
 
     public set_ghost_edge(srcId: number, end: Vector2): void {
-        this.roadNetworkCanvas.set_ghost_edge(srcId, end);
+        this.roadNetworkPainter.set_ghost_edge(srcId, end);
     }
 
     public remove_ghost_edge(): void {
-        this.roadNetworkCanvas.remove_ghost_edge();
+        this.roadNetworkPainter.remove_ghost_edge();
     }
 }

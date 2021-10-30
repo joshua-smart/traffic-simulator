@@ -9,20 +9,20 @@ export type GhostEdge = {
     end: Vector2
 };
 
-export default class RoadNetworkCanvas extends Canvas {
+export default class RoadNetworkPainter {
+    private canvas: Canvas;
     private vertexContainer: HTMLElement;
     private ghostEdge: GhostEdge;
 
-    constructor() {
-        const element = <HTMLCanvasElement>document.querySelector('#road-network-canvas');
-        super(element);
+    constructor(canvas: Canvas) {
+        this.canvas = canvas;
 
         this.ghostEdge = null;
         this.vertexContainer = document.querySelector('#vertex-container');
     }
 
     public draw(roadNetwork: RoadNetwork, transform: Transform): void {
-        this.clear();
+        this.canvas.clear();
         if (this.ghostEdge) this.draw_ghost_edge(roadNetwork, transform);
         this.draw_edges(roadNetwork, transform);
         this.draw_vertices(roadNetwork, transform);
@@ -32,7 +32,7 @@ export default class RoadNetworkCanvas extends Canvas {
         const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
         const srcScreenPosition = transform.to_screen_space(srcWorldPosition);
 
-        this.line(srcScreenPosition, this.ghostEdge.end, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
+        this.canvas.line(srcScreenPosition, this.ghostEdge.end, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
     }
 
     private draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
@@ -79,7 +79,7 @@ export default class RoadNetworkCanvas extends Canvas {
         const screenVertices = worldVertices.map((vertex) => transform.to_screen_space(vertex));
 
         const bezier = new CubicBezier(screenVertices[0], screenVertices[1], screenVertices[2], screenVertices[3]);
-        this.bezier(bezier,
+        this.canvas.bezier(bezier,
             {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'},
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );

@@ -13,7 +13,7 @@ type ShapeStyle = {
     line?: LineStyle
 }
 
-export default abstract class Canvas {
+export default class Canvas {
     private domElement: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
 
@@ -21,27 +21,27 @@ export default abstract class Canvas {
         this.domElement = domElement;
         this.ctx = this.domElement.getContext('2d');
 
-        this.domElement.width = this.domElement.offsetWidth;
-        this.domElement.height = this.domElement.offsetHeight;
+        this.domElement.width = this.domElement.parentElement.offsetWidth;
+        this.domElement.height = this.domElement.parentElement.offsetHeight;
     }
 
-    protected get width(): number { return this.domElement.width; }
-    protected get height(): number { return this.domElement.height; }
+    public get width(): number { return this.domElement.width; }
+    public get height(): number { return this.domElement.height; }
 
-    protected line(start: Vector2, end: Vector2, style?: LineStyle): void {
+    public line(start: Vector2, end: Vector2, style?: LineStyle): void {
         this.line_draw_wrapper(style, () => {
             this.ctx.moveTo(start.x, start.y);
             this.ctx.lineTo(end.x, end.y);
         });
     }
 
-    protected circle(center: Vector2, radius: number, style?: ShapeStyle): void {
+    public circle(center: Vector2, radius: number, style?: ShapeStyle): void {
         this.shape_draw_wrapper(style, () => {
             this.ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
         });
     }
 
-    protected bezier(b: CubicBezier, lineStyle?: LineStyle, shapeStyle?: ShapeStyle) {
+    public bezier(b: CubicBezier, lineStyle?: LineStyle, shapeStyle?: ShapeStyle) {
         this.line_draw_wrapper(lineStyle, () => {
             let distance = 0;
             let currentPoint = b.get_point_at_distance(distance);
@@ -70,7 +70,7 @@ export default abstract class Canvas {
         });
     }
 
-    protected polygon(vertices: Vector2[], style?: ShapeStyle): void {
+    public polygon(vertices: Vector2[], style?: ShapeStyle): void {
         this.shape_draw_wrapper(style, () => {
             this.ctx.moveTo(vertices[0].x, vertices[0].y);
             vertices.forEach(vertex => this.ctx.lineTo(vertex.x, vertex.y));
@@ -109,7 +109,7 @@ export default abstract class Canvas {
         return this.domElement;
     }
 
-    protected clear(): void {
+    public clear(): void {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.width);
     }
 }
