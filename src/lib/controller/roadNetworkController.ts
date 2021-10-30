@@ -37,9 +37,9 @@ export default class RoadNetworkController {
             // shift-Left click (empty)
             if (shift && emptyTarget)  stateMachine.transition(7, e);
             // Left click (vertex)
-            if (!shift && !emptyTarget) stateMachine.transition(6, e);
+            if (!shift && !emptyTarget) stateMachine.transition(8, e);
             // shift-Left click (vertex)
-            if (shift && !emptyTarget) stateMachine.transition(8, e);
+            if (shift && !emptyTarget) stateMachine.transition(6, e);
         }, false);
 
         element.addEventListener('mouseup', (e) => {
