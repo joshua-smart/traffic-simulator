@@ -2,26 +2,31 @@ import Model from '../model/model';
 import Vector2 from '../vector2';
 import Canvas from './canvas';
 import RoadNetworkPainter from './roadNetworkPainter';
+import SimulationPainter from './simulationPainter';
 import Transform from './transform';
 
 export default class View {
     private model: Model;
     private canvas: Canvas;
     private roadNetworkPainter: RoadNetworkPainter;
+    private simulationPainter: SimulationPainter;
     private transform: Transform;
 
     constructor(model: Model) {
         this.model = model;
         const canvasElement = <HTMLCanvasElement>document.querySelector('#main-canvas');
         this.canvas = new Canvas(canvasElement);
-        this.roadNetworkPainter = new RoadNetworkPainter(this.canvas);
+        this.roadNetworkPainter = new RoadNetworkPainter();
+        this.simulationPainter = new SimulationPainter();
         this.transform = new Transform(new Vector2(100, 200), 2);
 
         this.redraw();
     }
 
     public redraw(): void {
-        this.roadNetworkPainter.draw(this.model.get_road_network(), this.transform);
+        this.canvas.clear();
+        this.roadNetworkPainter.draw(this.canvas, this.model.get_road_network(), this.transform);
+        this.simulationPainter.draw(this.canvas, this.model.get_simulation());
     }
 
     public get_canvas_element(): HTMLElement {

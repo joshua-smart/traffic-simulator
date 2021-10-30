@@ -1,16 +1,23 @@
 import RoadNetwork, { create_default_network } from "./roadNetwork";
 import { cloneDeep } from 'lodash';
 import Vector2 from "../vector2";
+import Simulation from "./simulation";
 
 export default class Model {
     private roadNetwork: RoadNetwork;
+    private simulation: Simulation;
 
     constructor() {
         this.roadNetwork = create_default_network();
+        this.simulation = new Simulation();
     }
 
     public get_road_network(): RoadNetwork {
         return this.roadNetwork;
+    }
+
+    public get_simulation() {
+        return this.simulation;
     }
 
     public copy_road_network(): RoadNetwork {
