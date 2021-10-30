@@ -3,30 +3,36 @@ import Vector2 from "../vector2";
 import Canvas from "./canvas";
 import CubicBezier from "./cubicBezier";
 import Transform from "./transform";
-import { GhostEdge } from "./view";
+
+export type GhostEdge = {
+    srcId: number,
+    end: Vector2
+};
 
 export default class RoadNetworkCanvas extends Canvas {
     private vertexContainer: HTMLElement;
+    private ghostEdge: GhostEdge;
 
     constructor() {
         const element = <HTMLCanvasElement>document.querySelector('#road-network-canvas');
         super(element);
 
+        this.ghostEdge = null;
         this.vertexContainer = document.querySelector('#vertex-container');
     }
 
-    public draw(roadNetwork: RoadNetwork, transform: Transform, ghostEdge: GhostEdge): void {
+    public draw(roadNetwork: RoadNetwork, transform: Transform): void {
         this.clear();
-        if (ghostEdge) this.draw_ghost_edge(roadNetwork, transform, ghostEdge);
+        if (this.ghostEdge) this.draw_ghost_edge(roadNetwork, transform);
         this.draw_edges(roadNetwork, transform);
         this.draw_vertices(roadNetwork, transform);
     }
 
-    private draw_ghost_edge(roadNetwork: RoadNetwork, transform: Transform, {srcId, end}: GhostEdge) {
-        const srcWorldPosition = roadNetwork.get_vertex(srcId);
+    private draw_ghost_edge(roadNetwork: RoadNetwork, transform: Transform) {
+        const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
         const srcScreenPosition = transform.to_screen_space(srcWorldPosition);
 
-        this.line(srcScreenPosition, end, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
+        this.line(srcScreenPosition, this.ghostEdge.end, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
     }
 
     private draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
@@ -77,5 +83,13 @@ export default class RoadNetworkCanvas extends Canvas {
             {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'},
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );
+    }
+
+    public set_ghost_edge(srcId: number, end: Vector2): void {
+        this.ghostEdge = {srcId, end};
+    }
+
+    public remove_ghost_edge(): void {
+        this.ghostEdge = null;
     }
 }

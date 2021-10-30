@@ -3,16 +3,10 @@ import Vector2 from '../vector2';
 import RoadNetworkCanvas from './roadNetworkCanvas';
 import Transform from './transform';
 
-export type GhostEdge = {
-    srcId: number,
-    end: Vector2
-};
-
 export default class View {
     private model: Model;
     private roadNetworkCanvas: RoadNetworkCanvas;
     private transform: Transform;
-    private ghostEdge: GhostEdge;
 
     constructor(model: Model) {
         this.model = model;
@@ -23,7 +17,7 @@ export default class View {
     }
 
     public redraw(): void {
-        this.roadNetworkCanvas.draw(this.model.get_road_network(), this.transform, this.ghostEdge);
+        this.roadNetworkCanvas.draw(this.model.get_road_network(), this.transform);
     }
 
     public get_canvas_element(): HTMLElement {
@@ -49,10 +43,10 @@ export default class View {
     }
 
     public set_ghost_edge(srcId: number, end: Vector2): void {
-        this.ghostEdge = {srcId, end};
+        this.roadNetworkCanvas.set_ghost_edge(srcId, end);
     }
 
     public remove_ghost_edge(): void {
-        this.ghostEdge = null;
+        this.roadNetworkCanvas.remove_ghost_edge();
     }
 }
