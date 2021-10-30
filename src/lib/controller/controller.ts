@@ -25,6 +25,8 @@ export default class Controller {
         // [previousStateId, eventId, nextStateId, callback]
         const transitions: [number, number, number, (e: Event) => void][] = [
             [0, 9, 0, e => this.roadNetworkController.zoom_display(e)],
+            [0, 10, 0, () => this.roadNetworkController.undo()],
+            [0, 11, 0, () => this.roadNetworkController.redo()],
             [0, 0, 1, null/*start_simulation*/],
             [0, 3, 3, null],
             [0, 6, 4, e => this.roadNetworkController.target_vertex(e)],
@@ -42,7 +44,7 @@ export default class Controller {
             [5, 5, 5, e => this.roadNetworkController.move_new_connection(e)/*move_new_connection*/],
             [6, 4, 0, e => this.roadNetworkController.create_isolated_vertex(e)/*create_isolated_vertex*/],
             [7, 4, 0, null],
-            [7, 5, 8, e => this.roadNetworkController.move_vertex(e)/*start_moving_vertex*/],
+            [7, 5, 8, e => this.roadNetworkController.start_move_vertex()/*start_moving_vertex*/],
             [8, 4, 0, null],
             [8, 5, 8, e => this.roadNetworkController.move_vertex(e)/*move_vertex*/]
         ];

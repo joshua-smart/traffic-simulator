@@ -53,6 +53,14 @@ export default class RoadNetworkController {
         element.addEventListener('wheel', (e) => {
             stateMachine.transition(9, e);
         });
+
+        document.querySelector('#undo-button').addEventListener('click', () => {
+            stateMachine.transition(10, null);
+        });
+
+        document.querySelector('#redo-button').addEventListener('click', () => {
+            stateMachine.transition(11, null);
+        });
     }
 
     public pan_display(e: Event): void {
@@ -72,17 +80,19 @@ export default class RoadNetworkController {
     }
 
     public finish_new_connection(e: Event): void {
-        let dstId;
-        if ((<HTMLElement>e.target).id === 'road-network-canvas') {
-            const worldPosition = this.get_relative_world_position(<MouseEvent>e);
-            dstId = this.model.add_vertex(worldPosition);
-        } else {
-            dstId = Number((<HTMLElement>e.target).getAttribute('vertexId'));
-        }
-        this.model.toggle_edge(this.targetedVertex, dstId);
-        this.targetedVertex = null;
-        this.view.remove_ghost_edge();
-        this.view.redraw();
+        this.user_action(() => {
+            let dstId;
+            if ((<HTMLElement>e.target).id === 'main-canvas') {
+                const worldPosition = this.get_relative_world_position(<MouseEvent>e);
+                dstId = this.model.add_vertex(worldPosition);
+            } else {
+                dstId = Number((<HTMLElement>e.target).getAttribute('vertexId'));
+            }
+            this.model.toggle_edge(this.targetedVertex, dstId);
+            this.targetedVertex = null;
+            this.view.remove_ghost_edge();
+            this.view.redraw();
+        });
     }
 
     public move_new_connection(e: Event): void {
@@ -92,9 +102,11 @@ export default class RoadNetworkController {
     }
 
     public create_isolated_vertex(e: Event): void {
-        const worldPosition = this.get_relative_world_position(<MouseEvent>e);
-        this.model.add_vertex(worldPosition);
-        this.view.redraw();
+        this.user_action(() => {
+            const worldPosition = this.get_relative_world_position(<MouseEvent>e);
+            this.model.add_vertex(worldPosition);
+            this.view.redraw();
+        });
     }
 
     public target_vertex(e: Event) {
@@ -107,19 +119,27 @@ export default class RoadNetworkController {
         this.view.redraw();
     }
 
-    public remove_vertex(): void {
-        this.model.remove_vertex(this.targetedVertex);
-        this.view.redraw();
+    public start_move_vertex(): void {
+        this.user_action(() => {});
     }
 
-    private undo(): void {
+    public remove_vertex(): void {
+        this.user_action(() => {
+            this.model.remove_vertex(this.targetedVertex);
+            this.view.redraw();
+        });
+    }
+
+    public undo(): void {
+        if (this.previousStates.is_empty()) return;
         const currentState = this.model.copy_road_network();
         this.futureStates.push(currentState);
         const newState = this.previousStates.pop();
         this.model.apply_state(newState);
+        this.view.redraw();
     }
 
-    private redo(): void {
+    public redo(): void {
         // Maybe alert or error message here...
         if (this.futureStates.is_empty()) return;
 
@@ -127,6 +147,7 @@ export default class RoadNetworkController {
         this.previousStates.push(currentState);
         const newState = this.futureStates.pop();
         this.model.apply_state(newState);
+        this.view.redraw();
     }
 
     private user_action(action: () => void): void {
