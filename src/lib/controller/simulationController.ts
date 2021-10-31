@@ -10,8 +10,16 @@ export default class SimulationController {
         this.view = view;
     }
 
-    public start_simulation() {
+    public start() {
         // Stop drawing vertices
         // Tell simulation to start
+    }
+
+    public pause() {
+
+    }
+
+    public stop() {
+        
     }
 }

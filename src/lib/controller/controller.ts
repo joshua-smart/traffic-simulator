@@ -1,6 +1,7 @@
 import Model from '../model/model';
 import View from '../view/view';
 import RoadNetworkController from './roadNetworkController';
+import SimulationController from './simulationController';
 import StateMachine from './stateMachine';
 
 export enum S {
@@ -35,16 +36,14 @@ export enum E {
 }
 
 export default class Controller {
-    private model: Model;
-    private view: View;
     private roadNetworkController: RoadNetworkController;
+    private simulationController: SimulationController;
 
     private stateMachine: StateMachine<Event>;
 
     constructor(model: Model, view: View) {
-        this.model = model;
-        this.view = view;
         this.roadNetworkController = new RoadNetworkController(model, view);
+        this.simulationController = new SimulationController(model, view);
 
         this.stateMachine = new StateMachine<Event>(0);
 
@@ -60,14 +59,14 @@ export default class Controller {
             [S.idle,                   E.redo,                 S.idle,                   () => this.roadNetworkController.redo()],
             [S.idle,                   E.save,                 S.idle,                   () => this.roadNetworkController.save()],
             [S.idle,                   E.load,                 S.idle,                   () => this.roadNetworkController.load()],
-            [S.idle,                   E.start,                S.simuationActive,        null/*start_simulation*/],
+            [S.idle,                   E.start,                S.simuationActive,        () => this.simulationController.start()],
             [S.idle,                   E.leftClickEmpty,       S.panningDisplay,         null],
             [S.idle,                   E.shiftLeftClickVertex, S.vertexShiftClicked,     e => this.roadNetworkController.target_vertex(e)],
             [S.idle,                   E.shiftLeftClickEmpty,  S.creatingIsolatedVertex, null],
             [S.idle,                   E.leftClickVertex,      S.vertexClicked,          e => this.roadNetworkController.target_vertex(e)],
-            [S.simuationActive,        E.stop,                 S.idle,                   null/*stop_simulation*/],
-            [S.simuationActive,        E.pause,                S.simulationPaused,       null/*pause_simulation*/],
-            [S.simulationPaused,       E.stop,                 S.idle,                   null/*stop_simulation*/],
+            [S.simuationActive,        E.stop,                 S.idle,                   () => this.simulationController.stop()],
+            [S.simuationActive,        E.pause,                S.simulationPaused,       () => this.simulationController.pause()],
+            [S.simulationPaused,       E.stop,                 S.idle,                   () => this.simulationController.stop()],
             [S.simulationPaused,       E.start,                S.simuationActive,        null],
             [S.panningDisplay,         E.mouseUp,              S.idle,                   null],
             [S.panningDisplay,         E.mouseMove,            S.panningDisplay,         e => this.roadNetworkController.pan_display(e)],
