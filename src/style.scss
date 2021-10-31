@@ -73,11 +73,6 @@ main {
         height: 100%;
     }
 
-    #road-network-canvas {
-        width: 100%;
-        height: 100%;
-    }
-
     #vertex-container {
         position: absolute;
         top: 0;
@@ -98,6 +93,22 @@ main {
                 width: 18px;
                 height: 18px;
             }
+        }
+    }
+
+    #handle-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 10px;
+        height: 10px;
+
+        .handle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: orange;
+            border-radius: 5px;
         }
     }
 }

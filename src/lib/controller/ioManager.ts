@@ -5,7 +5,7 @@ import Vector2 from "../vector2";
 // Specifies the objects that must be contained in the json result
 type JSONRoadNetwork = {
     adjacencyMatrix: {
-        p1: {x: number, y: number}, p2: {x: number, y: number}
+        t1: {x: number, y: number}, t2: {x: number, y: number}
     }[][],
     vertices: {x: number, y: number}[]
 }
@@ -55,10 +55,10 @@ export default class IOManager {
             for(let dstId = 0; dstId < roadNetwork.size(); dstId++) {
                 const jsonEdge = json.adjacencyMatrix[srcId][dstId];
                 if (jsonEdge) {
-                    const p1 = new Vector2(jsonEdge.p1.x, jsonEdge.p1.y);
-                    const p2 = new Vector2(jsonEdge.p2.x, jsonEdge.p2.y);
+                    const t1 = new Vector2(jsonEdge.t1.x, jsonEdge.t1.y);
+                    const t2 = new Vector2(jsonEdge.t2.x, jsonEdge.t2.y);
 
-                    roadNetwork.set_edge(srcId, dstId, {p1, p2});
+                    roadNetwork.set_edge(srcId, dstId, {t1, t2});
                 }
             }
         }

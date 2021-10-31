@@ -12,7 +12,8 @@ export enum S {
     creatingEdge,
     creatingIsolatedVertex,
     vertexClicked,
-    movingVertex
+    movingVertex,
+    movingHandle
 }
 
 export enum E {
@@ -25,6 +26,7 @@ export enum E {
     shiftLeftClickVertex,
     shiftLeftClickEmpty,
     leftClickVertex,
+    leftClickHandle,
     scroll,
     undo,
     redo,
@@ -77,7 +79,10 @@ export default class Controller {
             [S.vertexClicked,          E.mouseUp,              S.idle,                   null],
             [S.vertexClicked,          E.mouseMove,            S.movingVertex,           () => this.roadNetworkController.start_move_vertex()],
             [S.movingVertex,           E.mouseUp,              S.idle,                   null],
-            [S.movingVertex,           E.mouseMove,            S.movingVertex,           e => this.roadNetworkController.move_vertex(e)]
+            [S.movingVertex,           E.mouseMove,            S.movingVertex,           e => this.roadNetworkController.move_vertex(e)],
+            [S.idle,                   E.leftClickHandle,      S.movingHandle,           e => this.roadNetworkController.target_handle(e)],
+            [S.movingHandle,           E.mouseMove,            S.movingHandle,           e => this.roadNetworkController.move_handle(e)],
+            [S.movingHandle,           E.mouseUp,              S.idle,                   null]
         ];
 
         transitions.forEach(([previousStateId, eventId, nextStateId, callback]) => {

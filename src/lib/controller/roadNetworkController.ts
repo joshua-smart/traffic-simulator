@@ -15,6 +15,7 @@ export default class RoadNetworkController {
     private futureStates: Stack<RoadNetwork>;
 
     private targetedVertex: number;
+    private targetedHandle: {srcId: number, dstId: number, position: 'start' | 'end'};
 
     constructor(model: Model, view: View) {
         this.model = model;
@@ -34,16 +35,24 @@ export default class RoadNetworkController {
             if (e.buttons !== 1) return;
 
             const shift = e.shiftKey;
-            const emptyTarget = (<HTMLElement>e.target).id === 'main-canvas';
+            const targetClass = (<HTMLElement>e.target).className;
 
-            // Left click (empty): e3
-            if (!shift && emptyTarget) stateMachine.transition(E.leftClickEmpty, e);
-            // shift-Left click (empty): e7
-            if (shift && emptyTarget)  stateMachine.transition(E.shiftLeftClickEmpty, e);
-            // Left click (vertex): e8
-            if (!shift && !emptyTarget) stateMachine.transition(E.leftClickVertex, e);
-            // shift-Left click (vertex): e6
-            if (shift && !emptyTarget) stateMachine.transition(E.shiftLeftClickVertex, e);
+            switch (targetClass) {
+                case ('canvas'): {
+                    if (!shift) stateMachine.transition(E.leftClickEmpty, e);
+                    else stateMachine.transition(E.shiftLeftClickEmpty, e);
+                    break;
+                }
+                case ('vertex'): {
+                    if (!shift) stateMachine.transition(E.leftClickVertex, e);
+                    else stateMachine.transition(E.shiftLeftClickVertex, e);
+                    break;
+                }
+                case ('handle'): {
+                    if(!shift) stateMachine.transition(E.leftClickHandle, e);
+                    break;
+                }
+            }
         });
 
         // mousereleased: e4
@@ -142,6 +151,23 @@ export default class RoadNetworkController {
             this.model.remove_vertex(this.targetedVertex);
             this.view.redraw();
         });
+    }
+
+    public target_handle(e: Event): void {
+        this.user_action(() => {
+            const element = <HTMLElement>e.target;
+            this.targetedHandle = {
+                srcId: Number(element.getAttribute('srcId')),
+                dstId: Number(element.getAttribute('dstId')),
+                position: <'start' | 'end'>element.getAttribute('position')
+            }
+        });
+    }
+
+    public move_handle(e: Event): void {
+        const worldPosition = this.get_relative_world_position(<MouseEvent>e);
+        this.model.set_handle(this.targetedHandle, worldPosition);
+        this.view.redraw();
     }
 
     // Undo last action

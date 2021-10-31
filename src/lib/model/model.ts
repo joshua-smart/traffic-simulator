@@ -40,11 +40,19 @@ export default class Model {
             return;
         }
         this.roadNetwork.remove_edge(dstId, srcId);
-        this.roadNetwork.set_edge(srcId, dstId, {p1: new Vector2(0, 0), p2: new Vector2(0, 0)});
+        this.roadNetwork.set_edge(srcId, dstId, {t1: new Vector2(0, 0), t2: new Vector2(0, 0)});
     }
 
     public set_vertex(vertexId: number, position: Vector2): void {
         this.roadNetwork.set_vertex(vertexId, position);
+    }
+
+    public set_handle({srcId, dstId, position}: {srcId: number, dstId: number, position: 'start' | 'end'}, mousePosition: Vector2): void {
+        const currentEdge = this.roadNetwork.get_edge(srcId, dstId);
+        const vertex = position == 'start' ? this.roadNetwork.get_vertex(srcId) : this.roadNetwork.get_vertex(dstId);
+        const newTangent = mousePosition.sub(vertex);
+        const newEdge = position == 'start' ? {t1: newTangent, t2: currentEdge.t2} : {t1: currentEdge.t1, t2: newTangent};
+        this.roadNetwork.set_edge(srcId, dstId, newEdge);
     }
 
     public remove_vertex(vertexId: number) {

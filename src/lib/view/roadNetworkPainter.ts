@@ -11,17 +11,20 @@ export type GhostEdge = {
 
 export default class RoadNetworkPainter {
     private vertexContainer: HTMLElement;
+    private handleContainer: HTMLElement;
     private ghostEdge: GhostEdge;
 
     constructor() {
         this.ghostEdge = null;
         this.vertexContainer = document.querySelector('#vertex-container');
+        this.handleContainer = document.querySelector('#handle-container');
     }
 
     public draw(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
         if (this.ghostEdge) this.draw_ghost_edge(canvas, roadNetwork, transform);
         this.draw_edges(canvas, roadNetwork, transform);
         this.draw_vertices(roadNetwork, transform);
+        this.draw_handles(roadNetwork, transform);
     }
 
     private draw_ghost_edge(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform) {
@@ -67,8 +70,8 @@ export default class RoadNetworkPainter {
 
         const worldVertices = [
             roadNetwork.get_vertex(srcId),
-            roadNetwork.get_vertex(srcId).add(edge.p1),
-            roadNetwork.get_vertex(dstId).add(edge.p2),
+            roadNetwork.get_vertex(srcId).add(edge.t1),
+            roadNetwork.get_vertex(dstId).add(edge.t2),
             roadNetwork.get_vertex(dstId)
         ];
 
@@ -79,6 +82,9 @@ export default class RoadNetworkPainter {
             {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'},
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );
+
+        canvas.line(screenVertices[0], screenVertices[1], {color: 'grey', width: 2});
+        canvas.line(screenVertices[2], screenVertices[3], {color: 'grey', width: 2});
     }
 
     public set_ghost_edge(srcId: number, end: Vector2): void {
@@ -87,5 +93,36 @@ export default class RoadNetworkPainter {
 
     public remove_ghost_edge(): void {
         this.ghostEdge = null;
+    }
+
+    private draw_handles(roadNetwork: RoadNetwork, transform: Transform): void {
+        this.handleContainer.innerHTML = '';
+
+        for(let srcId = 0; srcId < roadNetwork.size(); srcId++) {
+            for(let dstId = 0; dstId < roadNetwork.size(); dstId++) {
+                this.draw_handle(roadNetwork, srcId, dstId, 'start', transform);
+                this.draw_handle(roadNetwork, srcId, dstId, 'end', transform);
+            }
+        }
+    }
+
+    private draw_handle(roadNetwork: RoadNetwork, srcId: number, dstId: number, position: 'start' | 'end', transform: Transform): void {
+        const edge = roadNetwork.get_edge(srcId, dstId);
+        if (!edge) return;
+        const base = position == 'start' ? roadNetwork.get_vertex(srcId) : roadNetwork.get_vertex(dstId);
+        const handle = position == 'start' ? edge.t1 : edge.t2;
+
+        const screenHandle = transform.to_screen_space(handle.add(base));
+        const handleElement = document.createElement('div');
+        handleElement.className = 'handle';
+        handleElement.style.left = `${screenHandle.x}px`;
+        handleElement.style.top = `${screenHandle.y}px`;
+        handleElement.style.transform = `translate(-50%, -50%) scale(${transform.get_scale()})`;
+
+        handleElement.setAttribute('srcId', String(srcId));
+        handleElement.setAttribute('dstId', String(dstId));
+        handleElement.setAttribute('position', position);
+
+        this.handleContainer.appendChild(handleElement);
     }
 }
