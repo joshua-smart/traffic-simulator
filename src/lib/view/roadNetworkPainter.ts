@@ -83,8 +83,8 @@ export default class RoadNetworkPainter {
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );
 
-        canvas.line(screenVertices[0], screenVertices[1], {color: 'grey', width: 2});
-        canvas.line(screenVertices[2], screenVertices[3], {color: 'grey', width: 2});
+        canvas.line(screenVertices[0], screenVertices[1], {color: '#88888840', width: 2});
+        canvas.line(screenVertices[2], screenVertices[3], {color: '#88888840', width: 2});
     }
 
     public set_ghost_edge(srcId: number, end: Vector2): void {
