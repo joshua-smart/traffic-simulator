@@ -49,6 +49,7 @@ export default class Controller {
 
         this.initialise_state_machine();
         this.roadNetworkController.assign_listeners(this.stateMachine);
+        this.simulationController.assign_listeners(this.stateMachine);
     }
 
     private initialise_state_machine(): void {
@@ -67,7 +68,7 @@ export default class Controller {
             [S.simuationActive,        E.stop,                 S.idle,                   () => this.simulationController.stop()],
             [S.simuationActive,        E.pause,                S.simulationPaused,       () => this.simulationController.pause()],
             [S.simulationPaused,       E.stop,                 S.idle,                   () => this.simulationController.stop()],
-            [S.simulationPaused,       E.start,                S.simuationActive,        null],
+            [S.simulationPaused,       E.start,                S.simuationActive,        () => this.simulationController.resume()],
             [S.panningDisplay,         E.mouseUp,              S.idle,                   null],
             [S.panningDisplay,         E.mouseMove,            S.panningDisplay,         e => this.roadNetworkController.pan_display(e)],
             [S.vertexShiftClicked,     E.mouseUp,              S.idle,                   () => this.roadNetworkController.remove_vertex()],
