@@ -1,5 +1,11 @@
+import Agent from "./agent";
+import RoadNetwork from "./roadNetwork";
+
 export default class Simulation {
-    constructor() {
-        
+    private roadNetwork: RoadNetwork;
+    private agents: Agent[];
+
+    constructor(roadNetwork: RoadNetwork) {
+        this.roadNetwork = roadNetwork;
     }
 }

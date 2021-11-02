@@ -36,6 +36,7 @@ export default class SimulationController {
     }
 
     public start() {
+        this.model.start_simulation();
         this.runnning = true;
         this.run();
     }

@@ -9,7 +9,6 @@ export default class Model {
 
     constructor() {
         this.roadNetwork = create_default_network();
-        this.simulation = new Simulation();
     }
 
     public get_road_network(): RoadNetwork {
@@ -57,5 +56,9 @@ export default class Model {
 
     public remove_vertex(vertexId: number) {
         this.roadNetwork.remove_vertex(vertexId);
+    }
+
+    public start_simulation() {
+        this.simulation = new Simulation(this.roadNetwork);
     }
 }
