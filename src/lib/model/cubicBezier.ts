@@ -13,6 +13,10 @@ export default class CubicBezier {
         this.generate_lookup();
     }
 
+    public get_vertex(id: 0|1|2|3): Vector2 {
+        return this.vertices[id];
+    }
+
     // Ensure the distanceLookup is re-generated every time the curve is changed
     public set_vertex(index: number, value: Vector2): void {
         this.vertices[index] = value;

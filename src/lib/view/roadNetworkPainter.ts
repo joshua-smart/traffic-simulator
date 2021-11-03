@@ -1,7 +1,6 @@
 import RoadNetwork from "../model/roadNetwork";
 import Vector2 from "../vector2";
 import Canvas from "./canvas";
-import CubicBezier from "./cubicBezier";
 import Transform from "./transform";
 
 export type GhostEdge = {
@@ -29,9 +28,8 @@ export default class RoadNetworkPainter {
 
     private draw_ghost_edge(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform) {
         const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
-        const srcScreenPosition = transform.to_screen_space(srcWorldPosition);
 
-        canvas.line(srcScreenPosition, this.ghostEdge.end, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
+        canvas.line(srcWorldPosition, this.ghostEdge.end, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
     }
 
     private draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
@@ -68,23 +66,15 @@ export default class RoadNetworkPainter {
         const edge = roadNetwork.get_edge(srcId, dstId);
         if (!edge) return;
 
-        const worldVertices = [
-            roadNetwork.get_vertex(srcId),
-            roadNetwork.get_vertex(srcId).add(edge.t1),
-            roadNetwork.get_vertex(dstId).add(edge.t2),
-            roadNetwork.get_vertex(dstId)
-        ];
+        const worldBezier = roadNetwork.get_bezier(srcId, dstId);
 
-        const screenVertices = worldVertices.map((vertex) => transform.to_screen_space(vertex));
-
-        const bezier = new CubicBezier(screenVertices[0], screenVertices[1], screenVertices[2], screenVertices[3]);
-        canvas.bezier(bezier,
+        canvas.bezier(worldBezier,
             {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'},
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );
 
-        canvas.line(screenVertices[0], screenVertices[1], {color: '#88888840', width: 2});
-        canvas.line(screenVertices[2], screenVertices[3], {color: '#88888840', width: 2});
+        // canvas.line(screenVertices[0], screenVertices[1], {color: '#88888840', width: 2});
+        // canvas.line(screenVertices[2], screenVertices[3], {color: '#88888840', width: 2});
     }
 
     public set_ghost_edge(srcId: number, end: Vector2): void {

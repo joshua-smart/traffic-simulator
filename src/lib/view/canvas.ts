@@ -1,5 +1,5 @@
+import CubicBezier from '../model/cubicBezier';
 import Vector2 from '../vector2';
-import CubicBezier from './cubicBezier';
 import Transform from './transform';
 
 type LineStyle = {

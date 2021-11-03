@@ -1,6 +1,7 @@
 import Graph from './graph';
 import Vector2 from '../vector2';
 import Stack from '../stack';
+import CubicBezier from './cubicBezier';
 
 type Vertex = Vector2;
 type Edge = {t1: Vector2, t2: Vector2};
@@ -8,6 +9,21 @@ type Edge = {t1: Vector2, t2: Vector2};
 export default class RoadNetwork extends Graph<Vertex, Edge>{
     constructor() {
         super();
+    }
+
+    public get_bezier(srcId: number, dstId: number): CubicBezier {
+        const srcVertex = this.get_vertex(srcId);
+        const dstVertex = this.get_vertex(dstId);
+        const { t1, t2 } = this.get_edge(srcId, dstId);
+
+        const vertices: [Vector2, Vector2, Vector2, Vector2] = [
+            srcVertex,
+            srcVertex.add(t1),
+            dstVertex.add(t2),
+            dstVertex
+        ];
+
+        return new CubicBezier(...vertices);
     }
 
     private get_edge_length(srcId: number, dstId: number): number {
