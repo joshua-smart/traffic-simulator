@@ -18,7 +18,7 @@ export default class View {
         this.canvas = new Canvas(canvasElement);
         this.roadNetworkPainter = new RoadNetworkPainter();
         this.simulationPainter = new SimulationPainter();
-        this.transform = new Transform(new Vector2(100, 200), 2);
+        this.transform = new Transform(new Vector2(100, 350), 1.5);
 
         this.redraw();
     }

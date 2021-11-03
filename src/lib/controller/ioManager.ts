@@ -3,7 +3,7 @@ import { saveAs } from 'file-saver';
 import Vector2 from "../vector2";
 
 // Specifies the objects that must be contained in the json result
-type JSONRoadNetwork = {
+export type JSONRoadNetwork = {
     adjacencyMatrix: {
         t1: {x: number, y: number}, t2: {x: number, y: number}
     }[][],
@@ -40,7 +40,7 @@ export default class IOManager {
     }
 
     // Apply data in JSON object to a blank RoadNetwork and return
-    private static json_to_road_network(json: JSONRoadNetwork) {
+    public static json_to_road_network(json: JSONRoadNetwork) {
         const roadNetwork = new RoadNetwork();
 
         // Set vertices
