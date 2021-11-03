@@ -28,8 +28,9 @@ export default class RoadNetworkPainter {
 
     private draw_ghost_edge(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform) {
         const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
+        const worldEnd = transform.to_world_space(this.ghostEdge.end);
 
-        canvas.line(srcWorldPosition, this.ghostEdge.end, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
+        canvas.line(srcWorldPosition, worldEnd, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
     }
 
     private draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
@@ -66,15 +67,19 @@ export default class RoadNetworkPainter {
         const edge = roadNetwork.get_edge(srcId, dstId);
         if (!edge) return;
 
-        const worldBezier = roadNetwork.get_bezier(srcId, dstId);
+        const bezier = roadNetwork.get_bezier(srcId, dstId);
 
-        canvas.bezier(worldBezier,
+        canvas.bezier(bezier,
             {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'},
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );
 
-        // canvas.line(screenVertices[0], screenVertices[1], {color: '#88888840', width: 2});
-        // canvas.line(screenVertices[2], screenVertices[3], {color: '#88888840', width: 2});
+        const srcVertex = roadNetwork.get_vertex(srcId);
+        const dstVertex = roadNetwork.get_vertex(dstId);
+        const { t1, t2 } = roadNetwork.get_edge(srcId, dstId);
+
+        canvas.line(srcVertex, srcVertex.add(t1), {color: '#88888840', width: 2});
+        canvas.line(dstVertex, dstVertex.add(t2), {color: '#88888840', width: 2});
     }
 
     public set_ghost_edge(srcId: number, end: Vector2): void {
