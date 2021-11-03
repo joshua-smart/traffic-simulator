@@ -1,5 +1,6 @@
 import Vector2 from '../vector2';
 import CubicBezier from './cubicBezier';
+import Transform from './transform';
 
 type LineStyle = {
     color?: string,
@@ -16,6 +17,7 @@ type ShapeStyle = {
 export default class Canvas {
     private domElement: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
+    private transform: Transform;
 
     constructor(domElement: HTMLCanvasElement) {
         this.domElement = domElement;
@@ -25,19 +27,17 @@ export default class Canvas {
         this.domElement.height = this.domElement.parentElement.offsetHeight;
     }
 
+    public set_transform(transform: Transform): void {
+        this.transform = transform;
+    }
+
     public get width(): number { return this.domElement.width; }
     public get height(): number { return this.domElement.height; }
 
     public line(start: Vector2, end: Vector2, style?: LineStyle): void {
         this.line_draw_wrapper(style, () => {
-            this.ctx.moveTo(start.x, start.y);
-            this.ctx.lineTo(end.x, end.y);
-        });
-    }
-
-    public circle(center: Vector2, radius: number, style?: ShapeStyle): void {
-        this.shape_draw_wrapper(style, () => {
-            this.ctx.arc(center.x, center.y, radius, 0, 2 * Math.PI);
+            this.move_to(start);
+            this.line_to(end);
         });
     }
 
@@ -46,10 +46,10 @@ export default class Canvas {
             let distance = 0;
             let currentPoint = b.get_point_at_distance(distance);
 
-            this.ctx.moveTo(currentPoint.x, currentPoint.y);
+            this.move_to(currentPoint);
 
             while (currentPoint !== null) {
-                this.ctx.lineTo(currentPoint.x, currentPoint.y);
+                this.line_to(currentPoint);
                 distance += b.get_arc_length() / 100;
                 currentPoint = b.get_point_at_distance(distance);
             }
@@ -60,21 +60,13 @@ export default class Canvas {
             const t = tangent.normalise();
             const n = new Vector2(t.y, -t.x);
 
-            const v0 = midPoint.add(t.mult(5));
-            const v1 = midPoint.add(t.mult(-5)).add(n.mult(5));
-            const v2 = midPoint.add(t.mult(-5)).add(n.mult(-5));
+            const v0 = midPoint.add(t.mult(3));
+            const v1 = midPoint.add(t.mult(-3)).add(n.mult(3));
+            const v2 = midPoint.add(t.mult(-3)).add(n.mult(-3));
 
-            this.ctx.moveTo(v0.x, v0.y);
-            this.ctx.lineTo(v1.x, v1.y);
-            this.ctx.lineTo(v2.x, v2.y);
-        });
-    }
-
-    public polygon(vertices: Vector2[], style?: ShapeStyle): void {
-        this.shape_draw_wrapper(style, () => {
-            this.ctx.moveTo(vertices[0].x, vertices[0].y);
-            vertices.forEach(vertex => this.ctx.lineTo(vertex.x, vertex.y));
-            this.ctx.closePath();
+            this.move_to(v0);
+            this.line_to(v1);
+            this.line_to(v2);
         });
     }
 
@@ -91,6 +83,16 @@ export default class Canvas {
         this.ctx.beginPath();
         callback();
         this.ctx.stroke();
+    }
+
+    private move_to(position: Vector2): void {
+        const transformedPosition = this.transform.to_screen_space(position);
+        this.ctx.moveTo(transformedPosition.x, transformedPosition.y);
+    }
+
+    private line_to(position: Vector2): void {
+        const transformedPosition = this.transform.to_screen_space(position);
+        this.ctx.lineTo(transformedPosition.x, transformedPosition.y);
     }
 
     private assign_line_style({color, width, cap, join}: LineStyle): void {
