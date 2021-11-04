@@ -49,6 +49,26 @@ export default class CubicBezier {
         );
     }
 
+    // Implementation of the second cubic bezier derivative with respect to t
+    private second_derivative(t: number): Vector2 {
+        return new Vector2(0, 0).add(
+            this.vertices[0].mult(-6*t + 6)
+        ).add(
+            this.vertices[1].mult(18*t - 12)
+        ).add(
+            this.vertices[2].mult(-18*t + 6)
+        ).add(
+            this.vertices[3].mult(6*t)
+        );
+    }
+
+    // Calculate curvature of the curve at a given t, tighter curve equates to larger curvature
+    private curvature(t: number): number {
+        const d = this.tangent(t);
+        const d2 = this.second_derivative(t);
+        return (d.x * d2.y - d2.x * d.y) / ((d.x**2 + d.y**2) ** (3/2));
+    }
+
     // Create distanceLookup by cumulatively evaluating small straight line distances
     private generate_lookup(): void {
         const map = new Map<number, number>();
@@ -75,17 +95,23 @@ export default class CubicBezier {
     }
 
     // Find t then evaluate using interpolation function
-    public get_point_at_distance(targetDistance: number) {
+    public get_point_at_distance(targetDistance: number): Vector2 {
         const t = this.get_t_at_distance(targetDistance);
         if (t === null) return null;
         return this.interpolate(t);
     }
 
     // Find t then evaluate using tangent function
-    public get_tangent_at_distance(targetDistance: number) {
+    public get_tangent_at_distance(targetDistance: number): Vector2 {
         const t = this.get_t_at_distance(targetDistance);
         if (t === null) return null;
         return this.tangent(t);
+    }
+
+    public get_curvature_at_distance(targetDistance: number): number {
+        const t = this.get_t_at_distance(targetDistance);
+        if (t === null) return null;
+        return this.curvature(t);
     }
 
     public get_arc_length(): number {
