@@ -73,57 +73,105 @@
 
     \autoref{composition-diagram} outlines the compositions between the persistent objects in the program, further objects will need to be instantiated during the runtime of the program.
 
-    \subsection{Utility classes}
+    % \subsection{Utility classes}
+    %
+    % \paragraph{Vector2 -}
+    %
+    %     This program is based in a 2D rendering environment so a general 2D Vector class will be required for many functions. This class will store an x and y numerical attribute as well as containing the following static methods:
+    %
+    %     \inlinecode{Vector2.add(a, b)},
+    %     \inlinecode{Vector2.sub(a, b)},
+    %     \inlinecode{Vector2.mult(v, x)},
+    %     \inlinecode{Vector2.mag(v)},\\
+    %     \inlinecode{Vector2.sqr_mag(v)},
+    %     \inlinecode{Vector2.dot(a, b)}
+    %
+    %     And their non-static counterparts:
+    %
+    %     \inlinecode{v.add(b)},
+    %     \inlinecode{v.sub(b)},
+    %     \inlinecode{v.mult(x)},
+    %     \inlinecode{v.mag()},
+    %     \inlinecode{v.sqr_mag()},
+    %     \inlinecode{v.dot(b)}
+    %
+    %     Each of these methods will be implemented with static and non-static variants, allowing for more flexible usages. I will be using methods that do not mutate their parameters which is a scheme I am more familiar with and allows for clearer syntax.
+    %
+    %     \paragraph{CubicBezier -}
+    %
+    %     This class will store all of the computation needed to model cubic Bezier curves which I explored in \autoref{bezier}.
+    %     This class will contain the following methods:
+    %
+    %     \inlinecode{b.get_vertex(i)},
+    %     \inlinecode{b.set_vertex(i, v)},
+    %     \inlinecode{b.generate_lookup()},
+    %     \inlinecode{b.interpolate(t)}, \\
+    %     \inlinecode{b.tangent(t)},
+    %     \inlinecode{b.second_derivative(t)},
+    %     \inlinecode{b.curvature(t)},
+    %     \inlinecode{b.get_t_at_distance(d)}, \\
+    %     \inlinecode{b.get_point_at_distance(d)},
+    %     \inlinecode{b.get_tangent_at_distance(d)},
+    %     \inlinecode{b.get_curvature_at_distance(d)}
+    %
+    %     \paragraph{State Machine -}
+    %
+    %     This class represents a finite state machine model which utilises function callbacks, it will store a list of transitions and callbacks. When the \inlinecode{transition} method is called the state will change based on the appropriate transition and the callback assigned to it will be executed.
+    %
+    %     The included methods are:
+    %
+    %     \inlinecode{sm.transition(e)}, \inlinecode{sm.add_rule(src, e, dst, cb)}
+    %
+    %     \paragraph{Stack -}
+    %
+    %     I will also include a stack implementation to be used in the undo/redo procedures. Including:
+    %
+    %     \inlinecode{s.push(e)}, \inlinecode{s.pop()}, \inlinecode{s.is_empty()}, \inlinecode{s.clear()}
 
-    \paragraph{Vector2 -}
+\section{Model}
 
-        This program is based in a 2D rendering environment so a general 2D Vector class will be required for many functions. This class will store an x and y numerical attribute as well as containing the following static methods:
+    The model component is responsible for encapsulating the modelling data structures of the program. In this case the model is a graph structure containing road network information as well as a simulation containing a series of agents present in the network.
 
-        \inlinecode{Vector2.add(a, b)},
-        \inlinecode{Vector2.sub(a, b)},
-        \inlinecode{Vector2.mult(v, x)},
-        \inlinecode{Vector2.mag(v)},\\
-        \inlinecode{Vector2.sqr_mag(v)},
-        \inlinecode{Vector2.dot(a, b)}
+    \subsection{Classes}
 
-        And their non-static counterparts:
+        \subsubsection{Model}
 
-        \inlinecode{v.add(b)},
-        \inlinecode{v.sub(b)},
-        \inlinecode{v.mult(x)},
-        \inlinecode{v.mag()},
-        \inlinecode{v.sqr_mag()},
-        \inlinecode{v.dot(b)}
+            The Model class is the container for all other classes in this component. Containing methods for the view and controller components to interact with it. It will encapsulate the RoadNetwork and Simulation classes. The Model class also contains a series of methods used by the controller class during transition callbacks.
 
-        Each of these methods will be implemented with static and non-static variants, allowing for more flexible usages. I will be using methods that do not mutate their parameters which is a scheme I am more familiar with and allows for clearer syntax.
+            \umldiagram{Model}{
+                \inlinecode{- roadNetwork: RoadNetwork}\\
+                \inlinecode{- simulation: Simulation}
+            }{
+                \inlinecode{+ copy\_road\_network(): RoadNetwork}
+            }
 
-        \paragraph{CubicBezier -}
+        \subsubsection{RoadNetwork}
 
-        This class will store all of the computation needed to model cubic Bezier curves which I explored in \autoref{bezier}.
-        This class will contain the following methods:
+            The RoadNetwork class represents the data structure for the road network, inheriting from the Graph class and implementing its generic types.
 
-        \inlinecode{b.set_vertex(i, v)}, \inlinecode{b.interpolate(t)}, \inlinecode{b.get_point_at_distance(d)}, \inlinecode{b.get_normal(d)}, \\
-        \inlinecode{b.get_curvature(d)}
+            \umldiagram{RoadNetwork}{}{
+                \inlinecode{+ get\_bezier(int, int): CubicBezier}
+            }
 
-        \paragraph{State Machine -}
+        \subsubsection{CubicBezier}
 
-        This class represents a finite state machine model which utilises function callbacks, it will store a list of transitions and callbacks. When the \inlinecode{transition} method is called the state will change based on the appropriate transition and the callback assigned to it will be executed.
+            This is the container for the geometric structure of a cubic Bezier curve, outlined in \autoref{bezier}. Containing methods for querying and operating on these curves.
 
-        The included methods are:
-
-        \inlinecode{sm.transition(e)}, \inlinecode{sm.add_rule(src, e, dst, cb)}
-
-        \paragraph{Stack -}
-
-        I will also include a stack implementation to be used in the undo/redo procedures. Including:
-
-        \inlinecode{s.push(e)}, \inlinecode{s.pop()}, \inlinecode{s.is_empty()}, \inlinecode{s.clear()}
-
-        \paragraph{Queue -}
-
-        A queue structure will be used to model the routes followed by agents, this will require the following methods:
-
-        \inlinecode{q.enqueue(e)}, \inlinecode{q.dequeue()}, \inlinecode{q.is_empty()}
+            \umldiagram{CubicBezier}{
+                \inlinecode{- vertices: Vector2[]}\\
+                \inlinecode{- distanceLookup: Map<number, number>}
+            }{
+                \inlinecode{+ get_vertex(int): Vector2}\\
+                \inlinecode{+ set_vertex(int, Vector2): void}\\
+                \inlinecode{- interpolate(number): Vector2}\\
+                \inlinecode{- tangent(number): Vector2}\\
+                \inlinecode{- second_derivative(number): Vector2}\\
+                \inlinecode{- generate_lookup(): void}\\
+                \inlinecode{+ get_t_at_distance(number): number}\\
+                \inlinecode{+ get_point_at_distance(number): Vector2}\\
+                \inlinecode{+ get_tangent_at_distance(number): Vector2}\\
+                \inlinecode{+ get_curvature_at_distance(number): number}
+            }
 
 
 \section{Network Builder}
