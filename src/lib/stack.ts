@@ -1,25 +1,34 @@
 export default class Stack<Element> {
     private elements: Element[];
+    private length: number;
 
     constructor() {
         this.elements = [];
+        this.length = 0;
     }
 
     public push(element: Element): void {
-        this.elements.push(element);
+        this.elements[this.length] = element;
+        this.length++;
     }
 
     public pop(): Element {
-        return this.elements.pop();
+        const topElement = this.elements[this.length - 1];
+        this.length--;
+        return topElement;
     }
 
     public is_empty(): boolean {
-        return this.elements.length === 0;
+        return this.length === 0;
     }
 
     public clear(): void {
         while(!this.is_empty()) {
             this.pop();
         }
+    }
+
+    public peek(): Element {
+        return this.elements[this.length];
     }
 }
