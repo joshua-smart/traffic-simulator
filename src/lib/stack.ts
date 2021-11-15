@@ -13,7 +13,7 @@ export default class Stack<Element> {
     }
 
     public pop(): Element {
-        const topElement = this.elements[this.length - 1];
+        const topElement = this.peek();
         this.length--;
         return topElement;
     }
@@ -29,6 +29,6 @@ export default class Stack<Element> {
     }
 
     public peek(): Element {
-        return this.elements[this.length];
+        return this.elements[this.length - 1];
     }
 }
