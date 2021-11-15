@@ -1,7 +1,6 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
   entry: './lib/index.ts',
   module: {
     rules: [
@@ -24,5 +23,4 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, './build'),
   },
-  watch: true,
 };
