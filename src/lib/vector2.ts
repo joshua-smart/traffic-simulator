@@ -58,4 +58,11 @@ export default class Vector2 {
     public normalise(): Vector2 {
         return Vector2.normalise(this);
     }
+
+    public static angle(vector: Vector2): number {
+        return Math.atan2(vector.y, vector.x);
+    }
+    public angle(): number {
+        return Vector2.angle(this);
+    }
 }
