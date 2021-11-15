@@ -48,7 +48,7 @@ export default class Canvas {
 
             this.move_to(currentPoint);
 
-            while (currentPoint !== null) {
+            while (distance < b.get_arc_length()) {
                 this.line_to(currentPoint);
                 distance += b.get_arc_length() / 100;
                 currentPoint = b.get_point_at_distance(distance);
