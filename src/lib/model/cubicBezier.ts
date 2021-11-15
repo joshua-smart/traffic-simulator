@@ -91,26 +91,23 @@ export default class CubicBezier {
         for(const [t, distance] of this.distanceLookup) {
             if (distance >= targetDistance) return t;
         }
-        return null;
+        return 1;
     }
 
     // Find t then evaluate using interpolation function
     public get_point_at_distance(targetDistance: number): Vector2 {
         const t = this.get_t_at_distance(targetDistance);
-        if (t === null) return null;
         return this.interpolate(t);
     }
 
     // Find t then evaluate using tangent function
     public get_tangent_at_distance(targetDistance: number): Vector2 {
         const t = this.get_t_at_distance(targetDistance);
-        if (t === null) return null;
         return this.tangent(t);
     }
 
     public get_curvature_at_distance(targetDistance: number): number {
         const t = this.get_t_at_distance(targetDistance);
-        if (t === null) return null;
         return this.curvature(t);
     }
 
