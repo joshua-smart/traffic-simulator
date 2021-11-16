@@ -50,7 +50,7 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
             const u = q.shift();
 
             if (u == dstId) {
-                return;
+                break;
             }
 
             for(let v = 0; v < this.size(); v++) {
@@ -64,10 +64,10 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
             }
         }
 
-        const s: Stack<number> = new Stack<number>();
+        const s = new Stack<number>();
         let u = dstId;
 
-        while (u) {
+        while (u != undefined) {
             s.push(u);
             u = prev[u];
         }
