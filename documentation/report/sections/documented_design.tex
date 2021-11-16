@@ -186,12 +186,17 @@
             \hline
             \textbf{Input} & \textbf{Result}\\
             \hline
-            Left-click on existing node and drag to another existing node & Connect a road between the two targeted vertices\\\hline
-            Left-click on existing node and drag to empty space & Create new node at the end point and connect with the existing node\\\hline
-            Left-click in empty space and drag & Pan the display along the path of the cursor\\\hline
+            Left-click and drag on and empty space & Pan the display along the path of the cursor\\\hline
+
+            Lift-click and drag on an existing vertex & Move the targeted node along the path of the cursor until button is released\\\hline
+
+            Shift-left-click an existing vertex and drag to another existing vertex & Connect an edge between the two targeted vertices\\\hline
+
+            Shift-left-click an existing vertex and drag to an empty space & Create new node at the end point and connect with the existing node\\\hline
+
             Shift-Left-click on empty space & Create new node at the selected point with no connections\\\hline
-            Shift-Left-click on node & Delete the node from the network\\\hline
-            Shift-Left-click on existing node and drag & Move the targeted node along the path of the cursor until button is released\\\hline
+
+            Shift-Left-click on node & Remove the node from the network\\\hline
         \end{tabular}
         \caption{User interactions with graph model}
         \label{user-interaction-specification}
