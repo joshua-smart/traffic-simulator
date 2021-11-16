@@ -28,9 +28,8 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
     }
 
     private get_edge_length(srcId: number, dstId: number): number {
-        const srcV = this.get_vertex(srcId);
-        const dstV = this.get_vertex(dstId);
-        return Vector2.sub(srcV, dstV).magnitude();
+        const bezier = this.get_bezier(srcId, dstId);
+        return bezier.get_arc_length();
     }
 
     public find_route(srcId: number, dstId: number): Stack<number> {
