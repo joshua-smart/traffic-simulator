@@ -150,7 +150,7 @@
             The RoadNetwork class represents the data structure for the road network, inheriting from the Graph class and implementing its generic types.
 
             \umldiagram{RoadNetwork}{}{
-                \inlinecode{+ get\_bezier(int, int): CubicBezier}
+                \inlinecode{+ get\_bezier(number, number): CubicBezier}
             }
 
         \subsubsection{CubicBezier}
@@ -161,8 +161,8 @@
                 \inlinecode{- vertices: Vector2[]}\\
                 \inlinecode{- distanceLookup: Map<number, number>}
             }{
-                \inlinecode{+ get_vertex(int): Vector2}\\
-                \inlinecode{+ set_vertex(int, Vector2): void}\\
+                \inlinecode{+ get_vertex(number): Vector2}\\
+                \inlinecode{+ set_vertex(number, Vector2): void}\\
                 \inlinecode{- interpolate(number): Vector2}\\
                 \inlinecode{- tangent(number): Vector2}\\
                 \inlinecode{- second_derivative(number): Vector2}\\
@@ -230,7 +230,7 @@
                 \hline
                 \textbf{Method definition} & \textbf{Description}\\
                 \hline
-                \inlinecode{add_vertex(vertex): integer} & Adds a new vertex to the graph with a specified vertex value, returning the index of the new vertex\\
+                \inlinecode{add_vertex(vertex): number} & Adds a new vertex to the graph with a specified vertex value, returning the index of the new vertex\\
                 \hline
                 \inlinecode{set_vertex(vertexId, value): void} & Sets the value of a vertex at a given vertex id, no return value\\
                 \hline
