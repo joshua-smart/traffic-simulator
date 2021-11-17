@@ -48,9 +48,9 @@ export default class Model {
 
     public set_handle({srcId, dstId, position}: {srcId: number, dstId: number, position: 'start' | 'end'}, mousePosition: Vector2): void {
         const currentEdge = this.roadNetwork.get_edge(srcId, dstId);
-        const vertex = position == 'start' ? this.roadNetwork.get_vertex(srcId) : this.roadNetwork.get_vertex(dstId);
+        const vertex = position === 'start' ? this.roadNetwork.get_vertex(srcId) : this.roadNetwork.get_vertex(dstId);
         const newTangent = mousePosition.sub(vertex);
-        const newEdge = position == 'start' ? {t1: newTangent, t2: currentEdge.t2} : {t1: currentEdge.t1, t2: newTangent};
+        const newEdge = position === 'start' ? {t1: newTangent, t2: currentEdge.t2} : {t1: currentEdge.t1, t2: newTangent};
         this.roadNetwork.set_edge(srcId, dstId, newEdge);
     }
 

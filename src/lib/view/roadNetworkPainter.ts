@@ -104,8 +104,8 @@ export default class RoadNetworkPainter {
     private draw_handle(roadNetwork: RoadNetwork, srcId: number, dstId: number, position: 'start' | 'end', transform: Transform): void {
         const edge = roadNetwork.get_edge(srcId, dstId);
         if (!edge) return;
-        const base = position == 'start' ? roadNetwork.get_vertex(srcId) : roadNetwork.get_vertex(dstId);
-        const handle = position == 'start' ? edge.t1 : edge.t2;
+        const base = position === 'start' ? roadNetwork.get_vertex(srcId) : roadNetwork.get_vertex(dstId);
+        const handle = position === 'start' ? edge.t1 : edge.t2;
 
         const screenHandle = transform.to_screen_space(handle.add(base));
         const handleElement = document.createElement('div');

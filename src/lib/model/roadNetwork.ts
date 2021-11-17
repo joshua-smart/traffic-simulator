@@ -48,7 +48,7 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
             q.sort((a, b) => dist[a] - dist[b]);
             const u = q.shift();
 
-            if (u == dstId) {
+            if (u === dstId) {
                 break;
             }
 
