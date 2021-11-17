@@ -74,56 +74,23 @@
 }
 
 % CODE
-\usepackage{listings}
+\usepackage[outputdir=build]{minted}
 
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.95}
+\newcommand{\mintTS}[1]{\mintinline{TypeScript}{#1}}
 
-\lstdefinelanguage{typescript}{
-    keywords=[1]{
-        await, break, case, catch, class, const, continue, debugger, default, delete, do, else, enum, export, extends, false, finally, for, function, if, implements, import, in, instanceof, interface, let, new, null, package, private, protected, public, return, super, switch, static, this, throw, try, True, typeof, var, void, while, with, yield
-    },
-    keywords=[2]{
-        number, string, Map, Model, RoadNetwork, CubicBezier, Vector2, void
-    },
-    morecomment=[n]{<}{>}
-}
+\definecolor{typescolor}{HTML}{56b6c2}
 
-\lstdefinestyle{mystyle}{
-    language=typescript,
-    backgroundcolor=\color{backcolour},
-    commentstyle=\color{codegreen},
-    keywordstyle=[1]\color{magenta},
-    keywordstyle=[2]\color{blue},
-    numberstyle=\tiny\color{codegray},
-    stringstyle=\color{codepurple},
-    basicstyle=\ttfamily,
-    breakatwhitespace=false,
-    breaklines=true,
-    captionpos=b,
-    keepspaces=true,
-    numbers=left,
-    numbersep=5pt,
-    showspaces=false,
-    showstringspaces=false,
-    showtabs=false,
-    tabsize=2
-}
-
-\lstset{style=mystyle}
+% Type keywords:
+% number, string, Map, Model, RoadNetwork, CubicBezier, Vector2, void, Simulation, Edge, Vertex, StateMachine
 
 \newcommand{\inlinecode}[1]{\colorbox{backcolour}{\lstinline!#1!}}
 \usepackage{algpseudocode}
 \usepackage{algorithm}
 
 % FIGURES
-
 \usepackage[justification=centering]{caption}
 
 % UML CLASS DIAGRAM
-
 \newcommand{\umldiagram}[3]{
     \begin{table}[ht]
         \centering
