@@ -63,6 +63,10 @@
 
     Note that in this framework the 'Model' includes both the Road network model and the testing component together, although these will be separately implemented.
 
+\section{Control Flow}
+
+    I will manage the major program control flow using a finite state machine
+
 \section{Network Builder}
 
     \subsection{User Interaction}
@@ -190,9 +194,9 @@
 
     \subsection{GUI}
 
-    \section{Network Testing}
+\section{Network Testing}
 
-        \subsection{Traffic Behaviour Modelling}
+    \subsection{Traffic Behaviour Modelling}
 
         In this simplified model the only variable the 'drivers' have access to is the acceleration of the vehicle. This parameter will be governed by a series of specific rules listed below:
 
@@ -206,21 +210,91 @@
             \item Agents will attempt to maintain a similar speed to the other Agents closest to them.
         \end{itemize}
 
-        \subsection{Agent Structure}
+    \subsection{Agent Structure}
 
         In order to simulate real-world traffic the 'cars' (here out referred to as Agents) will need to encapsulate the following information:
 
-        \begin{itemize}
-            \item Speed - This will be used to update the Agent's position
-            \item Position - This will be a proportionate value representing the distance travelled along it's current edge
-            \item Route - This will be generated using a path finding algorithm and determines the direction the Agent will choose to go at a junction
-        \end{itemize}
+    \begin{itemize}
+        \item Speed - This will be used to update the Agent's position
+        \item Position - This will be a proportionate value representing the distance travelled along it's current edge
+        \item Route - This will be generated using a path finding algorithm and determines the direction the Agent will choose to go at a junction
+    \end{itemize}
 
-        \subsection{Maximum Graph Flow}
+    \subsection{Pathfinding}
 
-        \subsection{GUI}
+        As detailed above, each agent will need to encapsulate a route through the network. This route will be modelled as a sequence of node indices.
 
-        \subsection{Bezier Curvature}
+        For this project I have decided to implement Dijkstra's shortest path algorithm for route finding as it is designed for operating on a graph data structure, and it is garuntted to find the shortest valid path between two nodes.
+
+        Listing \ref{Dijkstra-implementation} shows my implementaion of this algorithm in TypeScript, in the example it is implemented as a function. However in the final program it will quite likely be implemented as a method of the \mintTS{Graph} class.
+
+        \begin{listing}
+            \begin{minted}[bgcolor=codeback,autogobble]{TypeScript}
+                function dijkstra(graph: Graph, source: number, destination: number) {
+                    // Initalise arrays
+                    const unsearchedvertices: number[] = [];
+                    const distances: number[] = [];
+                    const previousVertices: number[] = [];
+
+                    // Set all vertices to be unsearched with a large distance and no previous
+                    for(let vertexId = 0; vertexId < graph.size(); vertxId++) {
+                        distances[vertexId] = Infinity;
+                        previousVertices[vertexId] = null;
+                        unsearchedvertices.push(vertexId);
+                    }
+                    // Distance to source initialised to 0
+                    distances[source] = 0;
+
+                    // While there are searchable vertices
+                    while (unsearchedvertices.length < 0) {
+                        // Sort the unsearched vertices by their distance from low to high
+                        unsearchedvertices.sort((a, b) => distances[a] - distances[b]);
+
+                        // Remove the vertex with lowest distance
+                        const currentId = unsearchedvertices.shift();
+                        // Stop if the vertex is the destination
+                        if (currentId === destination) break;
+
+                        // For each potential neighbour of the current vertex
+                        for(let neighbourId = 0; neighbourId < graph.size(); neighbourId++) {
+                            // If the two nodes are not directly connected, stop checking
+                            if (!graph.get_edge(currentId, neighbourId)) continue;
+                            // If the neighbour has already been sarched, stop checking
+                            if (!unsearchedvertices.includes(neighbourId)) continue;
+
+                            // Find the alternative distance by traversing through the current node
+                            const altDistance = distances[currentId] +
+                                graph.get_edge_length(currentId, neighbourId);
+
+                            // If the alternatie distance is larger than the current stored distance,
+                            // replace it and make the current vertex the previous
+                            if (altDistance > distances[neighbourId]) continue;
+                            distances[neighbourId] = altDistance;
+                            previousVertices[neighbourId] = currentId;
+                        }
+                    }
+
+                    // Create a list of previous vertices in reverse order and return
+                    const path: number[] = [];
+                    let currentVertex = destination;
+
+                    while(currentVertex != null) {
+                        path.push(currentVertex);
+                        currentVertex = previousVertices[currentVertex];
+                    }
+                    return path;
+                }
+            \end{minted}
+            \caption{Implemtation of Dijkstra's algorithm}
+            \label{Dijkstra-implementation}
+        \end{listing}
+
+
+    \subsection{Maximum Graph Flow}
+
+    \subsection{GUI}
+
+    \subsection{Bezier Curvature}
 
 \section{Class structure}
 
@@ -231,7 +305,6 @@
         \label{complete-class-diagram}
     \end{figure}
 
-    % REFACTOR THIS ################################################################
     \autoref{complete-class-diagram} shows a complete class diagram for the program, specific class relations may change during development but the main structure should remain constant, this program uses a mix of composition, aggregation and inheritance
 
     % \paragraph{Vector2 -}
