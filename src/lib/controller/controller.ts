@@ -50,6 +50,8 @@ export default class Controller {
         this.initialise_state_machine();
         this.roadNetworkController.assign_listeners(this.stateMachine);
         this.simulationController.assign_listeners(this.stateMachine);
+
+        this.assign_key_listeners();
     }
 
     private initialise_state_machine(): void {
@@ -87,6 +89,14 @@ export default class Controller {
 
         transitions.forEach(([previousStateId, eventId, nextStateId, callback]) => {
             this.stateMachine.add_rule(previousStateId, eventId, nextStateId, callback);
+        });
+    }
+
+    private assign_key_listeners() {
+        window.addEventListener('keydown', e => {
+            if (e.key == 'z' && e.ctrlKey) this.stateMachine.transition(E.undo, null);
+
+            if (e.key == 'y' && e.ctrlKey) this.stateMachine.transition(E.redo, null);
         });
     }
 }
