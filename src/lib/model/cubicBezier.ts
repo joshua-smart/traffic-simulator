@@ -1,7 +1,7 @@
 import Vector2 from '../vector2';
 
 // Resolution used to generate the distanceLookup table
-const interpolationResolution = 0.01;
+const interpolationResolution = 0.005;
 
 export default class CubicBezier {
     private vertices: Vector2[];
