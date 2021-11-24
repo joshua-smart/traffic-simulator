@@ -5,12 +5,21 @@ import RoadNetworkPainter from './roadNetworkPainter';
 import SimulationPainter from './simulationPainter';
 import Transform from './transform';
 
+type DrawFlags = {
+    roads: boolean,
+    vertices: boolean,
+    handles: boolean,
+    simulation: boolean
+};
+
 export default class View {
     private model: Model;
     private canvas: Canvas;
     private roadNetworkPainter: RoadNetworkPainter;
     private simulationPainter: SimulationPainter;
     private transform: Transform;
+
+    private drawFlags: DrawFlags;
 
     constructor(model: Model) {
         this.model = model;
@@ -20,17 +29,27 @@ export default class View {
         this.simulationPainter = new SimulationPainter();
         this.transform = new Transform(new Vector2(100, 350), 1.5);
 
+        this.drawFlags = {
+            roads: true,
+            vertices: true,
+            handles: true,
+            simulation: false
+        }
+
         this.redraw();
     }
 
     public redraw(): void {
         this.canvas.clear();
         this.canvas.set_transform(this.transform);
-        this.roadNetworkPainter.draw(this.canvas, this.model.get_road_network(), this.transform);
-        const simulation = this.model.get_simulation();
-        if (simulation) {
-            this.simulationPainter.draw(this.canvas, simulation, this.transform);
-        }
+
+        if (this.drawFlags.roads) this.roadNetworkPainter.draw_roads(this.canvas, this.model.get_road_network(), this.transform);
+
+        if (this.drawFlags.handles) this.roadNetworkPainter.draw_handles(this.model.get_road_network(), this.transform);
+
+        if (this.drawFlags.vertices) this.roadNetworkPainter.draw_vertices(this.model.get_road_network(), this.transform);
+
+        if (this.drawFlags.simulation) this.simulationPainter.draw(this.canvas, this.model.get_simulation(), this.transform);
     }
 
     public get_canvas_element(): HTMLElement {

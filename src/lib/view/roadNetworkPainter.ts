@@ -19,13 +19,6 @@ export default class RoadNetworkPainter {
         this.handleContainer = document.querySelector('#handle-container');
     }
 
-    public draw(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
-        if (this.ghostEdge) this.draw_ghost_edge(canvas, roadNetwork, transform);
-        this.draw_edges(canvas, roadNetwork, transform);
-        this.draw_vertices(roadNetwork, transform);
-        this.draw_handles(roadNetwork, transform);
-    }
-
     private draw_ghost_edge(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform) {
         const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
         const worldEnd = transform.to_world_space(this.ghostEdge.end);
@@ -33,7 +26,7 @@ export default class RoadNetworkPainter {
         canvas.line(srcWorldPosition, worldEnd, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
     }
 
-    private draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
+    public draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
         this.vertexContainer.innerHTML = '';
 
         for(let vertexId = 0; vertexId < roadNetwork.size(); vertexId++) {
@@ -54,16 +47,16 @@ export default class RoadNetworkPainter {
         this.vertexContainer.appendChild(vertexElement);
     }
 
-    private draw_edges(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
+    public draw_roads(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
 
         for(let srcId = 0; srcId < roadNetwork.size(); srcId++) {
             for(let dstId = 0; dstId < roadNetwork.size(); dstId++) {
-                this.draw_edge(canvas, roadNetwork, srcId, dstId, transform);
+                this.draw_road(canvas, roadNetwork, srcId, dstId, transform);
             }
         }
     }
 
-    private draw_edge(canvas: Canvas, roadNetwork: RoadNetwork, srcId: number, dstId: number, transform: Transform): void {
+    private draw_road(canvas: Canvas, roadNetwork: RoadNetwork, srcId: number, dstId: number, transform: Transform): void {
         const edge = roadNetwork.get_edge(srcId, dstId);
         if (!edge) return;
 
@@ -90,7 +83,7 @@ export default class RoadNetworkPainter {
         this.ghostEdge = null;
     }
 
-    private draw_handles(roadNetwork: RoadNetwork, transform: Transform): void {
+    public draw_handles(roadNetwork: RoadNetwork, transform: Transform): void {
         this.handleContainer.innerHTML = '';
 
         for(let srcId = 0; srcId < roadNetwork.size(); srcId++) {
