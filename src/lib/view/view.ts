@@ -27,7 +27,10 @@ export default class View {
         this.canvas.clear();
         this.canvas.set_transform(this.transform);
         this.roadNetworkPainter.draw(this.canvas, this.model.get_road_network(), this.transform);
-        this.simulationPainter.draw(this.canvas, this.model.get_simulation());
+        const simulation = this.model.get_simulation();
+        if (simulation) {
+            this.simulationPainter.draw(this.canvas, simulation, this.transform);
+        }
     }
 
     public get_canvas_element(): HTMLElement {

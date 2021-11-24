@@ -1,17 +1,20 @@
 import Stack from '../stack';
 
 export default class Agent {
-    private distance: number;
-    private speed: number;
     private route: Stack<number>;
     private currentSrcVertex: number;
 
+    private distance: number;
+    private speed: number;
     private acceleration: number;
 
     constructor(route: Stack<number>) {
         this.route = route;
         this.currentSrcVertex = this.route.pop();
-        this.distance = 0;
+
+        this.distance = 10;
+        this.speed = 0.5;
+        this.acceleration = 0;
     }
 
     public move_to_next_edge(): void {
@@ -26,8 +29,13 @@ export default class Agent {
         }
     }
 
+    public get_distance(): number {
+        return this.distance;
+    }
+
     public increment_position(): void {
         this.speed += this.acceleration;
         this.distance += this.speed;
+        this.acceleration = 0;
     }
 }

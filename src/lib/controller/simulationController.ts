@@ -29,8 +29,8 @@ export default class SimulationController {
     }
 
     private run() {
-
-        console.log('frame');
+        this.model.step_simulation();
+        this.view.redraw();
 
         if (this.runnning) requestAnimationFrame(() => this.run());
     }
@@ -46,6 +46,7 @@ export default class SimulationController {
     }
 
     public stop() {
+        this.model.stop_simulation();
         this.runnning = false;
     }
 

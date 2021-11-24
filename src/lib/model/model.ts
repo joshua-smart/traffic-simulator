@@ -61,4 +61,12 @@ export default class Model {
     public start_simulation() {
         this.simulation = new Simulation(this.roadNetwork);
     }
+
+    public stop_simulation() {
+        this.simulation = null;
+    }
+
+    public step_simulation() {
+        this.simulation.step();
+    }
 }
