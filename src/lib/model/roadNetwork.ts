@@ -12,6 +12,7 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         super();
     }
 
+    // Create the bezier curve between two vertices in the network
     public get_bezier(srcId: number, dstId: number): CubicBezier {
         const srcVertex = this.get_vertex(srcId);
         const dstVertex = this.get_vertex(dstId);
@@ -27,50 +28,63 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         return new CubicBezier(...vertices);
     }
 
+    // Get length of bezier curve between two vertices of the network
     private get_edge_length(srcId: number, dstId: number): number {
         const bezier = this.get_bezier(srcId, dstId);
         return bezier.get_arc_length();
     }
 
+    // Get shortest valid route between two vertices of the network
     public find_route(srcId: number, dstId: number): Stack<number> {
-        const q: number[] = [];
-        const dist: number[] = [];
-        const prev: number[] = [];
+        // Initialise arrays
+        const unsearchedVertices: number[] = [];
+        const distances: number[] = [];
+        const previousVertices: number[] = [];
 
-        for(let v = 0; v < this.size(); v++) {
-            dist[v] = Infinity;
-            prev[v] = undefined;
-            q.push(v);
+        // Set all vertices to be unsearched with a large distance and no previous
+        for(let vertexId = 0; vertexId < this.size(); vertexId++) {
+            distances[vertexId] = Infinity;
+            previousVertices[vertexId] = undefined;
+            unsearchedVertices.push(vertexId);
         }
-        dist[srcId] = 0;
+        // Distance to source initialised to 0
+        distances[srcId] = 0;
 
-        while (q.length > 0) {
-            q.sort((a, b) => dist[a] - dist[b]);
-            const u = q.shift();
+        // While there are searchable vertices
+        while (unsearchedVertices.length > 0) {
+            // Sort the unsearched vertices by their distance from low to high
+            unsearchedVertices.sort((a, b) => distances[a] - distances[b]);
 
-            if (u === dstId) {
-                break;
+            // Remove the vertex with lowest distance
+            const currentId = unsearchedVertices.shift();
+            // Stop if the vertex is the destination
+            if (currentId === dstId) break;
+
+            // For each potential neighbour of the current vertex
+            for(let neighbourId = 0; neighbourId < this.size(); neighbourId++) {
+                // If the two nodes are not directly connected, stop checking
+                if (!this.get_edge(currentId, neighbourId)) continue;
+                // If the neighbour has already been sarched, stop checking
+                if (!unsearchedVertices.includes(neighbourId)) continue;
+
+                // Find the alternative distance by traversing through the current node
+                const altDistance = distances[currentId] + this.get_edge_length(currentId, neighbourId);
+
+                // If the alternatie distance is larger than the current stored distance, replace it and make the current vertex the previous
+                if (altDistance > distances[neighbourId]) continue;
+                distances[neighbourId] = altDistance;
+                previousVertices[neighbourId] = currentId;
             }
-
-            for(let v = 0; v < this.size(); v++) {
-                if(this.get_edge(u, v) && q.includes(v)) {
-                    const alt = dist[u] + this.get_edge_length(u, v);
-                    if (alt < dist[v]) {
-                        dist[v] = alt;
-                        prev[v] = u;
-                    }
-                }
-            }
         }
 
-        const s = new Stack<number>();
-        let u = dstId;
+        const route = new Stack<number>();
+        let currentId = dstId;
 
-        while (u != undefined) {
-            s.push(u);
-            u = prev[u];
+        while (currentId != undefined) {
+            route.push(currentId);
+            currentId = previousVertices[currentId];
         }
-        return s;
+        return route;
     }
 }
 
