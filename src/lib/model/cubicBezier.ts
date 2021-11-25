@@ -13,6 +13,7 @@ export default class CubicBezier {
         this.generate_lookup();
     }
 
+    // Return a control point of the curve
     public get_vertex(id: 0|1|2|3): Vector2 {
         return this.vertices[id];
     }
@@ -69,7 +70,7 @@ export default class CubicBezier {
         return (d.x * d2.y - d2.x * d.y) / ((d.x**2 + d.y**2) ** (3/2));
     }
 
-    // Create distanceLookup by cumulatively evaluating small straight line distances
+    // Create distanceLookup by cumulatively evaluating small straight line distances, setting arclength to final distance
     private generate_lookup(): void {
         const map = new Map<number, number>();
         let distance = 0;
@@ -106,11 +107,13 @@ export default class CubicBezier {
         return this.tangent(t);
     }
 
+    // Find t then evaluate using curvature function
     public get_curvature_at_distance(targetDistance: number): number {
         const t = this.get_t_at_distance(targetDistance);
         return this.curvature(t);
     }
 
+    // Return arcLength of curve
     public get_arc_length(): number {
         return this.arcLength;
     }
