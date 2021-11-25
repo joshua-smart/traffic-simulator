@@ -11,9 +11,11 @@ export default class RoadNetworkController {
     private model: Model;
     private view: View;
 
+    // Stacks for undo/redo functions
     private previousStates: Stack<RoadNetwork>;
     private futureStates: Stack<RoadNetwork>;
 
+    // Mouse interaction attributes
     private targetedVertex: number;
     private targetedHandle: {srcId: number, dstId: number, position: 'start' | 'end'};
 
@@ -55,19 +57,14 @@ export default class RoadNetworkController {
             }
         });
 
-        // mousereleased: e4
         element.addEventListener('mouseup', (e) => stateMachine.transition(E.mouseUp, e));
-        // mousemove: e5
         element.addEventListener('mousemove', (e) => stateMachine.transition(E.mouseMove, e));
-        // scroll: e9
         element.addEventListener('wheel', (e) => stateMachine.transition(E.scroll, e));
-        // undo: e10
+
         document.querySelector('#undo-button').addEventListener('click', () => stateMachine.transition(E.undo, null));
-        // redo: e11
         document.querySelector('#redo-button').addEventListener('click', () => stateMachine.transition(E.redo, null));
-        // save: e12
+
         document.querySelector('#save-button').addEventListener('click', () => stateMachine.transition(E.save, null));
-        // load: e13
         document.querySelector('#load-button').addEventListener('click', () => stateMachine.transition(E.load, null));
     }
 
@@ -153,6 +150,7 @@ export default class RoadNetworkController {
         });
     }
 
+    // Set targetedHandle to handle at mouse position
     public target_handle(e: Event): void {
         this.user_action(() => {
             const element = <HTMLElement>e.target;
@@ -164,6 +162,7 @@ export default class RoadNetworkController {
         });
     }
 
+    // Move targetedHandle to mouse position
     public move_handle(e: Event): void {
         const worldPosition = this.get_relative_world_position(<MouseEvent>e);
         this.model.set_handle(this.targetedHandle, worldPosition);
