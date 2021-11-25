@@ -19,6 +19,11 @@ export default class RoadNetworkPainter {
         this.handleContainer = document.querySelector('#handle-container');
     }
 
+    public clear(): void {
+        this.vertexContainer.innerHTML = '';
+        this.handleContainer.innerHTML = '';
+    }
+
     private draw_ghost_edge(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform) {
         const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
         const worldEnd = transform.to_world_space(this.ghostEdge.end);
@@ -27,8 +32,6 @@ export default class RoadNetworkPainter {
     }
 
     public draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
-        this.vertexContainer.innerHTML = '';
-
         for(let vertexId = 0; vertexId < roadNetwork.size(); vertexId++) {
             const vertex = roadNetwork.get_vertex(vertexId);
             this.draw_vertex(vertexId, vertex, transform);
@@ -48,7 +51,6 @@ export default class RoadNetworkPainter {
     }
 
     public draw_roads(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
-
         for(let srcId = 0; srcId < roadNetwork.size(); srcId++) {
             for(let dstId = 0; dstId < roadNetwork.size(); dstId++) {
                 this.draw_road(canvas, roadNetwork, srcId, dstId, transform);
@@ -66,13 +68,6 @@ export default class RoadNetworkPainter {
             {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'},
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );
-
-        const srcVertex = roadNetwork.get_vertex(srcId);
-        const dstVertex = roadNetwork.get_vertex(dstId);
-        const { t1, t2 } = roadNetwork.get_edge(srcId, dstId);
-
-        canvas.line(srcVertex, srcVertex.add(t1), {color: '#88888840', width: 2});
-        canvas.line(dstVertex, dstVertex.add(t2), {color: '#88888840', width: 2});
     }
 
     public set_ghost_edge(srcId: number, end: Vector2): void {
@@ -83,20 +78,19 @@ export default class RoadNetworkPainter {
         this.ghostEdge = null;
     }
 
-    public draw_handles(roadNetwork: RoadNetwork, transform: Transform): void {
-        this.handleContainer.innerHTML = '';
-
+    public draw_handles(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
         for(let srcId = 0; srcId < roadNetwork.size(); srcId++) {
             for(let dstId = 0; dstId < roadNetwork.size(); dstId++) {
-                this.draw_handle(roadNetwork, srcId, dstId, 'start', transform);
-                this.draw_handle(roadNetwork, srcId, dstId, 'end', transform);
+                this.draw_handle(canvas, roadNetwork, srcId, dstId, 'start', transform);
+                this.draw_handle(canvas, roadNetwork, srcId, dstId, 'end', transform);
             }
         }
     }
 
-    private draw_handle(roadNetwork: RoadNetwork, srcId: number, dstId: number, position: 'start' | 'end', transform: Transform): void {
+    private draw_handle(canvas: Canvas, roadNetwork: RoadNetwork, srcId: number, dstId: number, position: 'start' | 'end', transform: Transform): void {
         const edge = roadNetwork.get_edge(srcId, dstId);
         if (!edge) return;
+
         const base = position === 'start' ? roadNetwork.get_vertex(srcId) : roadNetwork.get_vertex(dstId);
         const handle = position === 'start' ? edge.t1 : edge.t2;
 
@@ -112,5 +106,7 @@ export default class RoadNetworkPainter {
         handleElement.setAttribute('position', position);
 
         this.handleContainer.appendChild(handleElement);
+
+        canvas.line(base, handle.add(base), {color: '#88888840', width: 2});
     }
 }

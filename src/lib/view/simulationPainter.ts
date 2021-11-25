@@ -10,10 +10,13 @@ export default class SimulationPainter {
     }
 
     public draw(canvas: Canvas, simulation: Simulation, transform: Transform): void {
-        this.agentContainer.innerHTML = '';
         for(let agentId = 0; agentId < simulation.agent_count(); agentId++) {
             this.draw_agent(canvas, simulation, agentId, transform);
         }
+    }
+
+    public clear(): void {
+        this.agentContainer.innerHTML = '';
     }
 
     private draw_agent(canvas: Canvas, simulation: Simulation, agentId: number, transform: Transform): void {

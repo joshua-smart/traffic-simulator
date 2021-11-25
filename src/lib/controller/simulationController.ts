@@ -37,6 +37,10 @@ export default class SimulationController {
 
     public start() {
         this.model.start_simulation();
+        this.view.set_draw_simulation(true);
+        this.view.set_draw_vertices(false);
+        this.view.set_draw_handles(false);
+        this.view.redraw();
         this.runnning = true;
         this.run();
     }
@@ -47,6 +51,10 @@ export default class SimulationController {
 
     public stop() {
         this.model.stop_simulation();
+        this.view.set_draw_simulation(false);
+        this.view.set_draw_handles(true);
+        this.view.set_draw_vertices(true);
+        this.view.redraw();
         this.runnning = false;
     }
 

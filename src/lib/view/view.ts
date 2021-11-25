@@ -7,8 +7,8 @@ import Transform from './transform';
 
 type DrawFlags = {
     roads: boolean,
-    vertices: boolean,
     handles: boolean,
+    vertices: boolean,
     simulation: boolean
 };
 
@@ -31,8 +31,8 @@ export default class View {
 
         this.drawFlags = {
             roads: true,
-            vertices: true,
             handles: true,
+            vertices: true,
             simulation: false
         }
 
@@ -41,16 +41,23 @@ export default class View {
 
     public redraw(): void {
         this.canvas.clear();
+        this.roadNetworkPainter.clear();
+        this.simulationPainter.clear();
         this.canvas.set_transform(this.transform);
 
         if (this.drawFlags.roads) this.roadNetworkPainter.draw_roads(this.canvas, this.model.get_road_network(), this.transform);
 
-        if (this.drawFlags.handles) this.roadNetworkPainter.draw_handles(this.model.get_road_network(), this.transform);
+        if (this.drawFlags.handles) this.roadNetworkPainter.draw_handles(this.canvas, this.model.get_road_network(), this.transform);
 
         if (this.drawFlags.vertices) this.roadNetworkPainter.draw_vertices(this.model.get_road_network(), this.transform);
 
         if (this.drawFlags.simulation) this.simulationPainter.draw(this.canvas, this.model.get_simulation(), this.transform);
     }
+
+    public set_draw_roads(value: boolean) { this.drawFlags.roads = value; }
+    public set_draw_handles(value: boolean) { this.drawFlags.handles = value; }
+    public set_draw_vertices(value: boolean) { this.drawFlags.vertices = value; }
+    public set_draw_simulation(value: boolean) { this.drawFlags.simulation = value; }
 
     public get_canvas_element(): HTMLElement {
         return document.querySelector('#canvas-container');
