@@ -56,6 +56,8 @@ export default class RoadNetworkPainter {
                 this.draw_road(canvas, roadNetwork, srcId, dstId, transform);
             }
         }
+
+        if (this.ghostEdge) this.draw_ghost_edge(canvas, roadNetwork, transform);
     }
 
     private draw_road(canvas: Canvas, roadNetwork: RoadNetwork, srcId: number, dstId: number, transform: Transform): void {
