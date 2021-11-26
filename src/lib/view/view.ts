@@ -86,4 +86,11 @@ export default class View {
     public remove_ghost_edge(): void {
         this.roadNetworkPainter.remove_ghost_edge();
     }
+
+    public get_screen_center(): Vector2 {
+        return new Vector2(
+            this.canvas.width/2,
+            this.canvas.height/2
+        );
+    }
 }

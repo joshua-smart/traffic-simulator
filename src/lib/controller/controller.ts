@@ -3,6 +3,7 @@ import View from '../view/view';
 import RoadNetworkController from './roadNetworkController';
 import SimulationController from './simulationController';
 import StateMachine from './stateMachine';
+import Vector2 from '../vector2';
 
 export enum S {
     idle,
@@ -36,12 +37,15 @@ export enum E {
 }
 
 export default class Controller {
+    private view: View;
+
     private roadNetworkController: RoadNetworkController;
     private simulationController: SimulationController;
 
     private stateMachine: StateMachine<Event>;
 
     constructor(model: Model, view: View) {
+        this.view = view;
         this.roadNetworkController = new RoadNetworkController(model, view);
         this.simulationController = new SimulationController(model, view);
 
@@ -94,9 +98,41 @@ export default class Controller {
 
     private assign_key_listeners() {
         window.addEventListener('keydown', e => {
-            if (e.key == 'z' && e.ctrlKey) this.stateMachine.transition(E.undo, null);
+            // (return this.stateMachine...) <- these statements are not used to return values, instead for early returns to avoid unnecessary checks
 
-            if (e.key == 'y' && e.ctrlKey) this.stateMachine.transition(E.redo, null);
+            // Bind undo/redo hotkeys
+            if (e.key == 'z' && e.ctrlKey) return this.stateMachine.transition(E.undo, null);
+            if (e.key == 'y' && e.ctrlKey) return this.stateMachine.transition(E.redo, null);
+
+
+            // Bind zoom hotkeys, zoom centred on center of screen
+            if (e.key == '=' && e.ctrlKey) {
+                e.preventDefault();
+                return this.key_zoom(1.2);
+            }
+            if (e.key == '-' && e.ctrlKey) {
+                e.preventDefault();
+                return this.key_zoom(1/1.2);
+            }
+
+            // Bind screen pan hotkeys
+            const panStrength = 20;
+            const directions: {[key: string]: Vector2} = {
+                'ArrowLeft': new Vector2(-panStrength, 0),
+                'ArrowRight': new Vector2(panStrength, 0),
+                'ArrowUp': new Vector2(0, -panStrength),
+                'ArrowDown': new Vector2(0, panStrength)
+            }
+            if (e.key in directions) {
+                this.view.pan_display(directions[e.key]);
+                this.view.redraw();
+            }
         });
+    }
+
+    private key_zoom(factor: number): void {
+        const center = this.view.get_screen_center();
+        this.view.zoom_display(center, factor);
+        this.view.redraw();
     }
 }
