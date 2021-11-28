@@ -12,15 +12,19 @@
     <body>
         <header>
             <div class="header-icon-container" id="left-header-icons">
-                <div id="start-button" class="button active"><i class="ri-play-fill"></i></i></div>
-                <div id="pause-button" class="button active"><i class="ri-pause-fill"></i></i></div>
-                <div id="stop-button" class="button active"><i class="ri-stop-fill"></i></i></div>
+                <div id="start-button" class="button active"><i class="ri-play-fill"></i></div>
+                <div id="pause-button" class="button active"><i class="ri-pause-fill"></i></div>
+                <div id="stop-button" class="button active"><i class="ri-stop-fill"></i></div>
                 <div id="undo-button" class="button disabled"><i class="ri-arrow-go-back-fill"></i></div>
                 <div id="redo-button" class="button disabled"><i class="ri-arrow-go-forward-fill"></i></div>
             </div>
+            <div class="header-icon-container" id="slider-container">
+                <input type="range" step="1" min="1" max="100" value="50" class="slider" id="timestep-slider">
+                <input type="range" step="1" min="1" max="100" value="50" class="slider" id="timewarp-slider">
+            </div>
             <div class="header-icon-container" id="right-header-icons">
                 <div id="save-button" class="button active"><i class="ri-save-2-fill"></i></div>
-                <div id="load-button" class="button active"><i class="ri-upload-2-line"></i></i></div>
+                <div id="load-button" class="button active"><i class="ri-upload-2-line"></i></div>
             </div>
         </header>
         <main>

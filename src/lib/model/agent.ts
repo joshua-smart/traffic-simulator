@@ -33,9 +33,9 @@ export default class Agent {
         return this.distance;
     }
 
-    public increment_position(): void {
-        this.speed += this.acceleration;
-        this.distance += this.speed;
+    public increment_position(timeStep): void {
+        this.speed += this.acceleration * timeStep;
+        this.distance += this.speed * timeStep;
         this.acceleration = 0;
     }
 }

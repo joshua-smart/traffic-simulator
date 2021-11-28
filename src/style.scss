@@ -59,6 +59,11 @@ header {
             background: #4A5E73;
         }
     }
+
+    #slider-container {
+        flex-direction: column;
+        justify-content: space-evenly;
+    }
 }
 
 main {

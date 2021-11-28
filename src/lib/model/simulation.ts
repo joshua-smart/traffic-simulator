@@ -10,9 +10,14 @@ export default class Simulation {
     private sources: number[];
     private exits: number[];
 
+    private timeStep: number;
+    private timeWarp: number;
+
     constructor(roadNetwork: RoadNetwork) {
         this.roadNetwork = roadNetwork;
         this.agents = [];
+        this.timeStep = 0.1;
+        this.timeWarp = 20;
 
         this.find_terminating_vertices();
 
@@ -20,13 +25,15 @@ export default class Simulation {
     }
 
     public step() {
-        this.agents.forEach((agent, agentId) => {
-            const bezier = this.get_agent_bezier(agentId);
-            if (agent.get_distance() >= bezier.get_arc_length()) {
-                agent.move_to_next_edge();
-            }
-            agent.increment_position();
-        });
+        for(let i = 0; i < this.timeWarp; i++) {
+            this.agents.forEach((agent, agentId) => {
+                const bezier = this.get_agent_bezier(agentId);
+                if (agent.get_distance() >= bezier.get_arc_length()) {
+                    agent.move_to_next_edge();
+                }
+                agent.increment_position(this.timeStep);
+            });
+        }
     }
 
     private add_agent(srcId: number, dstId: number): void {
