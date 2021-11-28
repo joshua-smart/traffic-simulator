@@ -106,11 +106,11 @@ export default class Controller {
 
 
             // Bind zoom hotkeys, zoom centred on center of screen
-            if (e.key == '=' && e.ctrlKey) {
+            if (e.key == '=') {
                 e.preventDefault();
                 return this.key_zoom(1.2);
             }
-            if (e.key == '-' && e.ctrlKey) {
+            if (e.key == '-') {
                 e.preventDefault();
                 return this.key_zoom(1/1.2);
             }
