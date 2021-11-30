@@ -38,7 +38,7 @@ export default class Stack<Element> {
     }
 
     // Get current size of stack
-    public get_length(): number {
+    public get_size(): number {
         return this.length;
     }
 }
