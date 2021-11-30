@@ -36,4 +36,9 @@ export default class Stack<Element> {
     public peek(): Element {
         return this.elements[this.length - 1];
     }
+
+    // Get current size of stack
+    public get_length(): number {
+        return this.length;
+    }
 }
