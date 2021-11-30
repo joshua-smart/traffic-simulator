@@ -20,6 +20,10 @@ export default class Agent {
     }
 
     public move_to_next_edge(): void {
+        if (this.on_last_edge()) {
+            this.kill = true;
+            return;
+        }
         this.currentSrcVertex = this.route.pop();
         this.distance = 0;
     }
