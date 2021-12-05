@@ -257,12 +257,12 @@
         \end{itemize}
         \item Constructing junctions, roundabouts and other isolated networks.
         \begin{itemize}
-            \item This program should be developed with the intention of simulating isolated parts of larger road networks, such as a particularly complicated roundabout or intersection.
-            \item Lower vertex counts on the graphs will allow for a faster simulation, this program should at maximum be able to handle a graph with 50 vertices.
+            \item This program should be developed with the intention of simulating isolated parts of larger road networks, such as a particularly complicated roundabout or intersection, a maximum graph size of 50 vertices will be included in the program to ensure it can still run smoothly.
+            \item This program is not designed to facilitate simulation of entire transport systems or regions.
         \end{itemize}
         \item The ability to save and load road networks.
         \begin{itemize}
-            \item Graph and road network data should have export functionality to a common file type such as \texttt{.txt} or \texttt{.csv}
+            \item Graph and road network data should have export functionality to a common file type such as \texttt{.txt} or \texttt{.json} to allow users to share and work on a network over multiple sessions.
             \item The same data should be capable of loading into a separate session of the program, restoring the same network from when it was saved.
         \end{itemize}
         \item Click-and-drag based graph builder.
@@ -271,7 +271,7 @@
         \end{itemize}
         \item Undo/redo functionality
         \begin{itemize}
-            \item This program should include options for undoing and redoing actions, allowing users to correct mistakes. This is a widespread feature in other software as explored in \autoref{current-systems}. This could be isolated to the network construction component.
+            \item This program should include options for undoing and redoing actions, allowing users to correct mistakes. This is a widespread feature in other software as explored in \autoref{current-systems}. This should be isolated to the network construction component as it is the place where users can make mistakes building the roads and want to reverse their changes, to avoid large memory usage this system should only remember the last 10 changes the user has made.
         \end{itemize}
     \end{itemize}
 
@@ -280,12 +280,17 @@
         \item Agent based traffic model.
         \begin{itemize}
             \item The program should include an agent based model to track traffic across the network. "Car" agents should be placed on the network and follow a series of rules as they "drive". Positions, density and timings of these agents can then be used to produce meaningful statistics.
-            \item The more agents there are to simulate the slower the program will run, this program should be able to handle at maximum 100 agents.
-            \item The efficiency of the agents is also affected by the size of the graph as I will need to implement a path-finding algorithm. Hence larger graphs will make this step take longer.
+            \item The more agents there are to simulate the slower the program will run, the number of agents in the simulation will be capped at 100 as this will allow for a smoother user experience and accurate simulation statistics.
+            \item The efficiency of the agents is also affected by the size of the graph as I will need to implement a path-finding algorithm. As stated above the graph size limit will ensure that this procedure does not heavily impact performance.
         \end{itemize}
         \item Theory based approaches.
         \begin{itemize}
             \item Theoretical measures could also be used to evaluate a road network, such as the Maximum Graph Flow problem [section \ref{max-flow}], or by measuring the curvatures of road sections [section \ref{bezier}].
+        \end{itemize}
+        \item Simulation data output
+        \begin{itemize}
+            \item The relevant output data includes: route length, journey time, maximum speed, minimum speed, average speed and time spent stationary. 
+            \item The program should be able to output a range of simulation data. This output can either be a file such as \texttt{.csv} or \texttt{.json}, or as a graphical component shown in the program.
         \end{itemize}
     \end{itemize}
 
@@ -299,7 +304,6 @@
     \end{figure}
 
     \begin{itemize}
-        \item The ability to save and load GUI data along with road network data, loading a saved session should return the screen to the same state as it was left off.
         \item Simple and intuitive interface.
         \begin{itemize}
             \item The more stylised parts of the interface should not detract from the functional parts the user needs to access, I have found this to be detrimental to the user experience in my product evaluations [section \ref{anylogic}].
@@ -308,5 +312,11 @@
         \item Desktop-scale application
         \begin{itemize}
             \item Due to the large potential for increasingly complex networks this program will require a desktop sized window in order to properly contain a visualisation of the graph as well as the tools used to manipulate it, this will ensure the user does not have issues accessing the full functionality of this program.
+            \item The program should also be able to support a range of aspect ratios, resizing the GUI elements to fit within the given space.
+        \end{itemize}
+        \item GUI layout
+        \begin{itemize}
+            \item The majority of the screen will be used to show a visualisation of the road network, allowing the user to manipulate and interact with it visually.
+            \item The screen will also contain a toolbar with a series of input elements such as buttons to facilitate more complex interactions with the program.
         \end{itemize}
     \end{itemize}
