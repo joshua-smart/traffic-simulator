@@ -51,6 +51,7 @@ export default class RoadNetworkPainter {
     }
 
     public draw_roads(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
+        canvas.line(new Vector2(0, 0), new Vector2(100, 0), {color: 'blue', width: 10});
         for(let srcId = 0; srcId < roadNetwork.size(); srcId++) {
             for(let dstId = 0; dstId < roadNetwork.size(); dstId++) {
                 this.draw_road(canvas, roadNetwork, srcId, dstId, transform);

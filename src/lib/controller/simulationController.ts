@@ -9,6 +9,8 @@ export default class SimulationController {
 
     private runnning: boolean = false;
 
+    private lastFrameTime: number = 0;
+
     constructor(model: Model, view: View) {
         this.model = model;
         this.view = view;
@@ -28,11 +30,13 @@ export default class SimulationController {
         });
     }
 
-    private run() {
-        this.model.step_simulation();
+    private run(time: number) {
+        const timeStep = time - this.lastFrameTime;
+        this.lastFrameTime = time;
+        this.model.step_simulation(timeStep);
         this.view.redraw();
 
-        if (this.runnning) requestAnimationFrame(() => this.run());
+        if (this.runnning) requestAnimationFrame((time) => this.run(time));
     }
 
     public start() {
@@ -42,7 +46,7 @@ export default class SimulationController {
         this.view.set_draw_handles(false);
         this.view.redraw();
         this.runnning = true;
-        this.run();
+        this.run(this.lastFrameTime);
     }
 
     public pause() {
@@ -60,6 +64,6 @@ export default class SimulationController {
 
     public resume() {
         this.runnning = true;
-        this.run();
+        this.run(this.lastFrameTime);
     }
 }

@@ -16,15 +16,10 @@ export default class Simulation {
     private timeStep: number;
     private timeWarp: number;
 
-    private time: number;
-
     constructor(roadNetwork: RoadNetwork) {
         this.roadNetwork = roadNetwork;
         this.agents = [];
-        this.timeStep = 1;
-        this.timeWarp = 20;
-
-        this.time = 0;
+        this.timeWarp = 1;
 
         const { sources, exits } = this.find_terminating_vertices();
         this.sources = sources;
@@ -32,38 +27,39 @@ export default class Simulation {
         this.trafficSequencer = new TrafficSequencer();
     }
 
-    public step() {
-        for(let i = 0; i < this.timeWarp; i++) {
-            this.update_simulation();
-        }
-    }
+    public step(timeStep: number): void {
+        const simulationTimeStep = timeStep * this.timeWarp;
+        this.update_agents(simulationTimeStep);
 
-    private update_simulation() {
-        this.update_agents();
-
-        const newAgentCount = this.trafficSequencer.get_new_agent_count(this.time);
+        const newAgentCount = this.trafficSequencer.get_new_agent_count(simulationTimeStep);
         for(let i = 0; i < newAgentCount; i++) {
             this.add_new_agent();
         }
-
-        this.time += this.timeStep;
     }
 
-    private update_agents() {
+    private update_agents(timeStep: number) {
+        const agentValues = this.agents.map((_, agentId) => ({
+                position: this.get_agent_position(agentId),
+                direction: this.get_agent_tangent(agentId)
+            })
+        );
         this.agents.forEach((_, agentId) => {
-            this.update_agent(agentId)
+            this.update_agent(agentId, timeStep, agentValues);
         });
 
         this.agents = this.agents.filter(agent => !agent.kill);
     }
 
-    private update_agent(agentId: number) {
+    private update_agent(agentId: number, timeStep: number, agentValues: {position: Vector2, direction: Vector2}[]) {
         const bezier = this.get_agent_bezier(agentId);
         const agent = this.agents[agentId];
         if (agent.get_distance() >= bezier.get_arc_length()) {
             agent.move_to_next_edge();
         }
-        agent.increment_position(this.timeStep);
+        const position = this.get_agent_position(agentId);
+        const direction = this.get_agent_tangent(agentId);
+        agent.calculate_acceleration(position, direction, agentValues);
+        agent.increment_position(timeStep);
     }
 
     private add_new_agent(): void {
@@ -104,12 +100,15 @@ export default class Simulation {
         return bezier.get_point_at_distance(agent.get_distance());
     }
 
-    public get_agent_rotation(agentId: number): number {
+    private get_agent_tangent(agentId: number): Vector2 {
         const agent = this.agents[agentId];
         const bezier = this.get_agent_bezier(agentId);
 
-        const tangent = bezier.get_tangent_at_distance(agent.get_distance());
-        return tangent.angle();
+        return bezier.get_tangent_at_distance(agent.get_distance());
+    }
+
+    public get_agent_rotation(agentId: number): number {
+        return this.get_agent_tangent(agentId).angle();
     }
 
     private get_agent_bezier(agentId: number): CubicBezier {

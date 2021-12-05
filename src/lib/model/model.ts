@@ -66,7 +66,7 @@ export default class Model {
         this.simulation = null;
     }
 
-    public step_simulation() {
-        this.simulation.step();
+    public step_simulation(timeStep: number) {
+        this.simulation.step(timeStep);
     }
 }
