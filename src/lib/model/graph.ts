@@ -1,7 +1,7 @@
 export default class Graph<Vertex, Edge> {
     private adjacencyMatrix: Edge[][];
     private vertices: Vertex[];
-    private empty: Edge;
+    public readonly empty: Edge;
 
     constructor() {
         this.adjacencyMatrix = [];
@@ -18,7 +18,7 @@ export default class Graph<Vertex, Edge> {
     public add_vertex(vertex: Vertex): number {
         this.vertices.push(vertex);
         this.adjacencyMatrix.forEach(row => row.push(this.empty));
-        this.adjacencyMatrix.push(new Array(this.vertices.length));
+        this.adjacencyMatrix.push(new Array(this.vertices.length).fill(this.empty));
         // Return index of added vertex
         return this.vertices.length - 1;
     }
