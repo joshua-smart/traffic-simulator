@@ -13,7 +13,6 @@ export default class Simulation {
     private sources: number[];
     private exits: number[]
 
-    private timeStep: number;
     private timeWarp: number;
 
     constructor(roadNetwork: RoadNetwork) {
@@ -40,7 +39,8 @@ export default class Simulation {
     private update_agents(timeStep: number) {
         const agentValues = this.agents.map((_, agentId) => ({
                 position: this.get_agent_position(agentId),
-                direction: this.get_agent_tangent(agentId)
+                direction: this.get_agent_tangent(agentId),
+                speed: this.agents[agentId].get_speed()
             })
         );
         this.agents.forEach((_, agentId) => {
@@ -50,7 +50,7 @@ export default class Simulation {
         this.agents = this.agents.filter(agent => !agent.kill);
     }
 
-    private update_agent(agentId: number, timeStep: number, agentValues: {position: Vector2, direction: Vector2}[]) {
+    private update_agent(agentId: number, timeStep: number, agentValues: {position: Vector2, direction: Vector2, speed: number}[]) {
         const bezier = this.get_agent_bezier(agentId);
         const agent = this.agents[agentId];
         if (agent.get_distance() >= bezier.get_arc_length()) {
@@ -63,9 +63,13 @@ export default class Simulation {
     }
 
     private add_new_agent(): void {
-        const src = this.sources[random(0, this.sources.length - 1)];
-        const dst = this.exits[random(0, this.exits.length - 1)];
-        const route = this.roadNetwork.find_route(src, dst);
+        let route;
+        while (true) {
+            const src = this.sources[random(0, this.sources.length - 1)];
+            const dst = this.exits[random(0, this.exits.length - 1)];
+            route = this.roadNetwork.find_route(src, dst);
+            if (route !== null) break;
+        }
         const agent = new Agent(route);
         this.agents.push(agent);
     }
@@ -82,8 +86,8 @@ export default class Simulation {
             let incomingEdges = 0;
             let outgoingEdges = 0;
             for(let dstId = 0; dstId < this.roadNetwork.size(); dstId++) {
-                if (this.roadNetwork.get_edge(dstId, vertexId)) incomingEdges++;
-                if (this.roadNetwork.get_edge(vertexId, dstId)) outgoingEdges++;
+                if (this.roadNetwork.get_edge(dstId, vertexId) !== this.roadNetwork.empty) incomingEdges++;
+                if (this.roadNetwork.get_edge(vertexId, dstId) !== this.roadNetwork.empty) outgoingEdges++;
             }
 
             if (incomingEdges === 0 && outgoingEdges !== 0) sources.push(vertexId);
