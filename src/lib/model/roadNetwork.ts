@@ -14,18 +14,23 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
 
     // Create the bezier curve between two vertices in the network
     public get_bezier(srcId: number, dstId: number): CubicBezier {
-        const srcVertex = this.get_vertex(srcId);
-        const dstVertex = this.get_vertex(dstId);
-        const { t1, t2 } = this.get_edge(srcId, dstId);
+        try {
+            const srcVertex = this.get_vertex(srcId);
+            const dstVertex = this.get_vertex(dstId);
+            const { t1, t2 } = this.get_edge(srcId, dstId);
 
-        const vertices: [Vector2, Vector2, Vector2, Vector2] = [
-            srcVertex,
-            srcVertex.add(t1),
-            dstVertex.add(t2),
-            dstVertex
-        ];
+            const vertices: [Vector2, Vector2, Vector2, Vector2] = [
+                srcVertex,
+                srcVertex.add(t1),
+                dstVertex.add(t2),
+                dstVertex
+            ];
 
-        return new CubicBezier(...vertices);
+            return new CubicBezier(...vertices);
+        }
+        catch {
+            console.log(`Error: srcId(${srcId}), dstId(${dstId})`);
+        }
     }
 
     // Get length of bezier curve between two vertices of the network
@@ -76,6 +81,9 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
                 previousVertices[neighbourId] = currentId;
             }
         }
+
+        // If search did not reach destination vertex
+        if (previousVertices[dstId] === undefined) return null;
 
         const route = new Stack<number>();
         let currentId = dstId;
