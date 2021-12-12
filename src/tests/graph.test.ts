@@ -2,40 +2,116 @@ import Graph from "../lib/model/graph";
 import * as assert from "assert";
 
 describe("graph test suite", () => {
-    let graph: Graph<number, number>;
 
-    it("instantiate graph class", () => {
-        graph = new Graph<number, number>();
+    const create_mock_graph = () => {
+        const graph = new Graph<number, number>();
+        graph.add_vertex(0);
+        graph.add_vertex(1);
+        graph.add_vertex(2);
+        graph.set_edge(0, 1, 1);
+        return graph;
+    };
+
+    describe("#constructor()", () => {
+        it("instantiates graph class", () => {
+            new Graph<number, number>();
+        });
+
+        it("gets value of edge 1->2 of mock graph as empty", () => {
+            const graph = create_mock_graph();
+            assert.strictEqual(graph.get_edge(1, 2), graph.empty);
+        });
     });
 
-    it("add three vertices [10, 7, -65]", () => {
-        graph.add_vertex(10);
-        graph.add_vertex(7);
-        graph.add_vertex(-65);
+    describe("#size()", () => {
+        it("gets size of empty graph as 0", () => {
+            const graph = new Graph<number, number>();
+            assert.strictEqual(graph.size(), 0);
+        });
+
+        it("gets size of mock graph as 3", () => {
+            const graph = create_mock_graph();
+            assert.strictEqual(graph.size(), 3);
+        });
     });
 
-    it("get value of vertex 0", () => {
-        assert.strictEqual(graph.get_vertex(0), 10);
+    describe("#add_vertex()", () => {
+        it("adds vertex with value 0", () => {
+            const graph = new Graph<number, number>();
+            graph.add_vertex(0);
+        });
     });
 
-    it("add edges (0, 1, 101), (1, 2, -0.6)", () => {
-        graph.set_edge(0, 1, 101);
-        graph.set_edge(1, 2, -0.6);
+    describe("#set_vertex()", () => {
+        it("sets value of mock graph vertex 0 to 1", () => {
+            const graph = create_mock_graph();
+            graph.set_vertex(0, 1);
+        });
+
+        it("throws error when setting empty graph vertex 0 to 0", () => {
+            const graph = new Graph<number, number>();
+            assert.throws(() => graph.set_vertex(0, 0));
+        });
     });
 
-    it("get value of empty edge between 0 and 2", () => {
-        assert.strictEqual(graph.get_edge(0, 2), graph.empty);
+    describe("#get_vertex()", () => {
+        it("gets value of 0 from mock graph vertex 0", () => {
+            const graph = create_mock_graph();
+            assert.strictEqual(graph.get_vertex(0), 0);
+        });
+
+        it("throws error getting value of vertex 0 in empty graph", () => {
+            const graph = new Graph<number, number>();
+            assert.throws(() => graph.get_vertex(0));
+        });
     });
 
-    it("remove vertex 0", () => {
-        graph.remove_vertex(0);
+    describe("#remove_vertex()", () => {
+        it("removes vertex 0 from mock graph", () => {
+            const graph = create_mock_graph();
+            graph.remove_vertex(0);
+        });
+
+        it("throws error removing vertex 0 from empty graph", () => {
+            const graph = new Graph<number, number>();
+            assert.throws(() => graph.remove_vertex(0));
+        });
     });
 
-    it("get new value of vertex 0", () => {
-        assert.strictEqual(graph.get_vertex(0), 7);
+    describe("#set_edge()", () => {
+        it("sets edge value 0 to mock graph edge 0->1", () => {
+            const graph = create_mock_graph();
+            graph.set_edge(0, 1, 0);
+        });
+
+        it("throws error setting value of edge 0->1 to 0 on empty graph", () => {
+            const graph = new Graph<number, number>();
+            assert.throws(() => graph.set_edge(0, 1, 0));
+        });
     });
 
-    it("get value of edge between 0 and 1", () => {
-        assert.strictEqual(graph.get_edge(0, 1), -0.6);
+    describe("#get_edge()", () => {
+        it("gets value of 1 from edge 0->1 on mock graph", () => {
+            const graph = create_mock_graph();
+            assert.strictEqual(graph.get_edge(0, 1), 1);
+        });
+
+        it("throws error getting edge 0->1 from empty graph", () => {
+            const graph = new Graph<number, number>();
+            assert.throws(() => graph.get_edge(0, 1));
+        });
+    });
+
+    describe("#remove_edge()", () => {
+        it("removes edge 0->1 from mock graph then value is empty", () => {
+            const graph = create_mock_graph();
+            graph.remove_edge(0, 1);
+            assert.strictEqual(graph.get_edge(0, 1), graph.empty);
+        });
+
+        it("throws error removing edge 0->1 from empty graph", () => {
+            const graph = new Graph<number, number>();
+            assert.throws(() => graph.remove_edge(0, 1));
+        });
     });
 });
