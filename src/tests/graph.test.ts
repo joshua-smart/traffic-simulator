@@ -48,9 +48,9 @@ describe("graph test suite", () => {
             graph.set_vertex(0, 1);
         });
 
-        it("throws error when setting empty graph vertex 0 to 0", () => {
+        it("throws GraphError when setting empty graph vertex 0 to 0", () => {
             const graph = new Graph<number, number>();
-            assert.throws(() => graph.set_vertex(0, 0));
+            assert.throws(() => graph.set_vertex(0, 0), "GraphError");
         });
     });
 
@@ -62,7 +62,7 @@ describe("graph test suite", () => {
 
         it("throws error getting value of vertex 0 in empty graph", () => {
             const graph = new Graph<number, number>();
-            assert.throws(() => graph.get_vertex(0));
+            assert.throws(() => graph.get_vertex(0), "GraphError");
         });
     });
 
@@ -72,9 +72,9 @@ describe("graph test suite", () => {
             graph.remove_vertex(0);
         });
 
-        it("throws error removing vertex 0 from empty graph", () => {
+        it("throws GraphError removing vertex 0 from empty graph", () => {
             const graph = new Graph<number, number>();
-            assert.throws(() => graph.remove_vertex(0));
+            assert.throws(() => graph.remove_vertex(0), "GraphError");
         });
     });
 
@@ -84,9 +84,9 @@ describe("graph test suite", () => {
             graph.set_edge(0, 1, 0);
         });
 
-        it("throws error setting value of edge 0->1 to 0 on empty graph", () => {
+        it("throws GraphError setting value of edge 0->1 to 0 on empty graph", () => {
             const graph = new Graph<number, number>();
-            assert.throws(() => graph.set_edge(0, 1, 0));
+            assert.throws(() => graph.set_edge(0, 1, 0), "GraphError");
         });
     });
 
@@ -96,9 +96,9 @@ describe("graph test suite", () => {
             assert.strictEqual(graph.get_edge(0, 1), 1);
         });
 
-        it("throws error getting edge 0->1 from empty graph", () => {
+        it("throws GraphError getting edge 0->1 from empty graph", () => {
             const graph = new Graph<number, number>();
-            assert.throws(() => graph.get_edge(0, 1));
+            assert.throws(() => graph.get_edge(0, 1), "GraphError");
         });
     });
 
@@ -109,9 +109,9 @@ describe("graph test suite", () => {
             assert.strictEqual(graph.get_edge(0, 1), graph.empty);
         });
 
-        it("throws error removing edge 0->1 from empty graph", () => {
+        it("throws GraphError removing edge 0->1 from empty graph", () => {
             const graph = new Graph<number, number>();
-            assert.throws(() => graph.remove_edge(0, 1));
+            assert.throws(() => graph.remove_edge(0, 1), "GraphError");
         });
     });
 });
