@@ -1,7 +1,7 @@
-class GraphError extends Error {
+export class GraphError extends Error {
+    name = "GraphError";
     constructor(message?: string) {
         super(message);
-        this.name = "GraphError";
     }
 };
 
