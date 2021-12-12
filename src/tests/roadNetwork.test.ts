@@ -1,23 +1,68 @@
-import RoadNetwork, { create_default_network } from "../lib/model/roadNetwork";
+import RoadNetwork, { create_default_network, RoadNetworkError } from "../lib/model/roadNetwork";
 import assert = require("assert");
+import Vector2 from "../lib/vector2";
+import CubicBezier from "../lib/model/cubicBezier";
+import { GraphError } from "../lib/model/graph";
 import Stack from "../lib/stack";
 
 describe("road network test suite", () => {
-    let roadNetwork: RoadNetwork;
 
-    it("instantiate road network class", () => {
-        roadNetwork = new RoadNetwork();
+    const create_mock_road_network = () => {
+        const roadNetwork = new RoadNetwork();
+        roadNetwork.add_vertex(new Vector2(0, 0));
+        roadNetwork.add_vertex(new Vector2(1, 0));
+        roadNetwork.add_vertex(new Vector2(0, 0));
+        roadNetwork.set_edge(0, 1, {t1: new Vector2(0, 1), t2: new Vector2(0, 1)});
+        roadNetwork.set_edge(0, 2, {t1: new Vector2(0, 0), t2: new Vector2(0, 0)});
+        return roadNetwork;
+    }
+
+    describe("#constructor()", () => {
+        it("instantiates RoadNetwork class", () => {
+            new RoadNetwork();
+        });
+
+        it("creates default road network", () => {
+            create_default_network();
+        });
     });
 
-    it("create default road network", () => {
-        roadNetwork = create_default_network();
+    describe("#get_bezier()", () => {
+        it("gets expected bezier from edge 0->1 of mock road network", () => {
+            const roadNetwork = create_mock_road_network();
+            const expectedBezier = new CubicBezier(new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0));
+            assert.deepStrictEqual(roadNetwork.get_bezier(0, 1), expectedBezier);
+        });
+
+        it("throws GraphError getting bezier from edge 0->1 of empty road network", () => {
+            const roadNetwork = new RoadNetwork();
+            assert.throws(() => roadNetwork.get_bezier(0, 0), {name: GraphError.name});
+        });
+
+        it("throws RoadNetworkError getting bezier from empty edge 1->2 of mock road network", () => {
+            const roadNetwork = create_mock_road_network();
+            assert.throws(() => roadNetwork.get_bezier(1, 2), {name: RoadNetworkError.name});
+        });
     });
 
-    it("get path between vertices 0 and 12", () => {
-        const expectedRoute = new Stack<number>();
-        [12, 8, 7, 6, 5, 4, 2, 0].forEach(i => expectedRoute.push(i));
-        assert.deepStrictEqual(roadNetwork.find_route(0, 12), expectedRoute);
+    describe("#find_route()", () => {
+        it("gets route [0, 1] for route 0->1 of mock road network", () => {
+            const roadNetwork = create_mock_road_network();
+            const expectedRoute = new Stack<number>();
+            expectedRoute.push(1);
+            expectedRoute.push(0);
+            assert.deepStrictEqual(roadNetwork.find_route(0, 1), expectedRoute);
+        });
+
+        it("throws RoadNetworkError for route 0->0 of empty road network", () => {
+            const roadNetwork = new RoadNetwork();
+            assert.throws(() => roadNetwork.find_route(0, 0), {name: GraphError.name});
+        });
     });
 
-    it("cannot get path between vertices 15 and 13");
+    describe("#create_default_network()", () => {
+        it("creates default road network", () => {
+            create_default_network();
+        });
+    });
 });
