@@ -68,14 +68,14 @@ export default class Graph<Vertex, Edge> {
     }
 
     // Internally used check for valid vertexId
-    private check_vertex_index(vertexId: number): void {
+    protected check_vertex_index(vertexId: number): void {
         if(vertexId < 0 || vertexId >= this.vertices.length) {
             throw new GraphError(`vertexId (${vertexId}) out of range for length (${this.vertices.length})`);
         }
     }
 
     // Internally used check for valid edge location
-    private check_edge_index(srcId: number, dstId: number): void {
+    protected check_edge_index(srcId: number, dstId: number): void {
         if(srcId < 0 || srcId >= this.vertices.length || dstId < 0 || dstId >= this.vertices.length) {
             throw new GraphError(`srcId (${srcId}), dstId (${dstId}) out of range for length (${this.vertices.length})`);
         }

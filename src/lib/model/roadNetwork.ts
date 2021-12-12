@@ -4,6 +4,13 @@ import Stack from '../stack';
 import CubicBezier from './cubicBezier';
 import ioManager, { JSONRoadNetwork } from '../controller/ioManager';
 
+export class RoadNetworkError extends Error {
+    name = "RoadNetworkError";
+    constructor(message?: string) {
+        super(message);
+    }
+}
+
 type Vertex = Vector2;
 type Edge = {t1: Vector2, t2: Vector2};
 
@@ -14,23 +21,20 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
 
     // Create the bezier curve between two vertices in the network
     public get_bezier(srcId: number, dstId: number): CubicBezier {
-        try {
-            const srcVertex = this.get_vertex(srcId);
-            const dstVertex = this.get_vertex(dstId);
-            const { t1, t2 } = this.get_edge(srcId, dstId);
+        const edge = this.get_edge(srcId, dstId);
+        if (edge === this.empty) throw new RoadNetworkError(`Cannot get bezier at empty edge srcId (${srcId}), dstId (${dstId})`);
+        const { t1, t2 } = edge;
+        const srcVertex = this.get_vertex(srcId);
+        const dstVertex = this.get_vertex(dstId);
 
-            const vertices: [Vector2, Vector2, Vector2, Vector2] = [
-                srcVertex,
-                srcVertex.add(t1),
-                dstVertex.add(t2),
-                dstVertex
-            ];
+        const vertices: [Vector2, Vector2, Vector2, Vector2] = [
+            srcVertex,
+            srcVertex.add(t1),
+            dstVertex.add(t2),
+            dstVertex
+        ];
 
-            return new CubicBezier(...vertices);
-        }
-        catch {
-            console.log(`Error: srcId(${srcId}), dstId(${dstId})`);
-        }
+        return new CubicBezier(...vertices);
     }
 
     // Get length of bezier curve between two vertices of the network
@@ -41,6 +45,8 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
 
     // Get shortest valid route between two vertices of the network
     public find_route(srcId: number, dstId: number): Stack<number> {
+        this.check_vertex_index(srcId);
+        this.check_vertex_index(dstId);
         // Initialise arrays
         const unsearchedVertices: number[] = [];
         const distances: number[] = [];
