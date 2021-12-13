@@ -1,7 +1,7 @@
-import Simulation from "../lib/model/simulation";
 import { create_mock_road_network } from './roadNetwork.test';
 import assert = require("assert");
-import RoadNetwork from "../lib/model/roadNetwork";
+import RoadNetwork from '../../lib/model/roadNetwork';
+import Simulation from '../../lib/model/simulation';
 
 
 describe("simulation test suite", () => {

@@ -1,5 +1,5 @@
-import Graph, { GraphError } from "../lib/model/graph";
 import * as assert from "assert";
+import Graph, { GraphError } from "../../lib/model/graph";
 
 describe("graph test suite", () => {
 
