@@ -5,17 +5,17 @@ import CubicBezier from "../lib/model/cubicBezier";
 import { GraphError } from "../lib/model/graph";
 import Stack from "../lib/stack";
 
-describe("road network test suite", () => {
+export const create_mock_road_network = () => {
+    const roadNetwork = new RoadNetwork();
+    roadNetwork.add_vertex(new Vector2(0, 0));
+    roadNetwork.add_vertex(new Vector2(1, 0));
+    roadNetwork.add_vertex(new Vector2(0, 0));
+    roadNetwork.set_edge(0, 1, {t1: new Vector2(0, 1), t2: new Vector2(0, 1)});
+    roadNetwork.set_edge(0, 2, {t1: new Vector2(0, 0), t2: new Vector2(0, 0)});
+    return roadNetwork;
+}
 
-    const create_mock_road_network = () => {
-        const roadNetwork = new RoadNetwork();
-        roadNetwork.add_vertex(new Vector2(0, 0));
-        roadNetwork.add_vertex(new Vector2(1, 0));
-        roadNetwork.add_vertex(new Vector2(0, 0));
-        roadNetwork.set_edge(0, 1, {t1: new Vector2(0, 1), t2: new Vector2(0, 1)});
-        roadNetwork.set_edge(0, 2, {t1: new Vector2(0, 0), t2: new Vector2(0, 0)});
-        return roadNetwork;
-    }
+describe("road network test suite", () => {
 
     describe("#constructor()", () => {
         it("instantiates RoadNetwork class", () => {
