@@ -54,9 +54,14 @@ describe("road network test suite", () => {
             assert.deepStrictEqual(roadNetwork.find_route(0, 1), expectedRoute);
         });
 
-        it("throws RoadNetworkError for route 0->0 of empty road network", () => {
+        it("throws GraphError for route 0->0 of empty road network", () => {
             const roadNetwork = new RoadNetwork();
             assert.throws(() => roadNetwork.find_route(0, 0), {name: GraphError.name});
+        });
+
+        it("throws RoadNetworkError for getting route 1->2 of mock road network", () => {
+            const roadNetwork = create_mock_road_network();
+            assert.throws(() => roadNetwork.find_route(1, 2), {name: RoadNetworkError.name});
         });
     });
 

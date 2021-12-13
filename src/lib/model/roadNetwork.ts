@@ -88,16 +88,17 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
             }
         }
 
-        // If search did not reach destination vertex
-        if (previousVertices[dstId] === undefined) return null;
-
+        // Reconstruct path from perviousVertices array
         const route = new Stack<number>();
         let currentId = dstId;
-
         while (currentId != undefined) {
             route.push(currentId);
             currentId = previousVertices[currentId];
         }
+
+        // Throw error if path is incomplete
+        if (route.peek() !== srcId) throw new RoadNetworkError(`Cannot form complete path srcId (${srcId}), dstId (${dstId})`);
+
         return route;
     }
 }
