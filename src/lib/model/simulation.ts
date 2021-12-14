@@ -3,7 +3,7 @@ import Agent from "./agent";
 import RoadNetwork from "./roadNetwork";
 import CubicBezier from "./cubicBezier";
 import TrafficSequencer from "./trafficSequencer";
-import { random } from "lodash";
+import { intersection, sample } from "lodash";
 
 export default class Simulation {
     private roadNetwork: RoadNetwork;
@@ -11,7 +11,7 @@ export default class Simulation {
     private trafficSequencer: TrafficSequencer;
 
     private sources: number[];
-    private exits: number[]
+    private exits: Map<number, number[]>;
 
     private timeWarp: number;
 
@@ -20,9 +20,9 @@ export default class Simulation {
         this.agents = [];
         this.timeWarp = 1;
 
-        const { sources, exits } = this.find_terminating_vertices();
-        this.sources = sources;
-        this.exits = exits;
+        const { sources, exits } = this.set_terminating_vertices();
+        this.sources = sources
+        this.exits = exits
         this.trafficSequencer = new TrafficSequencer();
     }
 
@@ -63,13 +63,12 @@ export default class Simulation {
     }
 
     private add_new_agent(): void {
-        let route;
-        while (true) {
-            const src = this.sources[random(0, this.sources.length - 1)];
-            const dst = this.exits[random(0, this.exits.length - 1)];
-            route = this.roadNetwork.find_route(src, dst);
-            if (route !== null) break;
-        }
+        if (this.sources.length === 0) return;
+        const src = sample(this.sources);
+        const validExits = this.exits.get(src);
+        if (validExits.length === 0) return;
+        const dst = sample(validExits);
+        const route = this.roadNetwork.find_route(src, dst);
         const agent = new Agent(route);
         this.agents.push(agent);
     }
@@ -78,7 +77,22 @@ export default class Simulation {
         return this.agents.length;
     }
 
-    private find_terminating_vertices(): {sources: number[], exits: number[]} {
+    private set_terminating_vertices(): { sources: number[], exits: Map<number, number[]> } {
+        const exits = new Map<number, number[]>();
+        const { sources: sourceVertices, exits: exitVertices } = this.get_source_and_exit_vertices();
+
+        const sources = sourceVertices.filter((source) => {
+            const connectedVertices = this.roadNetwork.traverse(source);
+            const connectedExits = intersection(connectedVertices, exitVertices);
+            if (connectedExits.length === 0) return false;
+            exits.set(source, connectedExits);
+            return true;
+        });
+
+        return { sources, exits };
+    }
+
+    private get_source_and_exit_vertices(): { sources: number[], exits: number[] } {
         const sources = [];
         const exits = [];
 

@@ -22,15 +22,22 @@ describe("simulation test suite", () => {
         it("gets correct source and exit vertices for empty network", () => {
             const simulation = create_empty_simulation();
 
-            assert.deepStrictEqual(simulation['sources'], []);
-            assert.deepStrictEqual(simulation['exits'], []);
+            const expectedSources = [];
+            const expectedExits = new Map<number, number[]>();
+
+            assert.deepStrictEqual(simulation['sources'], expectedSources);
+            assert.deepStrictEqual(simulation['exits'], expectedExits);
         });
 
         it("gets correct source and exit vertices for mock network", () => {
             const simulation = create_mock_simulation();
 
-            assert.deepStrictEqual(simulation['sources'], [0]);
-            assert.deepStrictEqual(simulation['exits'], [1, 2]);
+            const expectedSources = [0];
+            const expectedExits = new Map<number, number[]>();
+            expectedExits.set(0, [1, 2]);
+
+            assert.deepStrictEqual(simulation['sources'], expectedSources);
+            assert.deepStrictEqual(simulation['exits'], expectedExits);
         });
     });
 
