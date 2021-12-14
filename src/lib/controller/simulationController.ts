@@ -36,7 +36,8 @@ export default class SimulationController {
         this.model.step_simulation(timeStep);
         this.view.redraw();
 
-        if (this.runnning) requestAnimationFrame((time) => this.run(time));
+        if (this.runnning) return requestAnimationFrame((time) => this.run(time));
+        this.model.stop_simulation();
     }
 
     public start() {
@@ -54,7 +55,6 @@ export default class SimulationController {
     }
 
     public stop() {
-        this.model.stop_simulation();
         this.view.set_draw_simulation(false);
         this.view.set_draw_handles(true);
         this.view.set_draw_vertices(true);
