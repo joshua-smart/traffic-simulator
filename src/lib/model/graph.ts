@@ -80,4 +80,25 @@ export default class Graph<Vertex, Edge> {
             throw new GraphError(`srcId (${srcId}), dstId (${dstId}) out of range for length (${this.vertices.length})`);
         }
     }
+
+    // Bredth-first graph traversal
+    public traverse(srcId: number): number[] {
+        this.check_vertex_index(srcId);
+        const visited = [];
+        let searchable = [srcId];
+
+        while (searchable.length > 0) {
+            const current = searchable.shift();
+            visited.push(current);
+
+            for(let neighbourId = 0; neighbourId < this.size(); neighbourId++) {
+                if (this.get_edge(current, neighbourId) === this.empty) continue;
+                if (visited.includes(neighbourId)) continue;
+
+                searchable.push(neighbourId);
+            }
+        }
+
+        return visited;
+    }
 }

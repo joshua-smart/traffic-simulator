@@ -114,4 +114,21 @@ describe("graph test suite", () => {
             assert.throws(() => graph.remove_edge(0, 1), {name: GraphError.name});
         });
     });
+
+    describe("#traverse()", () => {
+        it("throws GraphError traversing empty graph from 0", () => {
+            const graph = new Graph<number, number>();
+            assert.throws(() => graph.traverse(0), {name: GraphError.name});
+        });
+
+        it("gets [0, 1] traversing mock graph from 0", () => {
+            const graph = create_mock_graph();
+            assert.deepStrictEqual(graph.traverse(0), [0, 1]);
+        });
+
+        it("gets [2] traversing mock graph from 2", () => {
+            const graph = create_mock_graph();
+            assert.deepStrictEqual(graph.traverse(2), [2]);
+        });
+    });
 });
