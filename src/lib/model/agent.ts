@@ -1,6 +1,7 @@
 import Stack from '../stack';
 import Vector2 from '../vector2';
 import { clamp, max, min } from 'lodash';
+import AgentRecorder from './agentRecorder';
 
 type AgentValue = {
     position: Vector2,
@@ -18,12 +19,16 @@ export default class Agent {
 
     public kill: boolean = false;
 
+    private agentRecorder: AgentRecorder;
+
     constructor(route: Stack<number>) {
         this.route = route;
         this.currentSrcVertex = this.route.pop();
 
         this.distance = 10;
         this.speed = 0;
+
+        this.agentRecorder = new AgentRecorder();
     }
 
     public move_to_next_edge(): void {
@@ -57,6 +62,8 @@ export default class Agent {
     public increment_position(timeStep: number): void {
         this.speed += this.acceleration * timeStep;
         this.distance += this.speed * timeStep;
+
+        this.agentRecorder.track(this.speed, timeStep);
     }
 
     public calculate_acceleration(position: Vector2, direction: Vector2, agentValues: AgentValue[]): void {
