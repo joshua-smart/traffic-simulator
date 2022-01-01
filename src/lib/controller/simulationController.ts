@@ -45,6 +45,7 @@ export default class SimulationController {
         this.view.set_draw('simulation', true);
         this.view.set_draw('vertices', false);
         this.view.set_draw('handles', false);
+        this.view.set_draw('output', true);
         this.view.redraw();
         this.runnning = true;
         this.run(this.lastFrameTime);
@@ -58,6 +59,7 @@ export default class SimulationController {
         this.view.set_draw('simulation', false);
         this.view.set_draw('handles', true);
         this.view.set_draw('vertices', true);
+        this.view.set_draw('output', false);
         this.view.redraw();
         this.runnning = false;
     }

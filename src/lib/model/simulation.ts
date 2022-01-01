@@ -3,7 +3,18 @@ import Agent from "./agent";
 import RoadNetwork from "./roadNetwork";
 import CubicBezier from "./cubicBezier";
 import TrafficSequencer from "./trafficSequencer";
-import { intersection, sample } from "lodash";
+import { intersection, sample, meanBy } from "lodash";
+import { AgentData } from "./agentRecorder";
+
+export type SimulationOutput = {
+    agentCount: number,
+    simTimer: number,
+    avgAliveTime: number,
+    avgDistance: number,
+    avgMaxSpeed: number,
+    avgMinSpeed: number,
+    avgStopTime: number
+}
 
 export default class Simulation {
     private roadNetwork: RoadNetwork;
@@ -15,10 +26,15 @@ export default class Simulation {
 
     private timeWarp: number;
 
+    private agentData: AgentData[];
+    private agentCount: number;
+
     constructor(roadNetwork: RoadNetwork) {
         this.roadNetwork = roadNetwork;
         this.agents = [];
         this.timeWarp = 1;
+        this.agentData = [];
+        this.agentCount = 0;
 
         const { sources, exits } = this.set_terminating_vertices();
         this.sources = sources
@@ -33,6 +49,7 @@ export default class Simulation {
         const newAgentCount = this.trafficSequencer.get_new_agent_count(simulationTimeStep);
         for(let i = 0; i < newAgentCount; i++) {
             this.add_new_agent();
+            this.agentCount++;
         }
     }
 
@@ -47,7 +64,13 @@ export default class Simulation {
             this.update_agent(agentId, timeStep, agentValues);
         });
 
-        this.agents = this.agents.filter(agent => !agent.kill);
+        this.agents = this.agents.filter(agent => {
+            if(agent.kill) {
+                this.agentData.push(agent.get_data());
+                return false;
+            }
+            return true;
+        });
     }
 
     private update_agent(agentId: number, timeStep: number, agentValues: {position: Vector2, direction: Vector2, speed: number}[]) {
@@ -133,5 +156,17 @@ export default class Simulation {
         const agent = this.agents[agentId];
         const {srcId , dstId} = agent.get_edge();
         return this.roadNetwork.get_bezier(srcId, dstId);
+    }
+
+    public get_output(): SimulationOutput {
+        return {
+            agentCount: this.agentCount,
+            simTimer: this.trafficSequencer.get_time(),
+            avgAliveTime: meanBy(this.agentData, data => data.aliveTime),
+            avgDistance: meanBy(this.agentData, data => data.routeDistance),
+            avgMaxSpeed: meanBy(this.agentData, data => data.maximumSpeed),
+            avgMinSpeed: meanBy(this.agentData, data => data.minimumSpeed),
+            avgStopTime: meanBy(this.agentData, data => data.stoppedTime)
+        }
     }
 }

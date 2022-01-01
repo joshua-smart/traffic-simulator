@@ -1,7 +1,7 @@
 import Stack from '../stack';
 import Vector2 from '../vector2';
 import { clamp, max, min } from 'lodash';
-import AgentRecorder from './agentRecorder';
+import AgentRecorder, { AgentData } from './agentRecorder';
 
 type AgentValue = {
     position: Vector2,
@@ -29,6 +29,10 @@ export default class Agent {
         this.speed = 0;
 
         this.agentRecorder = new AgentRecorder();
+    }
+
+    public get_data(): AgentData {
+        return this.agentRecorder.get_data();
     }
 
     public move_to_next_edge(): void {

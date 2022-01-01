@@ -1,6 +1,7 @@
 html {
     width: 100vw;
     height: 100vh;
+    box-sizing: border-box;
 }
 
 body {
@@ -133,4 +134,29 @@ main {
             border-radius: 3px;
         }
     }
+}
+
+#output-data-container {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 16rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    padding: 0.5rem;
+    color: white;
+}
+
+.output-line {
+    position: relative;
+    margin: 0.25rem;
+    margin-left: 1rem;
+    width: calc(100% - 1.5rem);
+}
+
+.output-data {
+    position: absolute;
+    right: 0;
+    user-select: all;
 }

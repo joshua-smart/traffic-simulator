@@ -15,4 +15,8 @@ export default class TrafficSequencer {
         this.time += timeStep;
         return newAgentCount;
     }
+
+    public get_time(): number {
+        return this.time;
+    }
 }

@@ -1,4 +1,4 @@
-type AgentData = {
+export type AgentData = {
     aliveTime: number;
     routeDistance: number;
     maximumSpeed: number;
@@ -32,7 +32,7 @@ export default class AgentRecorder {
         if (speed < 0.01) this.stoppedTime += timeStep;
     }
 
-    public get_date(): AgentData {
+    public get_data(): AgentData {
         return {
             aliveTime: this.aliveTime,
             routeDistance: this.routeDistance,

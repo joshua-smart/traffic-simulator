@@ -1,7 +1,7 @@
 import RoadNetwork, { create_default_network } from "./roadNetwork";
 import { cloneDeep } from 'lodash';
 import Vector2 from "../vector2";
-import Simulation from "./simulation";
+import Simulation, { SimulationOutput } from "./simulation";
 
 export default class Model {
     private roadNetwork: RoadNetwork;
@@ -68,5 +68,9 @@ export default class Model {
 
     public step_simulation(timeStep: number) {
         this.simulation.step(timeStep);
+    }
+
+    public get_output(): SimulationOutput {
+        return this.simulation.get_output();
     }
 }
