@@ -54,10 +54,9 @@ export default class View {
         if (this.drawFlags.simulation) this.simulationPainter.draw(this.canvas, this.model.get_simulation(), this.transform);
     }
 
-    public set_draw_roads(value: boolean) { this.drawFlags.roads = value; }
-    public set_draw_handles(value: boolean) { this.drawFlags.handles = value; }
-    public set_draw_vertices(value: boolean) { this.drawFlags.vertices = value; }
-    public set_draw_simulation(value: boolean) { this.drawFlags.simulation = value; }
+    public set_draw(key: string, value: boolean): void {
+        this.drawFlags[key] = value;
+    }
 
     public get_canvas_element(): HTMLElement {
         return document.querySelector('#canvas-container');
