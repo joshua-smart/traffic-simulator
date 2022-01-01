@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .button {
+        @apply bg-slate-500 m-2 text-4xl w-10 h-10 text-center rounded shadow-md;
+    }
+
+    .disabled {
+        @apply opacity-50;
+    }
+
+    .active {
+        @apply hover:ring-2 active:scale-95;
+    }
+
+    .output-line {
+        @apply relative m-1 ml-4;
+    }
+
+    .output-data {
+        @apply absolute right-0;
+    }
+
+    .vertex {
+        @apply absolute w-4 h-4 rounded-full bg-red-500 hover:bg-red-700;
+    }
+
+    .handle {
+        @apply absolute w-1.5 h-1.5 opacity-50 bg-orange-400 rounded-full;
+    }
+
+    .agent {
+        @apply absolute w-4 h-2 bg-blue-600 rounded-sm;
+    }
+}

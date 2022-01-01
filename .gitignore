@@ -1,6 +1,5 @@
 /node_modules/
 /src/build
 /src/node_modules
-*.css
-*.css.map
+/src/output.css
 /documentation/report/build/
