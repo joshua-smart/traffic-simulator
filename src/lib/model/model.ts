@@ -39,7 +39,7 @@ export default class Model {
             return;
         }
         this.roadNetwork.remove_edge(dstId, srcId);
-        this.roadNetwork.set_edge(srcId, dstId, {t1: new Vector2(0, 0), t2: new Vector2(0, 0)});
+        this.roadNetwork.add_edge(srcId, dstId);
     }
 
     public set_vertex(vertexId: number, position: Vector2): void {

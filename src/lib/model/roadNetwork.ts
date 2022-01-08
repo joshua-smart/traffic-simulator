@@ -19,6 +19,15 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         super();
     }
 
+    public add_edge(srcId: number, dstId: number): void {
+        const srcVertex = this.get_vertex(srcId);
+        const dstVertex = this.get_vertex(dstId);
+        const t1 = Vector2.sub(dstVertex, srcVertex).mult(1/3);
+        const t2 = t1.mult(-1);
+
+        super.set_edge(srcId, dstId, {t1, t2});
+    }
+
     // Create the bezier curve between two vertices in the network
     public get_bezier(srcId: number, dstId: number): CubicBezier {
         const edge = this.get_edge(srcId, dstId);
