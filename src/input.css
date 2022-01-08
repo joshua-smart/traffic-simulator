@@ -4,7 +4,7 @@
 
 @layer components {
     .button {
-        @apply bg-slate-500 m-2 text-4xl w-10 h-10 text-center rounded shadow-md;
+        @apply bg-zinc-500 m-2 text-4xl w-10 h-10 text-center rounded shadow-md;
     }
 
     .disabled {
