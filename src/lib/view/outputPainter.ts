@@ -1,5 +1,4 @@
 import { SimulationOutput } from "../model/simulation";
-import { round } from "lodash";
 
 export default class OutputPainter {
 
