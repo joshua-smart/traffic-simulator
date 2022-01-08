@@ -37,7 +37,6 @@ export default class SimulationController {
         this.view.redraw();
 
         if (this.runnning) return requestAnimationFrame((time) => this.run(time));
-        this.model.stop_simulation();
     }
 
     public start() {
@@ -48,7 +47,8 @@ export default class SimulationController {
         this.view.set_draw('output', true);
         this.view.redraw();
         this.runnning = true;
-        this.run(this.lastFrameTime);
+        this.lastFrameTime = performance.now();
+        this.run(performance.now());
     }
 
     public pause() {
@@ -56,6 +56,7 @@ export default class SimulationController {
     }
 
     public stop() {
+        this.model.stop_simulation();
         this.view.set_draw('simulation', false);
         this.view.set_draw('handles', true);
         this.view.set_draw('vertices', true);
@@ -66,6 +67,7 @@ export default class SimulationController {
 
     public resume() {
         this.runnning = true;
-        this.run(this.lastFrameTime);
+        this.lastFrameTime = performance.now();
+        this.run(performance.now());
     }
 }
