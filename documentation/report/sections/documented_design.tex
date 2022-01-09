@@ -224,9 +224,9 @@
 
         As detailed above, each agent will need to encapsulate a route through the network. This route will be modelled as a sequence of node indices.
 
-        For this project I have decided to implement Dijkstra's shortest path algorithm for route finding as it is designed for operating on a graph data structure, and it is garuntted to find the shortest valid path between two nodes.
+        For this project I have decided to implement Dijkstra's shortest path algorithm for route finding as it is designed for operating on a graph data structure, and it is guaranteed to find the shortest valid path between two nodes.
 
-        Listing \ref{Dijkstra-implementation} shows my implementaion of this algorithm in TypeScript, in the example it is implemented as a function. However in the final program it will quite likely be implemented as a method of the \mintTS{Graph} class.
+        Listing \ref{Dijkstra-implementation} shows my implementation of this algorithm in TypeScript, in the example it is implemented as a function. However in the final program it will quite likely be implemented as a method of the \mintTS{Graph} class.
 
         \begin{listing}
             \begin{minted}[bgcolor=codeback,autogobble]{TypeScript}
@@ -289,12 +289,18 @@
             \label{Dijkstra-implementation}
         \end{listing}
 
+    \subsection{Simulation framework}
 
-    \subsection{Maximum Graph Flow}
+        For this project I will implement a fixed timestep model, where each agent is updated across a small amount of time simultaneously. \autoref{simulation-flow-diagram} shows a flow diagram of the main steps of the simulation:
 
-    \subsection{GUI}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.4\textwidth]{simulation_flow_diagram.png}
+            \caption{Flow diagram for agent simulation}
+            \label{simulation-flow-diagram}
+        \end{figure}
 
-    \subsection{Bezier Curvature}
+        It is important to update the positions of the agents syncronously as this ensures every update happens in the same timestep instead of taking data from the next timestep for previously updated agents.
 
 \section{Class structure}
 
@@ -306,59 +312,6 @@
     \end{figure}
 
     \autoref{complete-class-diagram} shows a complete class diagram for the program, specific class relations may change during development but the main structure should remain constant, this program uses a mix of composition, aggregation and inheritance
-
-    % \paragraph{Vector2 -}
-    %
-    %     This program is based in a 2D rendering environment so a general 2D Vector class will be required for many functions. This class will store an x and y numerical attribute as well as containing the following static methods:
-    %
-    %     \mintTS{Vector2.add(a, b)},
-    %     \mintTS{Vector2.sub(a, b)},
-    %     \mintTS{Vector2.mult(v, x)},
-    %     \mintTS{Vector2.mag(v)},\\
-    %     \mintTS{Vector2.sqr_mag(v)},
-    %     \mintTS{Vector2.dot(a, b)}
-    %
-    %     And their non-static counterparts:
-    %
-    %     \mintTS{v.add(b)},
-    %     \mintTS{v.sub(b)},
-    %     \mintTS{v.mult(x)},
-    %     \mintTS{v.mag()},
-    %     \mintTS{v.sqr_mag()},
-    %     \mintTS{v.dot(b)}
-    %
-    %     Each of these methods will be implemented with static and non-static variants, allowing for more flexible usages. I will be using methods that do not mutate their parameters which is a scheme I am more familiar with and allows for clearer syntax.
-    %
-    %     \paragraph{CubicBezier -}
-    %
-    %     This class will store all of the computation needed to model cubic Bezier curves which I explored in \autoref{bezier}.
-    %     This class will contain the following methods:
-    %
-    %     \mintTS{b.get_vertex(i)},
-    %     \mintTS{b.set_vertex(i, v)},
-    %     \mintTS{b.generate_lookup()},
-    %     \mintTS{b.interpolate(t)}, \\
-    %     \mintTS{b.tangent(t)},
-    %     \mintTS{b.second_derivative(t)},
-    %     \mintTS{b.curvature(t)},
-    %     \mintTS{b.get_t_at_distance(d)}, \\
-    %     \mintTS{b.get_point_at_distance(d)},
-    %     \mintTS{b.get_tangent_at_distance(d)},
-    %     \mintTS{b.get_curvature_at_distance(d)}
-    %
-    %     \paragraph{State Machine -}
-    %
-    %     This class represents a finite state machine model which utilises function callbacks, it will store a list of transitions and callbacks. When the \mintTS{transition} method is called the state will change based on the appropriate transition and the callback assigned to it will be executed.
-    %
-    %     The included methods are:
-    %
-    %     \mintTS{sm.transition(e)}, \mintTS{sm.add_rule(src, e, dst, cb)}
-    %
-    %     \paragraph{Stack -}
-    %
-    %     I will also include a stack implementation to be used in the undo/redo procedures. Including:
-    %
-    %     \mintTS{s.push(e)}, \mintTS{s.pop()}, \mintTS{s.is_empty()}, \mintTS{s.clear()}
 
 \section{Model}
 
