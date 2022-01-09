@@ -37,27 +37,33 @@
                 </div>
             </div>
             <div id="output-data-container" class="absolute bg-[#00000040] rounded top-4 left-4 p-2 w-64 text-white">
-                <div class="output-line">
-                    Number of agents: <span class="output-data" id="agentCount">0</span>
+                <div class="">
+                    <div class="output-line">
+                        Number of agents: <span class="output-data" id="agentCount">0</span>
+                    </div>
+                    <div class="output-line">
+                        Simulation timer: <span class="output-data" id="simTimer">0<span class="text-sm">s</span></span>
+                    </div>
+                    <span class="font-bold ml-1">Averages:</span>
+                    <div class="output-line">
+                        Alive time: <span class="output-data" id="avgAliveTime">0<span class="text-sm">s</span></span>
+                    </div>
+                    <div class="output-line">
+                        Route distance: <span class="output-data" id="avgDistance">0<span class="text-sm">m</span></span>
+                    </div>
+                    <div class="output-line">
+                        Maximum speed: <span class="output-data" id="avgMaxSpeed">0<span class="text-sm">ms<sup>-1</sup></span></span>
+                    </div>
+                    <div class="output-line">
+                        Minimum speed: <span class="output-data" id="avgMinSpeed">0<span class="text-sm">ms<sup>-1</sup></span></span>
+                    </div>
+                    <div class="output-line">
+                        Stopped time: <span class="output-data" id="avgStopTime">0<span class="text-sm">s</span></span>
+                    </div>
                 </div>
-                <div class="output-line">
-                    Simulation timer: <span class="output-data" id="simTimer">0<span class="text-sm">s</span></span>
-                </div>
-                <span class="font-bold ml-1">Averages:</span>
-                <div class="output-line">
-                    Alive time: <span class="output-data" id="avgAliveTime">0<span class="text-sm">s</span></span>
-                </div>
-                <div class="output-line">
-                    Route distance: <span class="output-data" id="avgDistance">0<span class="text-sm">m</span></span>
-                </div>
-                <div class="output-line">
-                    Maximum speed: <span class="output-data" id="avgMaxSpeed">0<span class="text-sm">ms<sup>-1</sup></span></span>
-                </div>
-                <div class="output-line">
-                    Minimum speed: <span class="output-data" id="avgMinSpeed">0<span class="text-sm">ms<sup>-1</sup></span></span>
-                </div>
-                <div class="output-line">
-                    Stopped time: <span class="output-data" id="avgStopTime">0<span class="text-sm">s</span></span>
+                <div class="flex text-black justify-evenly">
+                    <div class="button disabled"><i class="ri-file-excel-2-fill"></i></div>
+                    <div class="button disabled"><i class="ri-file-text-fill"></i></div>
                 </div>
             </div>
         </main>
