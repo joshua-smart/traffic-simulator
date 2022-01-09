@@ -56,7 +56,7 @@ export default class SimulationController {
     }
 
     public stop() {
-        this.model.stop_simulation();
+        // this.model.stop_simulation();
         this.view.set_draw('simulation', false);
         this.view.set_draw('handles', true);
         this.view.set_draw('vertices', true);
