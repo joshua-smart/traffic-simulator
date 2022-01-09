@@ -1,4 +1,4 @@
-import { SimulationOutput } from "../model/simulation";
+import { SimulationOutput } from "../model/simulationRecorder";
 
 export default class OutputPainter {
 

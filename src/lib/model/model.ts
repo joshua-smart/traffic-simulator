@@ -1,7 +1,8 @@
 import RoadNetwork, { create_default_network } from "./roadNetwork";
 import { cloneDeep } from 'lodash';
 import Vector2 from "../vector2";
-import Simulation, { SimulationOutput } from "./simulation";
+import Simulation from "./simulation";
+import { SimulationOutput } from "./simulationRecorder";
 
 export default class Model {
     private roadNetwork: RoadNetwork;

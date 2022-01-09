@@ -5,21 +5,13 @@ import CubicBezier from "./cubicBezier";
 import TrafficSequencer from "./trafficSequencer";
 import { intersection, sample, meanBy } from "lodash";
 import { AgentData } from "./agentRecorder";
-
-export type SimulationOutput = {
-    agentCount: number,
-    simTimer: number,
-    avgAliveTime: number,
-    avgDistance: number,
-    avgMaxSpeed: number,
-    avgMinSpeed: number,
-    avgStopTime: number
-}
+import SimulationRecorder, { SimulationOutput } from "./simulationRecorder";
 
 export default class Simulation {
     private roadNetwork: RoadNetwork;
     private agents: Agent[];
     private trafficSequencer: TrafficSequencer;
+    private simulationRecorder: SimulationRecorder;
 
     private sources: number[];
     private exits: Map<number, number[]>;
@@ -29,28 +21,44 @@ export default class Simulation {
     private agentData: AgentData[];
     private agentCount: number;
 
+    private simulationTime: number;
+
     constructor(roadNetwork: RoadNetwork) {
         this.roadNetwork = roadNetwork;
         this.agents = [];
         this.timeWarp = 1;
         this.agentData = [];
         this.agentCount = 0;
+        this.simulationTime = 0;
 
         const { sources, exits } = this.set_terminating_vertices();
         this.sources = sources
         this.exits = exits
         this.trafficSequencer = new TrafficSequencer();
+        this.simulationRecorder = new SimulationRecorder();
     }
 
     public step(timeStep: number): void {
         const simulationTimeStep = timeStep * this.timeWarp;
+        this.simulationTime += simulationTimeStep;
         this.update_agents(simulationTimeStep);
 
-        const newAgentCount = this.trafficSequencer.get_new_agent_count(simulationTimeStep);
+        const newAgentCount = this.trafficSequencer.get_new_agent_count(this.simulationTime);
         for(let i = 0; i < newAgentCount; i++) {
             this.add_new_agent();
             this.agentCount++;
         }
+        this.simulationRecorder.track(this.simulationTime, (time: number) => {
+            return {
+                simTimer: time,
+                agentCount: this.agentCount,
+                avgAliveTime: meanBy(this.agentData, data => data.aliveTime),
+                avgDistance: meanBy(this.agentData, data => data.routeDistance),
+                avgMaxSpeed: meanBy(this.agentData, data => data.maximumSpeed),
+                avgMinSpeed: meanBy(this.agentData, data => data.minimumSpeed),
+                avgStopTime: meanBy(this.agentData, data => data.stoppedTime)
+            }
+        });
     }
 
     private update_agents(timeStep: number) {
@@ -159,14 +167,6 @@ export default class Simulation {
     }
 
     public get_output(): SimulationOutput {
-        return {
-            agentCount: this.agentCount,
-            simTimer: this.trafficSequencer.get_time(),
-            avgAliveTime: meanBy(this.agentData, data => data.aliveTime),
-            avgDistance: meanBy(this.agentData, data => data.routeDistance),
-            avgMaxSpeed: meanBy(this.agentData, data => data.maximumSpeed),
-            avgMinSpeed: meanBy(this.agentData, data => data.minimumSpeed),
-            avgStopTime: meanBy(this.agentData, data => data.stoppedTime)
-        }
+        return this.simulationRecorder.get_latest();
     }
 }
