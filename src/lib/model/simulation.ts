@@ -48,9 +48,10 @@ export default class Simulation {
             this.add_new_agent();
             this.agentCount++;
         }
-        this.simulationRecorder.track(this.simulationTime, (time: number) => {
+        this.simulationRecorder.track(this.simulationTime, (time: number, dataPoints: number) => {
             return {
                 simTimer: time,
+                dataPoints: dataPoints,
                 agentCount: this.agentCount,
                 avgAliveTime: meanBy(this.agentData, data => data.aliveTime),
                 avgDistance: meanBy(this.agentData, data => data.routeDistance),
@@ -166,7 +167,11 @@ export default class Simulation {
         return this.roadNetwork.get_bezier(srcId, dstId);
     }
 
-    public get_output(): SimulationOutput {
+    public get_output(): SimulationOutput[] {
+        return this.simulationRecorder.get_data();
+    }
+
+    public get_current_output(): SimulationOutput {
         return this.simulationRecorder.get_latest();
     }
 }

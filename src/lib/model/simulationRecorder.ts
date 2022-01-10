@@ -1,5 +1,6 @@
 export type SimulationOutput = {
     agentCount: number,
+    dataPoints: number,
     simTimer: number,
     avgAliveTime: number,
     avgDistance: number,
@@ -15,13 +16,17 @@ export default class SimulationRecorder {
 
     constructor() {
         this.data = [];
-        this.lastSaveTime = 0;
+        this.lastSaveTime = -Infinity;
     }
 
-    public track(time: number, getOutput: (time: number) => SimulationOutput): void {
+    public track(time: number, getOutput: (time: number, dataPoints: number) => SimulationOutput): void {
         if (time - this.lastSaveTime <= 1000) return;
-        this.data.push(getOutput(time));
+        this.data.push(getOutput(time, this.data.length + 1));
         this.lastSaveTime = time;
+    }
+
+    public get_data(): SimulationOutput[] {
+        return this.data;
     }
 
     public get_latest(): SimulationOutput {

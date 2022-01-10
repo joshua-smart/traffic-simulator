@@ -1,6 +1,8 @@
 import RoadNetwork from "../model/roadNetwork";
 import { saveAs } from 'file-saver';
 import Vector2 from "../vector2";
+import { SimulationOutput } from "../model/simulationRecorder";
+import { utils, writeFile, Sheet } from 'xlsx';
 
 // Specifies the objects that must be contained in the json result
 export type JSONRoadNetwork = {
@@ -64,5 +66,31 @@ export default class IOManager {
         }
 
         return roadNetwork;
+    }
+
+    private static generate_sheet_from_output(data: SimulationOutput[]): Sheet {
+        const filteredData = data.map(row => {
+            const { dataPoints, ...filteredRow } = row;
+            Object.keys(filteredRow).forEach(key => {
+                if (!isNaN(filteredRow[key])) return;
+                filteredRow[key] = 'NaN';
+            });
+            return filteredRow;
+        });
+        return utils.json_to_sheet(filteredData);
+    }
+
+    public static save_ouput_as_excel(data: SimulationOutput[]): void {
+        const workbook = utils.book_new();
+        const sheet = this.generate_sheet_from_output(data);
+        utils.book_append_sheet(workbook, sheet, 'Sheet1');
+        writeFile(workbook, 'myData.xlsx');
+    }
+
+    public static save_ouput_as_csv(data: SimulationOutput[]): void {
+        const workbook = utils.book_new();
+        const sheet = this.generate_sheet_from_output(data);
+        utils.book_append_sheet(workbook, sheet, 'Sheet1');
+        writeFile(workbook, 'myData.csv');
     }
 }

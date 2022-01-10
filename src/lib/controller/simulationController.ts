@@ -2,6 +2,7 @@ import Model from "../model/model";
 import View from "../view/view";
 import StateMachine from "./stateMachine";
 import { E } from './controller';
+import IOManager from "./ioManager";
 
 export default class SimulationController {
     private model: Model;
@@ -27,6 +28,18 @@ export default class SimulationController {
 
         document.querySelector('#stop-button').addEventListener('click', () => {
             stateMachine.transition(E.stop, null);
+        });
+
+        document.querySelector('#download-excel').addEventListener('click', () => {
+            if (document.querySelector('#download-excel').classList.contains('disabled')) return;
+            const data = this.model.get_output();
+            IOManager.save_ouput_as_excel(data);
+        });
+
+        document.querySelector('#download-csv').addEventListener('click', () => {
+            if (document.querySelector('#download-csv').classList.contains('disabled')) return;
+            const data = this.model.get_output();
+            IOManager.save_ouput_as_csv(data);
         });
     }
 

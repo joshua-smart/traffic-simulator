@@ -58,7 +58,7 @@ export default class View {
 
         if (this.drawFlags.simulation) this.simulationPainter.draw(this.canvas, this.model.get_simulation(), this.transform);
 
-        if (this.drawFlags.output) this.outputPainter.draw(this.model.get_output());
+        if (this.drawFlags.output) this.outputPainter.draw(this.model.get_current_output());
     }
 
     public set_draw(key: string, value: boolean): void {

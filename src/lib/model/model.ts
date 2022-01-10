@@ -71,7 +71,11 @@ export default class Model {
         this.simulation.step(timeStep);
     }
 
-    public get_output(): SimulationOutput {
+    public get_output(): SimulationOutput[] {
         return this.simulation.get_output();
+    }
+
+    public get_current_output(): SimulationOutput {
+        return this.simulation.get_current_output();
     }
 }
