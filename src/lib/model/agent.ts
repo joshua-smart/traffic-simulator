@@ -72,7 +72,7 @@ export default class Agent {
 
     public calculate_acceleration(position: Vector2, direction: Vector2, curvature: number, agentValues: AgentValue[]): void {
 
-        const separationDistance = 10;
+        const separationDistance = 4;
         const accelerationLimit = 20;
         const roadSpeed = 13.4;
 
@@ -98,7 +98,7 @@ export default class Agent {
         let targetSpeed = roadSpeed;
         if (behind || agentSpeed > this.speed) {
             const nearestDistance = position.sub(agentPos).square_magnitude();
-            targetSpeed = 0.5*(nearestDistance - separationDistance**2) * agentSpeed;
+            targetSpeed = 0.01*(nearestDistance - separationDistance**2) * agentSpeed;
         }
         return targetSpeed;
     }
