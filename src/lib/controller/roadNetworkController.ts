@@ -81,7 +81,7 @@ export default class RoadNetworkController {
         const {deltaY} = (<WheelEvent>e);
         const center = this.get_relative_screen_position(<WheelEvent>e);
         // map (-100, 100) to (1/zoomStrength, zoomStrength)
-        const factor = deltaY === 100 ? zoomStrength : 1/zoomStrength;
+        const factor = deltaY > 0 ? 1/zoomStrength : zoomStrength;
 
         this.view.zoom_display(center, factor);
         this.view.redraw();
