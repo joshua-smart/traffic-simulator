@@ -1,7 +1,7 @@
 import { random } from "lodash";
 
 export default class TrafficSequencer {
-    private waitTime: number = 1000;
+    private waitTime: number = 1;
     private lastSpawnTime: number = 0;
 
     public get_new_agent_count(time: number): number {
@@ -9,7 +9,7 @@ export default class TrafficSequencer {
         if (time - this.lastSpawnTime > this.waitTime) {
             this.lastSpawnTime = time;
             newAgentCount++;
-            this.waitTime = random(400, 500);
+            this.waitTime = 1;
         }
         return newAgentCount;
     }

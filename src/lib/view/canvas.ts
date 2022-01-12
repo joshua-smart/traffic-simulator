@@ -55,14 +55,16 @@ export default class Canvas {
             }
         });
         this.shape_draw_wrapper(shapeStyle, () => {
+            const arrowSize = 0.75;
+
             const midPoint = b.get_point_at_distance(b.get_arc_length() / 2);
             const tangent = b.get_tangent_at_distance(b.get_arc_length() / 2);
             const t = tangent.normalise();
             const n = new Vector2(t.y, -t.x);
 
-            const v0 = midPoint.add(t.mult(3));
-            const v1 = midPoint.add(t.mult(-3)).add(n.mult(3));
-            const v2 = midPoint.add(t.mult(-3)).add(n.mult(-3));
+            const v0 = midPoint.add(t.mult(arrowSize));
+            const v1 = midPoint.add(t.mult(-arrowSize)).add(n.mult(arrowSize));
+            const v2 = midPoint.add(t.mult(-arrowSize)).add(n.mult(-arrowSize));
 
             this.move_to(v0);
             this.line_to(v1);

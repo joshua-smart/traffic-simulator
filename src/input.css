@@ -24,14 +24,16 @@
     }
 
     .vertex {
-        @apply absolute w-4 h-4 rounded-full bg-red-500 hover:bg-red-700;
+        @apply absolute w-1 h-1 rounded-full bg-red-500 hover:bg-red-700;
     }
 
     .handle {
-        @apply absolute w-1.5 h-1.5 opacity-50 bg-orange-400 rounded-full;
+        @apply absolute w-0.5 h-0.5 opacity-50 bg-orange-400 rounded-full;
     }
 
     .agent {
-        @apply absolute w-4 h-2 bg-blue-600 rounded-sm;
+        @apply absolute bg-blue-600;
+        width: 2px;
+        height: 1px;
     }
 }

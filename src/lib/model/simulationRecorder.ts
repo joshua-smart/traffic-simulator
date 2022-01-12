@@ -20,7 +20,7 @@ export default class SimulationRecorder {
     }
 
     public track(time: number, getOutput: (time: number, dataPoints: number) => SimulationOutput): void {
-        if (time - this.lastSaveTime <= 1000) return;
+        if (time - this.lastSaveTime <= 1) return;
         this.data.push(getOutput(time, this.data.length + 1));
         this.lastSaveTime = time;
     }

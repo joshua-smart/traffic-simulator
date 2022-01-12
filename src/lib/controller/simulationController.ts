@@ -44,7 +44,7 @@ export default class SimulationController {
     }
 
     private run(time: number) {
-        const timeStep = time - this.lastFrameTime;
+        const timeStep = (time - this.lastFrameTime)/1000;
         this.lastFrameTime = time;
         this.model.step_simulation(timeStep);
         this.view.redraw();

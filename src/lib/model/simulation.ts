@@ -62,7 +62,7 @@ export default class Simulation {
         });
     }
 
-    private update_agents(timeStep: number) {
+    private update_agents(timeStep: number): void {
         const agentValues = this.agents.map((_, agentId) => ({
                 position: this.get_agent_position(agentId),
                 direction: this.get_agent_tangent(agentId),
@@ -82,7 +82,7 @@ export default class Simulation {
         });
     }
 
-    private update_agent(agentId: number, timeStep: number, agentValues: {position: Vector2, direction: Vector2, speed: number}[]) {
+    private update_agent(agentId: number, timeStep: number, agentValues: {position: Vector2, direction: Vector2, speed: number}[]): void {
         const bezier = this.get_agent_bezier(agentId);
         const agent = this.agents[agentId];
         if (agent.get_distance() >= bezier.get_arc_length()) {
@@ -90,7 +90,8 @@ export default class Simulation {
         }
         const position = this.get_agent_position(agentId);
         const direction = this.get_agent_tangent(agentId);
-        agent.calculate_acceleration(position, direction, agentValues);
+        const curvature = this.get_agent_curvature(agentId);
+        agent.calculate_acceleration(position, direction, curvature, agentValues);
         agent.increment_position(timeStep);
     }
 
@@ -155,6 +156,13 @@ export default class Simulation {
         const bezier = this.get_agent_bezier(agentId);
 
         return bezier.get_tangent_at_distance(agent.get_distance());
+    }
+
+    private get_agent_curvature(agentId: number): number {
+        const agent = this.agents[agentId];
+        const bezier = this.get_agent_bezier(agentId);
+
+        return bezier.get_curvature_at_distance(agent.get_distance());
     }
 
     public get_agent_rotation(agentId: number): number {

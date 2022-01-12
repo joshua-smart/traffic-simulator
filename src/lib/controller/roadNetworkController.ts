@@ -102,7 +102,7 @@ export default class RoadNetworkController {
     // If not targeting a vertex, create a new vertex and connect it, otherwise connect to new targeted vertex
     public finish_new_connection(e: Event): void {
         this.user_action(() => {
-            let dstId;
+            let dstId: number;
             // If not targeting a vertex
             if ((<HTMLElement>e.target).id === 'main-canvas') {
                 const worldPosition = this.get_relative_world_position(<MouseEvent>e);
@@ -226,7 +226,6 @@ export default class RoadNetworkController {
     // Load a road network from a local file
     public load(): void {
         IOManager.load_road_network(roadNetwork => {
-            console.log(roadNetwork);
             this.model.apply_state(roadNetwork);
             this.view.redraw();
         });

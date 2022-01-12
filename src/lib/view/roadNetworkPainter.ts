@@ -28,7 +28,7 @@ export default class RoadNetworkPainter {
         const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
         const worldEnd = transform.to_world_space(this.ghostEdge.end);
 
-        canvas.line(srcWorldPosition, worldEnd, {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'});
+        canvas.line(srcWorldPosition, worldEnd, {color: 'lightgrey', width: 2 * transform.get_scale(), cap: 'round'});
     }
 
     public draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
@@ -67,7 +67,7 @@ export default class RoadNetworkPainter {
         const bezier = roadNetwork.get_bezier(srcId, dstId);
 
         canvas.bezier(bezier,
-            {color: 'lightgrey', width: 10 * transform.get_scale(), cap: 'round'},
+            {color: 'lightgrey', width: 2 * transform.get_scale(), cap: 'round'},
             {color: 'grey', line: {color: 'transparent', width: 1}}
         );
     }

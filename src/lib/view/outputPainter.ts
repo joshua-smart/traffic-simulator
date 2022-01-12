@@ -8,12 +8,12 @@ export default class OutputPainter {
         this.formats = {
             'agentCount': (input) => `${input}`,
             'dataPoints': (input) => `${input}`,
-            'simTimer': (input) => `${(input / 1000).toFixed(2)}<span class="text-sm">s</span>`,
-            'avgAliveTime': (input) => `${(input / 1000).toFixed(2)}<span class="text-sm">s</span>`,
+            'simTimer': (input) => `${input.toFixed(2)}<span class="text-sm">s</span>`,
+            'avgAliveTime': (input) => `${input.toFixed(2)}<span class="text-sm">s</span>`,
             'avgDistance': (input) => `${input.toFixed(2)}<span class="text-sm">m</span>`,
             'avgMaxSpeed': (input) => `${input.toFixed(2)}<span class="text-sm">ms<sup>-1</sup></span>`,
             'avgMinSpeed': (input) => `${input.toFixed(2)}<span class="text-sm">ms<sup>-1</sup></span>`,
-            'avgStopTime': (input) => `${(input / 1000).toFixed(2)}<span class="text-sm">s</span>`
+            'avgStopTime': (input) => `${input.toFixed(2)}<span class="text-sm">s</span>`
         };
     }
 

@@ -25,7 +25,7 @@ export default class Agent {
         this.route = route;
         this.currentSrcVertex = this.route.pop();
 
-        this.distance = 10;
+        this.distance = 0;
         this.speed = 0;
 
         this.agentRecorder = new AgentRecorder();
@@ -70,11 +70,11 @@ export default class Agent {
         this.agentRecorder.track(this.speed, timeStep);
     }
 
-    public calculate_acceleration(position: Vector2, direction: Vector2, agentValues: AgentValue[]): void {
+    public calculate_acceleration(position: Vector2, direction: Vector2, curvature: number, agentValues: AgentValue[]): void {
 
-        const separationDistance = 50;
-        const accelerationLimit = 0.05;
-        const roadSpeed = 0.2;
+        const separationDistance = 10;
+        const accelerationLimit = 20;
+        const roadSpeed = 13.4;
 
         // Filter for agents that are in front of this object travelling at an angle < 90 degrees to this object
         const visibleAgents = agentValues.filter(({position: agentPos, direction: agentDir}) => {
@@ -86,10 +86,10 @@ export default class Agent {
             [...visibleAgents.map(agent => this.get_target_speed_from_agent(position, agent, roadSpeed, separationDistance)), roadSpeed]
         );
 
-        const targetSpeed = clamp(targetAgentSpeed, -roadSpeed, roadSpeed);
+        const targetSpeed = clamp(targetAgentSpeed, 0, roadSpeed);
 
-        const acceleration = 0.01*(targetSpeed - this.speed);
-        this.acceleration = clamp(acceleration, -accelerationLimit, accelerationLimit);
+        const acceleration = (targetSpeed - this.speed)*2;
+        this.acceleration = accelerationLimit*Math.sign(acceleration);
     }
 
     private get_target_speed_from_agent(position: Vector2, {position: agentPos, direction: agentDir, speed: agentSpeed}: AgentValue, roadSpeed: number, separationDistance: number) {
@@ -98,7 +98,7 @@ export default class Agent {
         let targetSpeed = roadSpeed;
         if (behind || agentSpeed > this.speed) {
             const nearestDistance = position.sub(agentPos).square_magnitude();
-            targetSpeed = max([0.1*(nearestDistance - separationDistance**2) * agentSpeed, 0]);
+            targetSpeed = 0.5*(nearestDistance - separationDistance**2) * agentSpeed;
         }
         return targetSpeed;
     }

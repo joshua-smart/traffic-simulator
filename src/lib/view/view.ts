@@ -31,7 +31,7 @@ export default class View {
         this.roadNetworkPainter = new RoadNetworkPainter();
         this.simulationPainter = new SimulationPainter();
         this.outputPainter = new OutputPainter();
-        this.transform = new Transform(new Vector2(100, 350), 1.5);
+        this.transform = new Transform(new Vector2(-800, 500), 5);
 
         this.drawFlags = {
             roads: true,
