@@ -88,7 +88,7 @@ export default class CubicBezier {
     }
 
     // Find first t such that distance is greater than the target, else return null
-    public get_t_at_distance(targetDistance: number): number {
+    private get_t_at_distance(targetDistance: number): number {
         for(const [t, distance] of this.distanceLookup) {
             if (distance >= targetDistance) return t;
         }
