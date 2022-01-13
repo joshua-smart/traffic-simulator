@@ -63,13 +63,10 @@
 
     Note that in this framework the 'Model' includes both the Road network model and the testing component together, although these will be separately implemented.
 
-\section{Control Flow}
-
-    I will manage the major program control flow using a finite state machine
-
 \section{Network Builder}
 
     \subsection{User Interaction}
+    \label{subsection:user-interaction}
 
         As specified in my analysis section, the user input scheme will be based largely off of mouse interactions similar to that of the Mini Motorways computer game [\autoref{mini-motorways}]. The controls are listed in \autoref{user-interaction-specification}:
 
@@ -327,7 +324,7 @@
                 \mintTS{- roadNetwork: RoadNetwork}\\
                 \mintTS{- simulation: Simulation}
             }{
-                \mintTS{+ copy_road_network(): RoadNetwork}
+                \mintTS{+ step_simulation(number): void}
             }
 
         \subsubsection{RoadNetwork}
@@ -356,7 +353,8 @@
                 \mintTS{- find_terminating_vertices()}\\
                 \mintTS{+ get_agent_position(number): Vector2}\\
                 \mintTS{+ get_agent_rotation(number): number}\\
-                \mintTS{- get_agent_bezier(number): CubicBezier}
+                \mintTS{- get_agent_bezier(number): CubicBezier}\\
+                \mintTS{- get_agent_curvature(number): number}
             }
 
 
@@ -398,3 +396,92 @@
             \mintTS{+ get_edge(number, number): Edge}\\
             \mintTS{+ remove_edge(number, number): Edge}
         }
+
+\section{Controller}
+
+    The controller component will contain all systems responsible for managing user input. The main system will consist of a state machine taking user inputs as events and transitioning between different states.
+
+    \subsection{Classes}
+
+        \subsubsection{Controller}
+
+            The controller class encapsulates the stateMachine and is responsible for passing the callbacks through to the model and view components.
+
+            As part of this class I will also include two enumerators \mintTS{E} and \mintTS{S}, representing the numeric events and states respectively.
+
+            \umldiagram{Controller}{
+                \mintTS{- model: Model}\\
+                \mintTS{- view: View}\\
+                \mintTS{- roadNetworkController: RoadNetworkController}\\
+                \mintTS{- simulationController: SimulationController}
+            }{}
+
+            \begin{table}
+                \centering
+                \begin{tabular}{|l|}
+                    \hline
+                    \textbf{E}\\
+                    \hline
+                    \mintTS{start}\\
+                    \mintTS{pause}\\
+                    \mintTS{leftClickEmpty}\\
+                    \mintTS{mouseUp}\\
+                    \mintTS{mouseMove}\\
+                    \mintTS{shiftLeftClickVertex}\\
+                    \mintTS{shiftLeftClickEmpty}\\
+                    \mintTS{leftClickVertex}\\
+                    \mintTS{leftClickHandle}\\
+                    \mintTS{scroll}\\
+                    \mintTS{undo}\\
+                    \mintTS{redo}\\
+                    \mintTS{save}\\
+                    \mintTS{load}\\
+                    \hline
+                \end{tabular}
+                \caption{E, events enumerator}
+            \end{table}
+
+            \begin{table}
+                \centering
+                \begin{tabular}{|l|}
+                    \hline
+                    \textbf{S}\\
+                    \hline
+                    \mintTS{idle}\\
+                    \mintTS{simulationActive}\\
+                    \mintTS{simulationPaused}\\
+                    \mintTS{panningDisplay}\\
+                    \mintTS{vertexShiftClicked}\\
+                    \mintTS{creatingEdge}\\
+                    \mintTS{creatingIsolatedVertex}\\
+                    \mintTS{vertexClicked}\\
+                    \mintTS{movingVertex}\\
+                    \mintTS{movingHandle}\\
+                    \hline
+                \end{tabular}
+                \caption{S, states enumerator}
+            \end{table}
+
+
+        \subsubsection{StateMachine}
+
+            The StateMachine class will be used to model a simple finite state machine. It will encapsulate a Map that links \mintTS{transitionId} to an object containing the \mintTS{newStateId} and a \mintTS{callback} which is called whenever that specific transition is made, as discussed in \autoref{subsection:user-interaction}.
+
+            \umldiagram{StateMachine}{
+                \mintTS{- transitions: Map<number, {number, (Payload) => void}>}\\
+                \mintTS{- currentStateId: number}
+            }{
+                \mintTS{+ transition(number, Payload): void}\\
+                \mintTS{+ add_rule(number, number, number, (Payload) => void): void}
+            }
+
+        \subsubsection{IOManager}
+
+            IOManager will contain a series of static helper functions relating to file input and output that will be used by other objects.
+
+            \umldiagram{IOManager}{}{
+                \mintTS{+ save_road_network(RoadNetwork): void}\\
+                \mintTS{+ load_road_network((RoadNetwork) => void): void}\\
+                \mintTS{+ save_output_as_excel(SimulationOutput[]): void}\\
+                \mintTS{+ save_output_as_csv(SimulationOutput[]): void}
+            }
