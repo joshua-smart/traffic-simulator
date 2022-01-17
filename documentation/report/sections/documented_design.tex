@@ -397,6 +397,69 @@
             \mintTS{+ remove_edge(number, number): Edge}
         }
 
+\section{View}
+
+    The View component controls all the rendering required to display this program, which consists of a html page with a canvas element embedded within.
+
+    \subsection{Classes}
+
+        \subsubsection{View}
+
+            As the main class in this component it is responsible for encapsulating all the other view related classes.
+
+            The \mintTS{drawFlags} attribute shown in the class diagram is a boolean valued object containing the keys \mintTS{roads}, \mintTS{handles}, \mintTS{vertices}, \mintTS{simulation} and \mintTS{output}. These are used to tell the class which parts of the scene should currently be drawn.
+
+            \umldiagram{View}{
+                \mintTS{- canvas: Canvas}\\
+                \mintTS{- roadNetworkPainter: RoadNetworkPainter}\\
+                \mintTS{- simulationPainter: SimulationPainter}\\
+                \mintTS{- outputPainter: OutputPainter}\\
+                \mintTS{- transform: Transform}\\
+                \mintTS{- drawFlags: DrawFlags}
+            }{
+                \mintTS{+ redraw(): void}\\
+                \mintTS{+ set_draw(string, boolean): void}\\
+                \mintTS{+ pan_display(Vector2): void}\\
+                \mintTS{+ zoom_display(Vector2, number): void}
+            }
+
+        \subsubsection{Canvas}
+
+            The canvas class encapsulates the native \mintTS{CanvasRenderingContext2D} class built in to JavaScript. Providing a useful set of functions to interact with its complex API.
+
+            \umldiagram{Canvas}{
+                \mintTS{- domElement: HTMLCanvasElement}\\
+                \mintTS{- ctx: CanvasRenderingContext2D}\\
+                \mintTS{- transform: Transform}
+            }{
+                \mintTS{+ set_transform(Transform): void}\\
+                \mintTS{+ get_width(): number}\\
+                \mintTS{+ get_height(): number}\\
+                \mintTS{+ line(Vector2, Vector2, LineStyle): void}\\
+                \mintTS{+ bezier(CubicBezier, LineStyle, ShapeStyle): void}\\
+                \mintTS{- move_to(Vector2): void}\\
+                \mintTS{- line_to(Vector2): void}\\
+                \mintTS{+ clear(): void}
+            }
+
+        \subsubsection{Transform}
+
+            This is a useful utility class for managing linear transformations. It uses an origin point as well as a scaling factor to transform between screen and world space, this is what allows for the translation and zoom of the network canvas.
+
+            \umldiagram{Transform}{
+                \mintTS{- position: Vector2}\\
+                \mintTS{- scale: number}
+            }{
+                \mintTS{+ to_screen_space(Vector2): Vector2}\\
+                \mintTS{+ to_world_space(Vector2): Vector2}\\
+                \mintTS{+ zoom(Vector2, number); void}
+            }
+
+
+
+
+
+
 \section{Controller}
 
     The controller component will contain all systems responsible for managing user input. The main system will consist of a state machine taking user inputs as events and transitioning between different states.
@@ -407,7 +470,7 @@
 
             The controller class encapsulates the stateMachine and is responsible for passing the callbacks through to the model and view components.
 
-            As part of this class I will also include two enumerators \mintTS{E} and \mintTS{S}, representing the numeric events and states respectively.
+            As part of this class I will also include two enumerators \mintTS{E} and \mintTS{S}, representing the numeric events and states respectively, allowing the code to more verbosely represent the triggering of events and states.
 
             \umldiagram{Controller}{
                 \mintTS{- model: Model}\\
@@ -484,4 +547,30 @@
                 \mintTS{+ load_road_network((RoadNetwork) => void): void}\\
                 \mintTS{+ save_output_as_excel(SimulationOutput[]): void}\\
                 \mintTS{+ save_output_as_csv(SimulationOutput[]): void}
+            }
+
+        \subsubsection{RoadNetworkController}
+
+            The RoadNetworkController class is responsible for managing all events that affect the road network, this mainly involves triggering the largely mouse-based road network builder events.
+
+            Included in this are the undo/redo procedures outlined in \autoref{subsection:user-interaction}. When considering the implementation of this feature I have decided to include a \mintTS{user_action()} function that takes a function as a parameter. It will first perform the necessary steps to add the current state to the stack before executing the callback function. This will allow me to use this in all event functions which need to cause a \mintTS{user_action}.
+
+            \umldiagram{RoadNetworkController}{
+                \mintTS{- previousStates: Stack<RoadNetwork>}\\
+                \mintTS{- futureStates: Stack<RoadNetwork>}
+            }{
+                \mintTS{+ target_vertex(Event): void}\\
+                \mintTS{+ move_new_connection(Event): void}\\
+                \mintTS{+ finish_new_connection(Event): void}\\
+                \mintTS{+ create_isolated_vertex(Event): void}\\
+                \mintTS{+ move_vertex(Event): void}\\
+                \mintTS{+ start_move_vertex(): void}\\
+                \mintTS{+ remove_vertex(): void}\\
+                \mintTS{+ target_handle(Event): void}\\
+                \mintTS{+ move_handle(Event): void}\\
+                \mintTS{+ undo(): void}\\
+                \mintTS{+ redo(): void}\\
+                \mintTS{+ save(): void}\\
+                \mintTS{+ load(): void}\\
+                \mintTS{- user_action(() => void): void}
             }
