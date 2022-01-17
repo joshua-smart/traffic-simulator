@@ -1,4 +1,3 @@
-import CubicBezier from "../model/cubicBezier";
 import Vector2 from "../vector2";
 
 export default class Transform {
