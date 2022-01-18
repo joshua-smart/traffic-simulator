@@ -1,35 +1,16 @@
 {
+  "extends": "tslint:recommended",
   "rules": {
     "semicolon": true,
-    "typedef": true,
-    "no-any": true,
-    "no-import-side-effect": true,
-    "ban-types": {
+    "variable-name": {
         "options": [
-            ["Object", "Avoid using the `Object` type. Did you mean `object`?"],
-            ["Boolean", "Avoid using the `Boolean` type. Did you mean `boolean`?"],
-            ["Number", "Avoid using the `Number` type. Did you mean `number`?"],
-            ["String", "Avoid using the `String` type. Did you mean `string`?"],
-            ["Symbol", "Avoid using the `Symbol` type. Did you mean `symbol`?"]
+            "allow-snake-case"
         ]
     },
+    "no-angle-bracket-type-assertion": false,
+    "no-shadowed-variable": false,
     "member-access": true,
-    "no-parameter-reassignment": true,
-    "prefer-for-of": true,
-    "await-promise": true,
-    "promise-function-async": true,
-    "no-construct": true,
-    "no-floating-promises": true,
-    "prefer-conditional-expression": true,
-    "switch-default": true,
-    "prefer-const": true,
-    "class-name": true,
-    "file-name-casing": [true, "camel-case"],
-    "prefer-method-signature": true,
-    "prefer-switch": true,
-    "prefer-template": true,
-    "variable-name": true,
-    "no-unnecessary-type-assertion": true,
-    "no-inferrable-types": true
+    "max-classes-per-file": false,
+    "no-unused-expression": false
   }
 }
