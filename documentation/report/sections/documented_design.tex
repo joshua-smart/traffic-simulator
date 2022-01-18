@@ -194,6 +194,7 @@
 \section{Network Testing}
 
     \subsection{Traffic Behaviour Modelling}
+    \label{subsection:traffic-behaviour-modelling}
 
         In this simplified model the only variable the 'drivers' have access to is the acceleration of the vehicle. This parameter will be governed by a series of specific rules listed below:
 
@@ -381,21 +382,80 @@
 
         \subsubsection{Graph}
 
-        After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term.
+            After exploring the different types of graph structure I have decided to utilise the adjacency matrix structure for this project. Despite the adjacency matrix implementation having less scalable complexities for most functions [\autoref{graph-time-complexities}] it has a large benefit of a constant time edge lookup; since this function will be called many times for each agent in the network I anticipate this implementation will be more efficient in the long term.
 
-        \umldiagram{Graph}{
-            \mintTS{- adjacencyMatrix: Edge[][]}\\
-            \mintTS{- vertices: Vertex[]}
-        }{
-            \mintTS{+ size(): number}\\
-            \mintTS{+ add_vertex(Vertex): number}\\
-            \mintTS{+ set_vertex(number, Vertex): void}\\
-            \mintTS{+ get_vertex(number): Vertex}\\
-            \mintTS{+ remove_vertex(number): Vertex}\\
-            \mintTS{+ set_edge(number, number, Edge): void}\\
-            \mintTS{+ get_edge(number, number): Edge}\\
-            \mintTS{+ remove_edge(number, number): Edge}
-        }
+            \umldiagram{Graph}{
+                \mintTS{- adjacencyMatrix: Edge[][]}\\
+                \mintTS{- vertices: Vertex[]}
+            }{
+                \mintTS{+ size(): number}\\
+                \mintTS{+ add_vertex(Vertex): number}\\
+                \mintTS{+ set_vertex(number, Vertex): void}\\
+                \mintTS{+ get_vertex(number): Vertex}\\
+                \mintTS{+ remove_vertex(number): Vertex}\\
+                \mintTS{+ set_edge(number, number, Edge): void}\\
+                \mintTS{+ get_edge(number, number): Edge}\\
+                \mintTS{+ remove_edge(number, number): Edge}
+            }
+
+        \subsubsection{Agent}
+
+            These objects represent agents in the network and are encapsulated within the simulation. The agent must be able to calculate its own acceleration at a given timestep based on the factors described in \autoref{subsection:traffic-behaviour-modelling}.
+
+            Agents will also contain a boolean \mintTS{kill} flag that is set to true once the agent is at the end of its route, allowing the simulation to dispose of it.
+
+            \umldiagram{Agent}{
+                \mintTS{- route: Stack<number>}\\
+                \mintTS{- currentSrcVertex: number}\\
+                \mintTS{- distance: number}\\
+                \mintTS{- speed: number}\\
+                \mintTS{- acceleration: number}\\
+                \mintTS{+ kill: boolean}\\
+                \mintTS{- agentRecorder: AgentRecorder}
+            }{
+                \mintTS{+ move_to_next_edge(): void}\\
+                \mintTS{+ increment_position(number): void}\\
+                \mintTS{+ calculate_acceleration(Vector2, Vector2, Vector2[]): void}
+            }
+
+        \subsubsection{AgentRecorder}
+
+            Each Agent encapsulates an AgentRecorder which monitors its speed and position over its lifetime, allowing this data to be returned to the simulation during the Agent's disposal procedure.
+
+            \umldiagram{AgentRecorder}{
+                \mintTS{- aliveTime: number}\\
+                \mintTS{- routeDistance: number}\\
+                \mintTS{- maximumSpeed: number}\\
+                \mintTS{- minimumSpeed: number}\\
+                \mintTS{- stoppedTime: number}
+            }{
+                \mintTS{track(number, number): void}
+            }
+
+        \subsubsection{TrafficSequencer}
+
+            This class is responsible for controlling the spawning of agents to the network, for every frame the simulation retrieves the number of agents that need to be spawned from this composed class.
+
+            \umldiagram{TrafficSequencer}{
+                \mintTS{- waitTime: number}\\
+                \mintTS{- lastSpawnTime: number}
+            }{
+                \mintTS{+ get_new_agent_count(number): number}
+            }
+
+        \subsubsection{SimulationRecorder}
+
+            Similarly to the AgentRecorder, the job of the SimulationRecorder is to persistently store the data provided by the simulation over time. To be used in the final data output.
+
+            The \mintTS{track()} method uses a callback provided by the simulation to get the data only if it is needed in the current frame, preventing it from computing the full data object unnecessarily.
+
+            \umldiagram{SimulationRecorder}{
+                \mintTS{- data: SimulationOutput[]}\\
+                \mintTS{lastSaveTime: number}
+            }{
+                \mintTS{+ track(number, (number) => SimulationOutput)}\\
+            }
+
 
 \section{View}
 
@@ -455,9 +515,45 @@
                 \mintTS{+ zoom(Vector2, number); void}
             }
 
+        \subsubsection{RoadNetworkPainter}
 
+            This class will contain methods used to paint the current road network stored in the model to the canvas.
 
+            It will also store a 'ghost' edge, representing the edge that is currently being drawn but not yet completed.
 
+            \umldiagram{RoadNetworkPainter}{
+                \mintTS{- vertexContainer: HTMLElement}\\
+                \mintTS{- handleContainer: HTMLElement}\\
+                \mintTS{- ghostEdge: {number, Vector2}}
+            }{
+                \mintTS{+ clear(): void}\\
+                \mintTS{+ draw_roads(Canvas, RoadNetwork, Transform): void}\\
+                \mintTS{+ draw_vertices(RoadNetwork, Transform): void}\\
+                \mintTS{+ draw_handles(Canvas, RoadNetwork, Transform): void}
+            }
+
+        \subsubsection{SimulationPainter}
+
+            This will be used to draw the current agents to the canvas.
+
+            \umldiagram{SimulationPainter}{
+                \mintTS{- agentContainer: HTMLElement}
+            }{
+                \mintTS{+ clear(): void}\\
+                \mintTS{+ draw(Canvas, Simulation, Transform): void}
+            }
+
+        \subsubsection{OutputPainter}
+
+            This painter is slightly different from the other two, as it is responsible for managing solely a html element. This element contains the current output data retrieved from the simulation.
+
+            The output painter is responsible for display and formatting this data. This will be achieved using a \mintTS{Map} that points the id of the output data to a function that correctly formats the number to a string.
+
+            \umldiagram{OutputPainter}{
+                \mintTS{- formats: Map<string, (number) => string>}
+            }{
+                \mintTS{+ draw(SimulationOutput)}
+            }
 
 
 \section{Controller}
@@ -573,4 +669,19 @@
                 \mintTS{+ save(): void}\\
                 \mintTS{+ load(): void}\\
                 \mintTS{- user_action(() => void): void}
+            }
+
+        \subsubsection{SimulationController}
+
+            This will handle all the callbacks related to the simulation. It will also contain the main animation loop that will step the simulation.
+
+            \umldiagram{SimulationController}{
+                \mintTS{- running: boolean}\\
+                \mintTS{- lastFrameTime: number}
+            }{
+                \mintTS{+ start(): void}\\
+                \mintTS{+ pause(): void}\\
+                \mintTS{+ stop(): void}\\
+                \mintTS{+ resume(): void}\\
+                \mintTS{- run(number): void}
             }
