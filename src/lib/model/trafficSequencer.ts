@@ -1,5 +1,3 @@
-import { random } from "lodash";
-
 export default class TrafficSequencer {
     private waitTime: number = 1;
     private lastSpawnTime: number = 0;
