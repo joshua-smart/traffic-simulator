@@ -1,6 +1,6 @@
 import Stack from '../stack';
 import Vector2 from '../vector2';
-import { clamp, max, min } from 'lodash';
+import { clamp, min } from 'lodash';
 import AgentRecorder, { AgentData } from './agentRecorder';
 
 type AgentValue = {
