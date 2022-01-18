@@ -8,7 +8,7 @@ describe("state machine test suite", () => {
     });
 
     it("add rule (0, 0) -> (1, () => {})", () => {
-        stateMachine.add_rule(0, 0, 1, () => {});
+        stateMachine.add_rule(0, 0, 1);
     });
 
     it("transition with event 0", () => {

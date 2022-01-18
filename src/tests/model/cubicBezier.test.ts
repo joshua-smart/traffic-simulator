@@ -1,4 +1,4 @@
-import * as assert from 'assert';
+import assert from 'assert';
 import CubicBezier from "../../lib/model/cubicBezier";
 import Vector2 from "../../lib/vector2";
 

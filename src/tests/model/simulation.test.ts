@@ -25,8 +25,8 @@ describe("simulation test suite", () => {
             const expectedSources = [];
             const expectedExits = new Map<number, number[]>();
 
-            assert.deepStrictEqual(simulation['sources'], expectedSources);
-            assert.deepStrictEqual(simulation['exits'], expectedExits);
+            assert.deepStrictEqual(simulation['sources'], expectedSources); // tslint:disable-line
+            assert.deepStrictEqual(simulation['exits'], expectedExits); // tslint:disable-line
         });
 
         it("gets correct source and exit vertices for mock network", () => {
@@ -36,8 +36,8 @@ describe("simulation test suite", () => {
             const expectedExits = new Map<number, number[]>();
             expectedExits.set(0, [1, 2]);
 
-            assert.deepStrictEqual(simulation['sources'], expectedSources);
-            assert.deepStrictEqual(simulation['exits'], expectedExits);
+            assert.deepStrictEqual(simulation['sources'], expectedSources); // tslint:disable-line
+            assert.deepStrictEqual(simulation['exits'], expectedExits); // tslint:disable-line
         });
     });
 

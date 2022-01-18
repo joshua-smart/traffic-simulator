@@ -13,7 +13,7 @@ export const create_mock_road_network = () => {
     roadNetwork.set_edge(0, 1, {t1: new Vector2(0, 1), t2: new Vector2(0, 1)});
     roadNetwork.set_edge(0, 2, {t1: new Vector2(0, 0), t2: new Vector2(0, 0)});
     return roadNetwork;
-}
+};
 
 describe("road network test suite", () => {
 
