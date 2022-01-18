@@ -1,9 +1,9 @@
 export class GraphError extends Error {
-    name = "GraphError";
+    public name = "GraphError";
     constructor(message?: string) {
         super(message);
     }
-};
+}
 
 export default class Graph<Vertex, Edge> {
     private adjacencyMatrix: Edge[][];
@@ -85,7 +85,7 @@ export default class Graph<Vertex, Edge> {
     public traverse(srcId: number): number[] {
         this.check_vertex_index(srcId);
         const visited = [];
-        let searchable = [srcId];
+        const searchable = [srcId];
 
         while (searchable.length > 0) {
             const current = searchable.shift();

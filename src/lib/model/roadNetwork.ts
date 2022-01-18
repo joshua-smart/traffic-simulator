@@ -5,7 +5,7 @@ import CubicBezier from './cubicBezier';
 import ioManager, { JSONRoadNetwork } from '../controller/ioManager';
 
 export class RoadNetworkError extends Error {
-    name = "RoadNetworkError";
+    public name = "RoadNetworkError";
     constructor(message?: string) {
         super(message);
     }
@@ -100,7 +100,7 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         // Reconstruct path from perviousVertices array
         const route = new Stack<number>();
         let currentId = dstId;
-        while (currentId != undefined) {
+        while (currentId !== undefined) {
             route.push(currentId);
             currentId = previousVertices[currentId];
         }

@@ -32,8 +32,8 @@ export default class Simulation {
         this.simulationTime = 0;
 
         const { sources, exits } = this.set_terminating_vertices();
-        this.sources = sources
-        this.exits = exits
+        this.sources = sources;
+        this.exits = exits;
         this.trafficSequencer = new TrafficSequencer();
         this.simulationRecorder = new SimulationRecorder();
     }
@@ -51,14 +51,14 @@ export default class Simulation {
         this.simulationRecorder.track(this.simulationTime, (time: number, dataPoints: number) => {
             return {
                 simTimer: time,
-                dataPoints: dataPoints,
+                dataPoints,
                 agentCount: this.agentCount,
                 avgAliveTime: meanBy(this.agentData, data => data.aliveTime),
                 avgDistance: meanBy(this.agentData, data => data.routeDistance),
                 avgMaxSpeed: meanBy(this.agentData, data => data.maximumSpeed),
                 avgMinSpeed: meanBy(this.agentData, data => data.minimumSpeed),
                 avgStopTime: meanBy(this.agentData, data => data.stoppedTime)
-            }
+            };
         });
     }
 

@@ -7,12 +7,12 @@ type LineStyle = {
     width?: number,
     cap?: CanvasLineCap,
     join?: CanvasLineJoin
-}
+};
 
 type ShapeStyle = {
     color?: string,
     line?: LineStyle
-}
+};
 
 export default class Canvas {
     private domElement: HTMLCanvasElement;

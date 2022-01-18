@@ -39,6 +39,6 @@ export default class AgentRecorder {
             maximumSpeed: this.maximumSpeed,
             minimumSpeed: this.minimumSpeed,
             stoppedTime: this.stoppedTime
-        }
+        };
     }
 }

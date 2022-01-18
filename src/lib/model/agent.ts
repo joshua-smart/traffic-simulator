@@ -7,7 +7,7 @@ type AgentValue = {
     position: Vector2,
     direction: Vector2,
     speed: number
-}
+};
 
 export default class Agent {
     private route: Stack<number>;
@@ -52,7 +52,7 @@ export default class Agent {
         return {
             srcId: this.currentSrcVertex,
             dstId: this.route.peek()
-        }
+        };
     }
 
     public get_distance(): number {

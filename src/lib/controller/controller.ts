@@ -101,16 +101,16 @@ export default class Controller {
             // (return this.stateMachine...) <- these statements are not used to return values, instead for early returns to avoid unnecessary checks
 
             // Bind undo/redo hotkeys
-            if (e.key == 'z' && e.ctrlKey) return this.stateMachine.transition(E.undo, null);
-            if (e.key == 'y' && e.ctrlKey) return this.stateMachine.transition(E.redo, null);
+            if (e.key === 'z' && e.ctrlKey) return this.stateMachine.transition(E.undo, null);
+            if (e.key === 'y' && e.ctrlKey) return this.stateMachine.transition(E.redo, null);
 
 
             // Bind zoom hotkeys, zoom centred on center of screen
-            if (e.key == '=') {
+            if (e.key === '=') {
                 e.preventDefault();
                 return this.key_zoom(1.2);
             }
-            if (e.key == '-') {
+            if (e.key === '-') {
                 e.preventDefault();
                 return this.key_zoom(1/1.2);
             }
@@ -122,7 +122,7 @@ export default class Controller {
                 'ArrowRight': new Vector2(panStrength, 0),
                 'ArrowUp': new Vector2(0, -panStrength),
                 'ArrowDown': new Vector2(0, panStrength)
-            }
+            };
             if (e.key in directions) {
                 this.view.pan_display(directions[e.key]);
                 this.view.redraw();

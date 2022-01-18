@@ -139,7 +139,7 @@ export default class RoadNetworkController {
 
     // Indicates the start of a vertex move event, for compatibility with undo/redo
     public start_move_vertex(): void {
-        this.user_action(() => {});
+        this.user_action();
     }
 
     // Remove the targeted vertex from the road network
@@ -158,7 +158,7 @@ export default class RoadNetworkController {
                 srcId: Number(element.getAttribute('srcId')),
                 dstId: Number(element.getAttribute('dstId')),
                 position: <'start' | 'end'>element.getAttribute('position')
-            }
+            };
         });
     }
 
@@ -204,7 +204,7 @@ export default class RoadNetworkController {
     }
 
     // Wrapper for other event handlers, for compatibility with undo/redo
-    private user_action(action: () => void): void {
+    private user_action(action?: () => void): void {
         // Copy current roadNetwork
         const currentState = this.model.copy_road_network();
         // Push currentState onto previousStates and enable undo
@@ -214,7 +214,7 @@ export default class RoadNetworkController {
         this.futureStates.clear();
         this.disable_redo_button();
         // Perform action
-        action();
+        if (action) action();
     }
 
     // Save the current road network state to a local file

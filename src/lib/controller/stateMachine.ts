@@ -13,7 +13,7 @@ export default class StateMachine<Payload> {
     }
 
     // Generate transitionId for state and event combo and add transition data to transitions Map
-    public add_rule(previousStateId: number, eventId: number, newStateId: number, callback: (payload: Payload) => void) {
+    public add_rule(previousStateId: number, eventId: number, newStateId: number, callback?: (payload: Payload) => void) {
         const transitionId = StateMachine.get_transition_id(previousStateId, eventId);
         this.transitions.set(transitionId, {newStateId, callback});
     }

@@ -39,7 +39,7 @@ export default class View {
             vertices: true,
             simulation: false,
             output: false
-        }
+        };
 
         this.redraw();
     }

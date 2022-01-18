@@ -10,21 +10,21 @@ export type JSONRoadNetwork = {
         t1: {x: number, y: number}, t2: {x: number, y: number}
     }[][],
     vertices: {x: number, y: number}[]
-}
+};
 
 export default class IOManager {
 
     // Save current road network to a file
     public static save_road_network(roadNetwork: RoadNetwork): void {
         // Convert roadNetwork to json representation
-        const json = JSON.stringify(roadNetwork)
-        var file = new File([json], 'my road network.json', {type: 'application/json;charset=utf-8'});
+        const json = JSON.stringify(roadNetwork);
+        const file = new File([json], 'my road network.json', {type: 'application/json;charset=utf-8'});
         saveAs(file);
     }
 
     // Request file from the user and load it into the current roadNetwork
     public static async load_road_network(callback: (roadNetwork: RoadNetwork) => void) {
-        const fileInput = <HTMLInputElement>document.querySelector('#file-input')
+        const fileInput = <HTMLInputElement>document.querySelector('#file-input');
         fileInput.click();
         fileInput.onchange = async () => {
             // Catch errors on invalid files
@@ -38,7 +38,7 @@ export default class IOManager {
             } catch {
                 alert('File could not be loaded');
             }
-        }
+        };
     }
 
     // Apply data in JSON object to a blank RoadNetwork and return
@@ -46,8 +46,7 @@ export default class IOManager {
         const roadNetwork = new RoadNetwork();
 
         // Set vertices
-        for(let vertexId = 0; vertexId < json.vertices.length; vertexId++) {
-            const jsonVertex = json.vertices[vertexId];
+        for(const jsonVertex of json.vertices) {
             const vertex = new Vector2(jsonVertex.x, jsonVertex.y);
             roadNetwork.add_vertex(vertex);
         }

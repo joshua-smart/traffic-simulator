@@ -7,7 +7,7 @@ export type SimulationOutput = {
     avgMaxSpeed: number,
     avgMinSpeed: number,
     avgStopTime: number
-}
+};
 
 export default class SimulationRecorder {
     private data: SimulationOutput[];
