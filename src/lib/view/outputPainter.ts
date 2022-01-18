@@ -2,19 +2,24 @@ import { SimulationOutput } from "../model/simulationRecorder";
 
 export default class OutputPainter {
 
-    private formats: {[key: string]: (input: number) => string};
+    private formats: Map<string, (input: number) => string>;
 
     constructor() {
-        this.formats = {
-            'agentCount': (input) => `${input}`,
-            'dataPoints': (input) => `${input}`,
-            'simTimer': (input) => `${input.toFixed(2)}<span class="text-sm">s</span>`,
-            'avgAliveTime': (input) => `${input.toFixed(2)}<span class="text-sm">s</span>`,
-            'avgDistance': (input) => `${input.toFixed(2)}<span class="text-sm">m</span>`,
-            'avgMaxSpeed': (input) => `${input.toFixed(2)}<span class="text-sm">ms<sup>-1</sup></span>`,
-            'avgMinSpeed': (input) => `${input.toFixed(2)}<span class="text-sm">ms<sup>-1</sup></span>`,
-            'avgStopTime': (input) => `${input.toFixed(2)}<span class="text-sm">s</span>`
-        };
+        const raw = (input: number) => `${input}`;
+        const seconds = (input: number) => `${input.toFixed(2)}<span class="text-sm">s</span>`;
+        const metres = (input: number) => `${input.toFixed(2)}<span class="text-sm">m</span>`;
+        const metresPerSecond = (input: number) => `${input.toFixed(2)}<span class="text-sm">ms<sup>-1</sup></span>`;
+
+        this.formats = new Map<string, (input: number) => string>([
+            ['agentCount', raw],
+            ['dataPoints', raw],
+            ['simTimer', seconds],
+            ['avgAliveTime', seconds],
+            ['avgDistance', metres],
+            ['avgMaxSpeed', metresPerSecond],
+            ['avgMinSpeed', metresPerSecond],
+            ['avgStopTime', seconds]
+        ]);
     }
 
     public draw(simulationOutput: SimulationOutput): void {
@@ -23,7 +28,7 @@ export default class OutputPainter {
             const element = document.querySelector(`#${id}`);
             const value = simulationOutput[id];
             if (isNaN(value)) return;
-            const text = this.formats[id](value);
+            const text = this.formats.get(id)(value);
             element.innerHTML = `${text}`;
         });
         this.enableDownload();
