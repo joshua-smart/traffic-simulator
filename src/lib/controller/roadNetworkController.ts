@@ -33,6 +33,7 @@ export default class RoadNetworkController {
         const element = this.view.get_canvas_element();
 
         element.addEventListener('mousedown', (e) => {
+            e.preventDefault();
             // Isolate left-click events
             if (e.buttons !== 1) return;
 
