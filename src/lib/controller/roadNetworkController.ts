@@ -114,7 +114,7 @@ export default class RoadNetworkController {
                 dstId = Number((<HTMLElement>e.target).getAttribute('vertexId'));
             }
             // Add edge
-            this.model.toggle_edge(this.targetedVertex, dstId);
+            if (dstId !== -1) this.model.toggle_edge(this.targetedVertex, dstId);
             // Unset targetedVertex and ghost edge
             this.targetedVertex = null;
             this.view.remove_ghost_edge();

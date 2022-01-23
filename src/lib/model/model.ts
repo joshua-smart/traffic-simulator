@@ -29,6 +29,7 @@ export default class Model {
     }
 
     public add_vertex(position: Vector2): number {
+        if (this.roadNetwork.size() >= 50) return -1;
         return this.roadNetwork.add_vertex(position);
     }
 
