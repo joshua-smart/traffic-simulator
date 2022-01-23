@@ -43,7 +43,7 @@ export default class Simulation {
         this.simulationTime += simulationTimeStep;
         this.update_agents(simulationTimeStep);
 
-        const newAgentCount = this.trafficSequencer.get_new_agent_count(this.simulationTime);
+        const newAgentCount = this.trafficSequencer.get_new_agent_count(this.simulationTime, this.agents.length);
         for(let i = 0; i < newAgentCount; i++) {
             this.add_new_agent();
             this.agentCount++;
