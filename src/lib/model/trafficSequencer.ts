@@ -1,3 +1,4 @@
+// Used to tell the simulation when to spawn new agents, spawns an agent every second
 export default class TrafficSequencer {
     private waitTime: number = 1;
     private lastSpawnTime: number = 0;

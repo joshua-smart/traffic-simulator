@@ -6,6 +6,7 @@ export type AgentData = {
     stoppedTime: number;
 };
 
+// Saves statistics for an agent as it traverses the road network
 export default class AgentRecorder {
 
     private aliveTime: number;
@@ -22,6 +23,7 @@ export default class AgentRecorder {
         this.stoppedTime = 0;
     }
 
+    // Update internal statistics, called every frame
     public track(speed: number, timeStep: number): void {
         this.aliveTime += timeStep;
         this.routeDistance += speed * timeStep;
@@ -32,6 +34,7 @@ export default class AgentRecorder {
         if (speed < 0.01) this.stoppedTime += timeStep;
     }
 
+    // Returns final statistics when the agent is destroyed
     public get_data(): AgentData {
         return {
             aliveTime: this.aliveTime,
