@@ -133,33 +133,42 @@
 
             \textbf{INSERT IMAGE HERE}
 
-\section{Front-end}
+    \subsection{Test 8 - Data Output}
 
-    \subsection{Network construction}
+        \subsubsection{Methodology}
 
-        As shown in \autoref{testing:gui-screenshot}, I have developed a program that displays a 2D road network. Utilising a graph data structure on the back end along with cubic Bezier curves to allow for curving road sections.
+            This test will validate the programs ability to provide output data to the user, using the following procedure.
 
-        \begin{figure}
-            \centering
-            \includegraphics[width=0.6\textwidth]{gui-screenshot.png}
-            \caption{Screenshot of final program}
-            \label{testing:gui-screenshot}
-        \end{figure}
+            \begin{enumerate}
+                \item Start up the program
+                \item Start the simulation using the default road network
+                \item Let the student run for a sufficient length of time, roughly 20 data points
+                \item Pause the simulation and take a screenshot of the current program state
+                \item Use the save output data feature to export a \mintTS{.xlsx} and \mintTS{.csv} file
+                \item Open both files and screenshot their contents
+            \end{enumerate}
 
-        I have also implemented a mainly mouse-based graph editing system, allowing the user to manipulate and design their own road network. \autoref{testing:construction-examples} shows a few demo networks I have built using this program.
+            I expect the number of samples present in the output files to match the number of samples shown on screen, as well as having reasonable values given the summary data.
 
+        \subsubsection{Results}
 
-    \subsection{Videos}
+            \textbf{INSERT IMAGES}
 
-        As part of the testing process for this project I have produced a video displaying the front-end user interaction. Making use of the majority of features I have implemented. Please note that the keyboard and mouse overlay are for clarity purposes only and not part of the program.
+    \subsection{Tests 9, 10, 11 - GUI Compatibility}
 
-        \href{https://youtu.be/RnU7ZQtnQWU}{NEA testing video 1}
+        \subsubsection{Methodology}
+
+            To address the last 3 requirements in my summary, I will use my browser's inbuilt dev tools to test to programs behaviour on a series of different sizes and aspect ratios, capturing screenshots as I go. I expect the UI to resize elements in order to fit the screen size it has been given.
+
+        \subsubsection{Results}
+
+            \textbf{INSERT IMAGES}
 
 \section{Back-end}
 
     During the development process I wrote a series of unit tests to validate the major parts of the system, leading to less error-prone and maintainable code. The following index (\autoref{tests-index}) points to the test files in my code base. All the tests pass when executed.
 
-    \begin{table}
+    \begin{table}[h]
         \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
             \hline
             \textbf{Test target} & \textbf{Link}\\\hline

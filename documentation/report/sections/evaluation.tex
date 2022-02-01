@@ -1,5 +1,25 @@
-NOTES:
-\begin{itemize}
-    \item A* instead of Dijkstra's
-    \item Linear interpolation of bezier lookup table
-\end{itemize}
+\section{Technical Evaluation}
+
+    In this section I will review my codebase and pick out specific implementations or design choices that could be improved upon. I will explore where and why these decisions were made as well as providing improvements.
+
+    \subsection{Pathfinding Algorithms}
+
+        As described in \autoref{design:pathfinding}, in my code I implemented Dijkstra's algorithm to facilitate finding routes across the road network. This has a simple implementation and is a fairly well known path finding algorithm. On reflection, I could have instead implemented the A* search algorithm as this uses a heuristic technique which is on average more efficient than Dijkstra's.
+
+    \subsection{Bezier lookup table}
+
+        \autoref{design:linear-interpolation-bezier} shows the algorithm I wrote for interpolating a Bezier curve by distance using a lookup table of sampled points. Another further improvement I could have made is the use of linear interpolation between the data points in order to improve the accuracy of the approximation.
+
+        With the current implementation I look for the first distance sample $\geq$ the target and take it's value of $t$. Alternatively, by finding the last distance sample below the target ($d_1$, $t_1$) and the first distance sample above the target ($d_2$, $t_2$), I could interpolate to get:
+
+        \[t = t_1 + (t_2 - t_1) * \frac{d - d_1}{d_2 - d_1}\]
+
+        Providing a better approximation of the curve
+
+    \subsection{Control Structure}
+
+        Documented in \autoref{subsection:user-interaction}, I utilised a state machine to manage all the controls of the program. This was a very useful model for implementing the network builder controls as it allowed me to rely on state transitions to remember which point of the action a user is currently performing. However this did have some unforeseen side effects for the rest of the program.
+
+        My program implements \mintTS{simulationActive} as it's own state, and this state can only be transitioned out of my either stopping the simulation (transitioning back to the idle state) or pausing the simulation (at which point the program enters the \mintTS{simulationPaused} state). This causes the user to be unable to save the simulation while it is running or even while it is paused, as this event branches off from the idle state.
+
+        On reflection, it would have improved the system to isolate the state machine responsibility to just the network builder, using more traditional methods of control flow to manage the main framework of the application.

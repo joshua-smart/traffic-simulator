@@ -25,7 +25,7 @@
 
         TypeScript compiles into native JavaScript code and this is what will be running in the browser when the program is loaded.
 
-        As a quick note, as the static type system for TypeScript was built off of the existing JavaScript system it does include a specific integer type. Instead all numeric values fall under the \mintTS{number} type, therefore in the rest of this document I will refer to variables used as ids or array indices using the \mintTS{number} type as this more accurately reflects the implementation. While its integer status can largely be infered from identifiers or usages.
+        As a quick note, as the static type system for TypeScript was built off of the existing JavaScript system it does not include a specific integer type. Instead all numeric values fall under the \mintTS{number} type, therefore in the rest of this document I will refer to variables used as ids or array indices using the \mintTS{number} type as this more accurately reflects the implementation. While its integer status can largely be infered from identifiers or usages.
 
     \subsection{HTML/CSS}
     \label{html/css}
@@ -128,6 +128,7 @@
     The roads will be modelled using a series of Bezier curves, to allow for this the user must be able to adjust the control points of the curves. The edges of the graph will need to store a data structure containing 2 control points for the curve (the first and last points are defined by the source and destination vertices of the edge). This will make for cubic Bezier curves which will be controlled by their own \mintTS{CubicBezier} class. One function of this will be a \mintTS{get_point_at_distance} method which will interpolate linearly along the length of the curve, returning a point. This is not a trivial problem and my solution is documented below.
 
     \subsubsection{Linear interpolation of cubic Bezier curves}
+    \label{design:linear-interpolation-bezier}
 
     Given a cubic Bezier curve with control points $\mathbf{P_0}$, $\mathbf{P_1}$, $\mathbf{P_2}$ and $\mathbf{P_3}$. We can define it as
 
@@ -143,6 +144,7 @@
 
     \begin{algorithm}
         \begin{algorithmic}
+            \State map $\gets$ new Map()
             \State distance $\gets 0$
             \State $t \gets 0$
             \While{$t <= 1$}
@@ -160,8 +162,8 @@
 
     \begin{algorithm}
         \begin{algorithmic}
-            \Function{get\_point}{B, targetDistance}
-                \For{$t$, distance \textbf{in} B.map}
+            \Function{get\_point}{Bezier, targetDistance}
+                \For{$t$, distance \textbf{in} Bezier.map}
                     \If{distance $\geq$ targetDistance}
                         \State \textbf{return} $t$
                     \EndIf
@@ -219,6 +221,7 @@
     \end{itemize}
 
     \subsection{Pathfinding}
+    \label{design:pathfinding}
 
         As detailed above, each agent will need to encapsulate a route through the network. This route will be modelled as a sequence of node indices.
 
@@ -453,7 +456,7 @@
                 \mintTS{- data: SimulationOutput[]}\\
                 \mintTS{lastSaveTime: number}
             }{
-                \mintTS{+ track(number, (number) => SimulationOutput)}\\
+                \mintTS{+ track(number, (number) => SimulationOutput)}
             }
 
 
