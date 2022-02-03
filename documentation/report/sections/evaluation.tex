@@ -1,3 +1,19 @@
+\section{Summary}
+
+    \begin{itemize}
+        \item Workflow
+        \item Learning experience
+        \item Highlight successes
+    \end{itemize}
+
+    I have learned many new skills and techniques during this project such as unit testing and program architectures. I think the main success I had with this project was my own approach to development; this approach mainly focused on planning and designing the program before development began. This process is documented in \autoref{design}, I spent a decent chunk of time writing my ideas and producing diagrams, when the time came to begin development this wealth of resources drastically sped up my pace of development as I could devote my attention to specific implementations instead of the program design.
+
+    Along with this I discovered and researched the Model-View-Controller architecture which I then utilised in my own program. This helped me greatly as it allowed me to compartmentalise the different sections and create features separately that I could then bring together to form a cohesive program. I would like to have tried a different architecture such as Hex (Ports \& Adapters) to develop my program, but time constraints as well as ignorance to these other options led me to continue on with the aforementioned design.
+
+    During the development process I hit an unknown bug. In short my implementation of Dijkstra's algorithm would not correctly detect when a path between two vertices did not exist, causing the agents to take invalid paths across the network. I had spent a while trying to locate the source of this issue when I decided to implement unit tests.
+
+\section{Objective Evaluation}
+
 \section{Technical Evaluation}
 
     In this section I will review my codebase and pick out specific implementations or design choices that could be improved upon. I will explore where and why these decisions were made as well as providing improvements.
@@ -14,7 +30,7 @@
 
         \[t = t_1 + (t_2 - t_1) * \frac{d - d_1}{d_2 - d_1}\]
 
-        Providing a better approximation of the curve
+        Providing a better approximation of the curve, although this would have required some additional consideration into retrieving these values.
 
     \subsection{Control Structure}
 
@@ -23,3 +39,7 @@
         My program implements \mintTS{simulationActive} as it's own state, and this state can only be transitioned out of my either stopping the simulation (transitioning back to the idle state) or pausing the simulation (at which point the program enters the \mintTS{simulationPaused} state). This causes the user to be unable to save the simulation while it is running or even while it is paused, as this event branches off from the idle state.
 
         On reflection, it would have improved the system to isolate the state machine responsibility to just the network builder, using more traditional methods of control flow to manage the main framework of the application.
+
+\section{Feedback}
+
+\section{Conclusion}
