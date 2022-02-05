@@ -78,7 +78,22 @@
 \newcommand{\mintTS}[1]{\mintinline{TypeScript}{#1}}
 
 \definecolor{codeback}{rgb}{0.95, 0.95, 0.95}
-\definecolor{typescolor}{HTML}{56b6c2}
+\setminted[TypeScript]{bgcolor=codeback}
+
+\newcommand{\insertcodefile}[1]{
+    \inputminted[
+        linenos,
+        bgcolor=codeback,
+        breaklines=true,
+        breakafter={\{,}
+    ]{Typescript}{#1}
+}
+
+\newcommand{\addappendixcode}[1]{
+    \subsection{#1}
+    \label{appendix:#1}
+    \insertcodefile{../../src/lib/#1}
+}
 
 % Type keywords:
 % number, string, Map, Model, RoadNetwork, CubicBezier, Vector2, void, Simulation, Edge, Vertex, StateMachine
