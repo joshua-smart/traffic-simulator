@@ -1,4 +1,4 @@
-import Stack from '../stack';
+import Stack from '../model/stack';
 import Vector2 from '../vector2';
 import { clamp, min } from 'lodash';
 import AgentRecorder, { AgentData } from './agentRecorder';
@@ -10,6 +10,7 @@ type AgentValue = {
 };
 
 export default class Agent {
+    // Stack of vertices representing the route, the top of the stack being the first vertex
     private route: Stack<number>;
     private currentSrcVertex: number;
 
@@ -28,6 +29,7 @@ export default class Agent {
         this.distance = 0;
         this.speed = 0;
 
+        // Attach AgentRecorder to Agent
         this.agentRecorder = new AgentRecorder();
     }
 
@@ -35,6 +37,7 @@ export default class Agent {
         return this.agentRecorder.get_data();
     }
 
+    // Called when agent has reached the end of the current edge
     public move_to_next_edge(): void {
         if (this.on_last_edge()) {
             this.kill = true;
@@ -63,13 +66,16 @@ export default class Agent {
         return this.speed;
     }
 
+    // Increment speed and position based on timeStep of last frame
     public increment_position(timeStep: number): void {
         this.speed += this.acceleration * timeStep;
         this.distance += this.speed * timeStep;
 
+        // Update recorded data
         this.agentRecorder.track(this.speed, timeStep);
     }
 
+    // Calculate acceleration for current frame
     public calculate_acceleration(position: Vector2, direction: Vector2, curvature: number, agentValues: AgentValue[]): void {
 
         const separationDistance = 4;
@@ -82,16 +88,17 @@ export default class Agent {
             return direction.dot(toAgentRay) > 0 && direction.dot(agentDir) > 0;
         });
 
-        const targetAgentSpeed = min(
-            [...visibleAgents.map(agent => this.get_target_speed_from_agent(position, agent, roadSpeed, separationDistance)), roadSpeed]
-        );
+        // Calculate target speed for each other agent and return the minimum, capped at roadSpeed
+        const targetAgentSpeed = min(visibleAgents.map(agent => this.get_target_speed_from_agent(position, agent, roadSpeed, separationDistance)));
 
         const targetSpeed = clamp(targetAgentSpeed, 0, roadSpeed);
 
+        // Calculate acceleration from targetSpeed
         const acceleration = (targetSpeed - this.speed)*2;
         this.acceleration = accelerationLimit*Math.sign(acceleration);
     }
 
+    // Get targetSpeed based on square distance to other agent
     private get_target_speed_from_agent(position: Vector2, {position: agentPos, direction: agentDir, speed: agentSpeed}: AgentValue, roadSpeed: number, separationDistance: number) {
         const behind = agentDir.dot(position.sub(agentPos)) < 0;
 

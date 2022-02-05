@@ -1,3 +1,4 @@
+// Custom error class
 export class GraphError extends Error {
     public name = "GraphError";
     constructor(message?: string) {

@@ -5,6 +5,7 @@ export default class OutputPainter {
     private formats: Map<string, (input: number) => string>;
 
     constructor() {
+        // Create map for format functions
         const raw = (input: number) => `${input}`;
         const seconds = (input: number) => `${input.toFixed(2)}<span class="text-sm">s</span>`;
         const metres = (input: number) => `${input.toFixed(2)}<span class="text-sm">m</span>`;
@@ -24,6 +25,7 @@ export default class OutputPainter {
 
     public draw(simulationOutput: SimulationOutput): void {
         if (!simulationOutput) return;
+        // Iterate over object key, apply format function and draw to screen
         Object.keys(simulationOutput).forEach(id => {
             const element = document.querySelector(`#${id}`);
             const value = simulationOutput[id];
@@ -34,6 +36,7 @@ export default class OutputPainter {
         this.enableDownload();
     }
 
+    // When data is available, enable download buttons
     private enableDownload(): void {
         document.querySelector('#download-excel').classList.remove('disabled');
         document.querySelector('#download-excel').classList.add('active');

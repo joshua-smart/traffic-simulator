@@ -20,6 +20,7 @@ export default class Model {
         return this.simulation;
     }
 
+    // Create deep copy of RoadNetwork class to avoid duplicate references
     public copy_road_network(): RoadNetwork {
         return cloneDeep(this.roadNetwork);
     }
@@ -28,11 +29,13 @@ export default class Model {
         this.roadNetwork = newState;
     }
 
+    // Enforce vertex limit
     public add_vertex(position: Vector2): number {
         if (this.roadNetwork.size() >= 50) return -1;
         return this.roadNetwork.add_vertex(position);
     }
 
+    // Reverse edge if the reverse is present, create new if none exists, remove if edge exists
     public toggle_edge(srcId: number, dstId: number): void {
         // No self-connecting vertices
         if (srcId === dstId) return;
@@ -48,6 +51,7 @@ export default class Model {
         this.roadNetwork.set_vertex(vertexId, position);
     }
 
+    // Move edge handle to mouse position
     public set_handle({srcId, dstId, position}: {srcId: number, dstId: number, position: 'start' | 'end'}, mousePosition: Vector2): void {
         const currentEdge = this.roadNetwork.get_edge(srcId, dstId);
         const vertex = position === 'start' ? this.roadNetwork.get_vertex(srcId) : this.roadNetwork.get_vertex(dstId);

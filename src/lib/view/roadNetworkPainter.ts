@@ -19,11 +19,13 @@ export default class RoadNetworkPainter {
         this.handleContainer = document.querySelector('#handle-container');
     }
 
+    // Clear all vertices and handles
     public clear(): void {
         this.vertexContainer.innerHTML = '';
         this.handleContainer.innerHTML = '';
     }
 
+    // If a ghost edge is defined draw edge from srcId to Vector2 position
     private draw_ghost_edge(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform) {
         const srcWorldPosition = roadNetwork.get_vertex(this.ghostEdge.srcId);
         const worldEnd = transform.to_world_space(this.ghostEdge.end);
@@ -31,6 +33,7 @@ export default class RoadNetworkPainter {
         canvas.line(srcWorldPosition, worldEnd, {color: 'lightgrey', width: 2 * transform.get_scale(), cap: 'round'});
     }
 
+    // Create HTML elements for the vertices of the road network
     public draw_vertices(roadNetwork: RoadNetwork, transform: Transform): void {
         for(let vertexId = 0; vertexId < roadNetwork.size(); vertexId++) {
             const vertex = roadNetwork.get_vertex(vertexId);
@@ -38,6 +41,7 @@ export default class RoadNetworkPainter {
         }
     }
 
+    // Add positions and styles to vertex element, then draw to UI
     private draw_vertex(vertexId: number, vertex: Vector2, transform: Transform): void {
         const screenVertex = transform.to_screen_space(vertex);
         const vertexElement = document.createElement('div');
@@ -50,6 +54,7 @@ export default class RoadNetworkPainter {
         this.vertexContainer.appendChild(vertexElement);
     }
 
+    // For each src and dst vertex, if an edge exists, draw it
     public draw_roads(canvas: Canvas, roadNetwork: RoadNetwork, transform: Transform): void {
         for(let srcId = 0; srcId < roadNetwork.size(); srcId++) {
             for(let dstId = 0; dstId < roadNetwork.size(); dstId++) {
@@ -60,6 +65,7 @@ export default class RoadNetworkPainter {
         if (this.ghostEdge) this.draw_ghost_edge(canvas, roadNetwork, transform);
     }
 
+    // Get and draw the bezier curve represented by a given edge
     private draw_road(canvas: Canvas, roadNetwork: RoadNetwork, srcId: number, dstId: number, transform: Transform): void {
         const edge = roadNetwork.get_edge(srcId, dstId);
         if (!edge) return;
@@ -89,6 +95,7 @@ export default class RoadNetworkPainter {
         }
     }
 
+    // Set positions and attributes of handle element and draw to UI
     private draw_handle(canvas: Canvas, roadNetwork: RoadNetwork, srcId: number, dstId: number, position: 'start' | 'end', transform: Transform): void {
         const edge = roadNetwork.get_edge(srcId, dstId);
         if (!edge) return;

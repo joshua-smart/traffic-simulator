@@ -19,6 +19,7 @@ export default class SimulationPainter {
         this.agentContainer.innerHTML = '';
     }
 
+    // Create HTML element for agent, apply styles and position, draw to UI
     private draw_agent(canvas: Canvas, simulation: Simulation, agentId: number, transform: Transform): void {
         const worldPosition = simulation.get_agent_position(agentId);
         const rotation = simulation.get_agent_rotation(agentId);

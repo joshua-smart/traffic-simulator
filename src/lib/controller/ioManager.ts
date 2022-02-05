@@ -67,6 +67,7 @@ export default class IOManager {
         return roadNetwork;
     }
 
+    // Generate Sheet object from data, remove dataPoints attribute and format NaN entries
     private static generate_sheet_from_output(data: SimulationOutput[]): Sheet {
         const filteredData = data.map(row => {
             const { dataPoints, ...filteredRow } = row;
@@ -79,6 +80,7 @@ export default class IOManager {
         return utils.json_to_sheet(filteredData);
     }
 
+    // Save output data to .xlsx file
     public static save_ouput_as_excel(data: SimulationOutput[]): void {
         const workbook = utils.book_new();
         const sheet = this.generate_sheet_from_output(data);
@@ -86,6 +88,7 @@ export default class IOManager {
         writeFile(workbook, 'myData.xlsx');
     }
 
+    // Save output data to .csv file
     public static save_ouput_as_csv(data: SimulationOutput[]): void {
         const workbook = utils.book_new();
         const sheet = this.generate_sheet_from_output(data);

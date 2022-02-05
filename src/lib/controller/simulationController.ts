@@ -8,8 +8,8 @@ export default class SimulationController {
     private model: Model;
     private view: View;
 
+    // Boolean flag for simulation
     private runnning: boolean = false;
-
     private lastFrameTime: number = 0;
 
     constructor(model: Model, view: View) {
@@ -17,6 +17,7 @@ export default class SimulationController {
         this.view = view;
     }
 
+    // Bind elements to state machine transitions
     public assign_listeners(stateMachine: StateMachine<Event>) {
         document.querySelector('#start-button').addEventListener('click', () => {
             stateMachine.transition(E.start, null);
@@ -43,6 +44,7 @@ export default class SimulationController {
         });
     }
 
+    // Main loop for the simulation
     private run(time: number) {
         const timeStep = (time - this.lastFrameTime)/1000;
         this.lastFrameTime = time;
@@ -52,6 +54,7 @@ export default class SimulationController {
         if (this.runnning) return requestAnimationFrame((time) => this.run(time));
     }
 
+    // Initialise a new simulation and start main loop
     public start() {
         this.model.start_simulation();
         this.view.set_draw('simulation', true);
@@ -68,8 +71,8 @@ export default class SimulationController {
         this.runnning = false;
     }
 
+    // Stop main loop
     public stop() {
-        // this.model.stop_simulation();
         this.view.set_draw('simulation', false);
         this.view.set_draw('handles', true);
         this.view.set_draw('vertices', true);
@@ -78,6 +81,7 @@ export default class SimulationController {
         this.runnning = false;
     }
 
+    // Restart main loop
     public resume() {
         this.runnning = true;
         this.lastFrameTime = performance.now();

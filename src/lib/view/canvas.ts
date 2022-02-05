@@ -14,6 +14,7 @@ type ShapeStyle = {
     line?: LineStyle
 };
 
+// Wrapper class for CanvasRenderingContext2D, to provide a friendlier interface
 export default class Canvas {
     private domElement: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
@@ -21,6 +22,7 @@ export default class Canvas {
 
     constructor(domElement: HTMLCanvasElement) {
         this.domElement = domElement;
+        // Get context object from HTML element
         this.ctx = this.domElement.getContext('2d');
 
         this.domElement.width = this.domElement.parentElement.offsetWidth;
@@ -34,6 +36,7 @@ export default class Canvas {
     public get width(): number { return this.domElement.width; }
     public get height(): number { return this.domElement.height; }
 
+    // Draw line to canvas from start to end with optional style
     public line(start: Vector2, end: Vector2, style?: LineStyle): void {
         this.line_draw_wrapper(style, () => {
             this.move_to(start);
@@ -41,6 +44,7 @@ export default class Canvas {
         });
     }
 
+    // Draw bezier curve to canvas with direction arrow at midpoint
     public bezier(b: CubicBezier, lineStyle?: LineStyle, shapeStyle?: ShapeStyle) {
         this.line_draw_wrapper(lineStyle, () => {
             let distance = 0;
@@ -72,6 +76,7 @@ export default class Canvas {
         });
     }
 
+    // Function wrapper to manage draw begin and end methods for shapes
     private shape_draw_wrapper(style: ShapeStyle, callback: () => void): void {
         if (style) this.assign_shape_style(style);
         this.ctx.beginPath();
@@ -80,6 +85,7 @@ export default class Canvas {
         this.ctx.stroke();
     }
 
+    // Function wrapper to manage draw begin and end methods for lines
     private line_draw_wrapper(style: LineStyle, callback: () => void) {
         if (style) this.assign_line_style(style);
         this.ctx.beginPath();
@@ -87,11 +93,13 @@ export default class Canvas {
         this.ctx.stroke();
     }
 
+    // Apply transform and move using result vector
     private move_to(position: Vector2): void {
         const transformedPosition = this.transform.to_screen_space(position);
         this.ctx.moveTo(transformedPosition.x, transformedPosition.y);
     }
 
+    // Apply transform and draw line using result vector
     private line_to(position: Vector2): void {
         const transformedPosition = this.transform.to_screen_space(position);
         this.ctx.lineTo(transformedPosition.x, transformedPosition.y);

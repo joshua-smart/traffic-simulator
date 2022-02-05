@@ -3,7 +3,7 @@ import RoadNetwork, { create_default_network, RoadNetworkError } from "../../lib
 import Vector2 from "../../lib/vector2";
 import CubicBezier from "../../lib/model/cubicBezier";
 import { GraphError } from "../../lib/model/graph";
-import Stack from "../../lib/stack";
+import Stack from "../../lib/model/stack";
 
 export const create_mock_road_network = () => {
     const roadNetwork = new RoadNetwork();

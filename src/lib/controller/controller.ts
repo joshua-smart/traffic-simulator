@@ -5,6 +5,7 @@ import SimulationController from './simulationController';
 import StateMachine from './stateMachine';
 import Vector2 from '../vector2';
 
+// States enum
 export enum S {
     idle,
     simuationActive,
@@ -18,6 +19,7 @@ export enum S {
     movingHandle
 }
 
+// Events enum
 export enum E {
     start,
     pause,
@@ -51,6 +53,7 @@ export default class Controller {
 
         this.stateMachine = new StateMachine<Event>(0);
 
+        // Bind UI events to state machine transitions
         this.initialise_state_machine();
         this.roadNetworkController.assign_listeners(this.stateMachine);
         this.simulationController.assign_listeners(this.stateMachine);
@@ -96,6 +99,7 @@ export default class Controller {
         });
     }
 
+    // Bind keyboard hotkeys
     private assign_key_listeners() {
         window.addEventListener('keydown', e => {
             // (return this.stateMachine...) <- these statements are not used to return values, instead for early returns to avoid unnecessary checks

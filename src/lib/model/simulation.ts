@@ -31,15 +31,17 @@ export default class Simulation {
         this.agentCount = 0;
         this.simulationTime = 0;
 
-        const { sources, exits } = this.set_terminating_vertices();
+        const { sources, exits } = this.get_terminating_vertices();
         this.sources = sources;
         this.exits = exits;
         this.trafficSequencer = new TrafficSequencer();
         this.simulationRecorder = new SimulationRecorder();
     }
 
+    // Called for every frame of the simulation
     public step(timeStep: number): void {
         const simulationTimeStep = timeStep * this.timeWarp;
+        // Update simulationTimer
         this.simulationTime += simulationTimeStep;
         this.update_agents(simulationTimeStep);
 
@@ -48,6 +50,7 @@ export default class Simulation {
             this.add_new_agent();
             this.agentCount++;
         }
+        // Supply callback to SimulationRecorder for data gathering
         this.simulationRecorder.track(this.simulationTime, (time: number, dataPoints: number) => {
             return {
                 simTimer: time,
@@ -62,6 +65,7 @@ export default class Simulation {
         });
     }
 
+    // Iterate over agents and update position, if kill flag is active collect data and remove from array
     private update_agents(timeStep: number): void {
         const agentValues = this.agents.map((_, agentId) => ({
                 position: this.get_agent_position(agentId),
@@ -82,6 +86,7 @@ export default class Simulation {
         });
     }
 
+    // First check if agent is at end of edge, then calculate acceleration, then increment position
     private update_agent(agentId: number, timeStep: number, agentValues: {position: Vector2, direction: Vector2, speed: number}[]): void {
         const bezier = this.get_agent_bezier(agentId);
         const agent = this.agents[agentId];
@@ -95,6 +100,7 @@ export default class Simulation {
         agent.increment_position(timeStep);
     }
 
+    // Select random source, then select random exit from validExits array, generate route and push the new agent
     private add_new_agent(): void {
         if (this.sources.length === 0) return;
         const src = sample(this.sources);
@@ -110,7 +116,8 @@ export default class Simulation {
         return this.agents.length;
     }
 
-    private set_terminating_vertices(): { sources: number[], exits: Map<number, number[]> } {
+    // Uses a graph traversal to create a Map pointing a source vertex to an array of connected exit vertices, this ensures only valid source-exit pairs can be selected to generate routes
+    private get_terminating_vertices(): { sources: number[], exits: Map<number, number[]> } {
         const exits = new Map<number, number[]>();
         const { sources: sourceVertices, exits: exitVertices } = this.get_source_and_exit_vertices();
 
@@ -125,6 +132,7 @@ export default class Simulation {
         return { sources, exits };
     }
 
+    // Source defined as a vertex with outgoing but not incoming edges, exit defined as vertex with incoming edges but not outgoing edges
     private get_source_and_exit_vertices(): { sources: number[], exits: number[] } {
         const sources = [];
         const exits = [];

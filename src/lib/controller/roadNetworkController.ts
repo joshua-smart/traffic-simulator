@@ -1,6 +1,6 @@
 import Model from '../model/model';
 import RoadNetwork from '../model/roadNetwork';
-import Stack from '../stack';
+import Stack from '../model/stack';
 import Vector2 from '../vector2';
 import View from '../view/view';
 import { E } from './controller';
