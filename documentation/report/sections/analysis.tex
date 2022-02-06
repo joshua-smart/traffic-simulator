@@ -247,6 +247,7 @@
     My proposed solution consists of a desktop app that allows the user to construct an arbitrary road network and perform tests regarding safety and efficiency, in order to assist in the process of road network development.
 
 \section{Objectives}
+\label{analysis:objectives}
 
     \subsection{Network construction}
 
@@ -282,10 +283,6 @@
             \item The program should include an agent based model to track traffic across the network. "Car" agents should be placed on the network and follow a series of rules as they "drive". Positions, density and timings of these agents can then be used to produce meaningful statistics.
             \item The more agents there are to simulate the slower the program will run, the number of agents in the simulation will be capped at 60 as this will allow for a smoother user experience and accurate simulation statistics.
             \item The efficiency of the agents is also affected by the size of the graph as I will need to implement a path-finding algorithm. As stated above the graph size limit will ensure that this procedure does not heavily impact performance.
-        \end{itemize}
-        \item Theory based approaches.
-        \begin{itemize}
-            \item Theoretical measures could also be used to evaluate a road network, such as the Maximum Graph Flow problem [section \ref{max-flow}], or by measuring the curvatures of road sections [section \ref{bezier}].
         \end{itemize}
         \item Simulation data output
         \begin{itemize}

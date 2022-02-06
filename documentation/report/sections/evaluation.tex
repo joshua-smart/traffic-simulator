@@ -1,18 +1,82 @@
 \section{Summary}
 
-    \begin{itemize}
-        \item Workflow
-        \item Learning experience
-        \item Highlight successes
-    \end{itemize}
-
     I have learned many new skills and techniques during this project such as unit testing and program architectures. I think the main success I had with this project was my own approach to development; this approach mainly focused on planning and designing the program before development began. This process is documented in \autoref{design}, I spent a decent chunk of time writing my ideas and producing diagrams, when the time came to begin development this wealth of resources drastically sped up my pace of development as I could devote my attention to specific implementations instead of the program design.
 
     Along with this I discovered and researched the Model-View-Controller architecture which I then utilised in my own program. This helped me greatly as it allowed me to compartmentalise the different sections and create features separately that I could then bring together to form a cohesive program. I would like to have tried a different architecture such as Hex (Ports \& Adapters) to develop my program, but time constraints as well as ignorance to these other options led me to continue on with the aforementioned design.
 
-    During the development process I hit an unknown bug. In short my implementation of Dijkstra's algorithm would not correctly detect when a path between two vertices did not exist, causing the agents to take invalid paths across the network. I had spent a while trying to locate the source of this issue when I decided to implement unit tests.
+    During the development process I hit an unknown bug. In short my implementation of Dijkstra's algorithm would not correctly detect when a path between two vertices did not exist, causing the agents to take invalid paths across the network. I had spent a while trying to locate the source of this issue when I decided to implement unit tests. Writing a suite of unit tests to validate the functionality of the graph class allowed me to quickly pinpoint the source of this error as well as spot a few potential future problems in other parts of the program.
 
 \section{Objective Evaluation}
+
+    In this section I will go through each objective listed in \autoref{analysis:objectives} and evaluate to what extent I have achieved this in my technical solution.
+
+    \subsection{Road Network Rendering}
+
+        \begin{quote}
+            \textbf{The program should be capable of procedurally drawing a road network to the UI using point vertices and cubic Bezier curves to model roads.}
+        \end{quote}
+
+        As demonstrated in \autoref{testing:t1}, the program is fully capable of rendering a road network structure to the UI. This forms the basis of the user interaction allowing them to visualise the underlying graph data structure.
+
+    \subsection{Vertex Limit}
+
+        \begin{quote}
+            \textbf{The number of vertices should be limited to 50 to prevent slowing down the simulation.}
+        \end{quote}
+
+    \subsection{Save \& Load}
+
+        \begin{quote}
+            \textbf{The user should be able to save and load road networks in and out of the program.}
+        \end{quote}
+
+    \subsection{Road Network Builder}
+
+        \begin{quote}
+            \textbf{The program should support a click-and-drag based interaction, allowing the creation of vertices and connections and further editing of the network.}
+        \end{quote}
+
+    \subsection{Undo \& Redo}
+
+        \begin{quote}
+            \textbf{The user should also be able to undo and redo actions to the road network.}
+        \end{quote}
+
+    \subsection{Agent Simulation}
+
+        \begin{quote}
+            \textbf{The program should be able to simulate cars driving sensibly across the road network.}
+        \end{quote}
+
+    \subsection{Agent Limit}
+
+        \begin{quote}
+            \textbf{The maximum number of agents active at any time should be limited to 60.}
+        \end{quote}
+
+    \subsection{Data Output}
+
+        \begin{quote}
+            \textbf{Relevant output data described in \autoref{analysis} should be outputted to both the UI and downloadable files.}
+        \end{quote}
+
+    \subsection{Interface Design}
+
+        \begin{quote}
+            \textbf{There should be a minimalist interface with the majority of screen real-estate allocated to the network visualisation.}
+        \end{quote}
+
+    \subsection{Desktop Compatibility}
+
+        \begin{quote}
+            \textbf{This program should support desktop size displays.}
+        \end{quote}
+
+    \subsection{UI Scaling}
+
+        \begin{quote}
+            \textbf{It should also be compatible with variable aspect ratios, resizing UI elements to fit the screen.}
+        \end{quote}
 
 \section{Technical Evaluation}
 

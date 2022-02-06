@@ -2,34 +2,38 @@
 
     Here is the link to my online GitHub Repository: \href{https://github.com/joshua-smart/traffic-simulator}{traffic-simulator codebase}
 
-    \textbf{PS. I will add my code to this section at the end as it makes it horrible to compile and I think navigating the GitHub repo is much easier}
-
-    \section{Code index}
+\section{Code index}
 
     \autoref{solution:code-index} links to some relevant algorithms and implementations present in my code base.
 
+    % args -> description, path, filename, line
+    \newcommand{\codeindexline}[4]{
+        #1 & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/#2#3}{#3} & \ref{appendix:#3} & #4 \\\hline
+    }
+
     \begin{table}[ht]
         \centering
-        \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+        \begin{tabular}{|l|l|p{0.15\textwidth}|p{0.1\textwidth}|}
             \hline
-            \textbf{Feature} & \textbf{Link}
-            \\\hline
-            Dijkstra's shortest path algorithm & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/model/roadNetwork.ts#L38}{src/lib/model/roadNetwork.ts\#L38}
-            \\\hline
-            Graph data structure & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/model/graph.ts}{src/lib/model/graph.ts}
-            \\\hline
-            Stack data structure & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/stack.ts}{src/lib/stack.ts}
-            \\\hline
-            File save and load procedures & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/controller/ioManager.ts}{src/lib/controller/ioManager.ts}
-            \\\hline
-            Object based agent model & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/model/agent.ts}{src/lib/model/agent.ts}
-            \\\hline
-            Bezier curve implementation & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/model/cubicBezier.ts}{src/lib/model/cubicBezier.ts}
-            \\\hline
-            Lookup table approximation of Bezier arc length & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/model/cubicBezier.ts#L74}{src/lib/model/cubicBezier.ts\#L74}
-            \\\hline
-            State machine implementation & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/lib/controller/stateMachine.ts}{src/lib/controller/stateMachine.ts}
-            \\\hline
+            \textbf{Feature} & \textbf{Github Link} & \textbf{Appendix Reference} & \textbf{Line Number}\\\hline
+
+            \codeindexline{Dijkstra's shortest path algorithm}{src/lib/model/}{roadNetwork.ts}{38}
+
+            \codeindexline{Graph data structure}{src/lib/model/}{graph.ts}{}
+
+            \codeindexline{Bredth-first graph traversal}{src/lib/model}{graph.ts}{}
+
+            \codeindexline{Stack data structure}{src/lib/}{stack.ts}{}
+
+            \codeindexline{File save and load procedures}{src/lib/controller/}{ioManager.ts}{}
+
+            \codeindexline{Object based agent model}{src/lib/model/}{agent.ts}{}
+
+            \codeindexline{Bezier curve implementation}{src/lib/model/}{cubicBezier.ts}
+
+            \codeindexline{Lookup table approximation of Bezier arc length}{src/lib/model/}{cubicBezier.ts}{74}
+
+            \codeindexline{State machine implementation}{src/lib/controller/}{stateMachine.ts}{}
         \end{tabular}
         \caption{Summary of relevant algorithms and implementations}
         \label{solution:code-index}

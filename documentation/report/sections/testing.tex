@@ -1,7 +1,7 @@
 \section{Objectives Summarised}
 
     \begin{enumerate}
-        \item The program should be capable of procedurally drawing a road network to the UI.
+        \item The program should be capable of procedurally drawing a road network to the UI using point vertices and cubic Bezier curves to model roads.
         \item The number of vertices should be limited to 50 to prevent slowing down the simulation.
         \item The user should be able to save and load road networks in and out of the program.
         \item The program should support a click-and-drag based interaction, allowing the creation of vertices and connections and further editing of the network.
@@ -19,6 +19,7 @@
     Each of the below tests relates to the corresponding objective shown above, I intend to show rigorously the functionality of all of these features.
 
     \subsection{Test 1 - Road network rendering}
+    \label{testing:t1}
 
         \subsubsection{Methodology}
 
@@ -36,6 +37,7 @@
             Shown in \autoref{testing:example-layouts} are four example layouts I constructed, all networks are rendered to the UI as expected, displaying smooth curves and everything is positioned correctly.
 
     \subsection{Test 2 - Vertex limit}
+    \label{testing:t2}
 
         \subsubsection{Methodology}
 
@@ -48,6 +50,7 @@
             The recorded video can be found at \href{https://youtu.be/03z-9HgNAaQ}{https://youtu.be/03z-9HgNAaQ}. The test ran as expected and the user was not able to create new vertices after the limit of 50 was reached. New connections that would have usually created a new vertex also behaved correctly when 50 vertices were already present.
 
     \subsection{Test 3 - Save and Load}
+    \label{testing:t3}
 
         \subsubsection{Methodology}
 
@@ -74,7 +77,10 @@
                     \label{testing:t3-image}
                 \end{figure}
 
+                This test produced the expected results, Screenshot 1 shows the edited default road network. After using the save function Screenshot 2 shows a \mintTS{.json} file named \mintTS{my road network.json}. When the file is opened it shows a JSON object containing \mintTS{"adjacencyMatrix"} and \mintTS{"vertices"} attributes representing the graph data structure shown in Screenshot 3. After the load function is executed using this file Screenshot 4 was taken showing an identical layout to the inital edits.
+
     \subsection{Test 4 - Road network construction}
+    \label{testing:t4}
 
         \subsubsection{Methodology}
 
@@ -91,13 +97,12 @@
                 \item Reposition road control point
             \end{itemize}
 
-            I will demonstrate these features in order during the video.
-
         \subsubsection{Results}
 
-            \href{https://youtu.be/2Kl5lxrjS\_o}{https://youtu.be/2Kl5lxrjS\_o}
+            \href{https://youtu.be/2Kl5lxrjS\_o}{https://youtu.be/2Kl5lxrjS\_o}. As shown in the video the user is able to perform all of the above actions without issue and the relevant alterations are seen in the network visualisation.
 
     \subsection{Test 5 - Undo and Redo}
+    \label{testing:t5}
 
         \subsubsection{Methodology}
 
@@ -123,7 +128,10 @@
                 \label{testing:t5-image}
             \end{figure}
 
+            This test shows the edit of one vertex being added to the network being undone in Screenshot 3 and redone in Screenshot 4. Also visible are the 'disabled' states of the undo/redo buttons in Screenshot 1, the undo option being available after a change is made in Screenshot 2. And the redo button only becoming active after an undo operation is triggered in Screenshot 3.
+
     \subsection{Test 6 - Agent Movement}
+    \label{testing:t6}
 
         \subsubsection{Methodology}
 
@@ -131,9 +139,16 @@
 
         \subsubsection{Results}
 
-            \href{https://youtu.be/pmxqU6VuwSY}{https://youtu.be/pmxqU6VuwSY}
+            \href{https://youtu.be/pmxqU6VuwSY}{https://youtu.be/pmxqU6VuwSY}. This test successfully demonstrates a few behaviours of the agents:
+
+            \begin{itemize}
+                \item Agents accelerate from rest once and stop accelerating once some maximum road velocity is reached.
+                \item Agents will slow down or stop when another agent is detected travelling in a similar direction. The emergent behaviour of this causes agents to 'give way' to one another when approaching junctions.
+                \item Agents successfully follow their generated routes, starting from a source vertex and travelling along valid paths (respecting the directions of edges) to a connected exit vertex.
+            \end{itemize}
 
     \subsection{Test 7 - Maximum agent limit}
+    \label{testing:t7}
 
         \subsubsection{Methodology}
 
@@ -144,6 +159,7 @@
             \textbf{INSERT IMAGE HERE}
 
     \subsection{Test 8 - Data Output}
+    \label{testing:t8}
 
         \subsubsection{Methodology}
 
@@ -170,7 +186,10 @@
                 \label{testing:t8-image}
             \end{figure}
 
+            Screenshot 1 shows the summary output data display, indicating 40 data points have been collected. After using the save data output function, Screenshot 2 shows two files named \mintTS{myData.xlsx} and \mintTS{myData.csv}. Viewing the contents of these files gives Screenshots 3.1 and 3.2, as expected both these files contain an identical 40 rows of information. The leading rows of \mintTS{NaN} are expected behaviour as this represents the frames in which no agents had concluded their route so no data is present.
+
     \subsection{Tests 9, 10, 11 - GUI Compatibility}
+    \label{testing:t9,10,11}
 
         \subsubsection{Methodology}
 
@@ -184,7 +203,7 @@
 
     During the development process I wrote a series of unit tests to validate the major parts of the system, leading to less error-prone and maintainable code. The following index (\autoref{tests-index}) points to the test files in my code base. All the tests pass when executed.
 
-    \begin{table}[h]
+    \begin{table}[ht]
         \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
             \hline
             \textbf{Test target} & \textbf{Link}\\\hline

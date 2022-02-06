@@ -1,29 +1,54 @@
-    \addappendixcode{index.ts}
-    \addappendixcode{vector2.ts}
-    \addappendixcode{stack.ts}
+\section{Core Files}
+    \subsection{index.html}
+        \label{appendix:index.html}
+        \inputminted[
+            linenos,
+            bgcolor=codeback,
+            breaklines=true,
+            breakafter={\{,}
+        ]{HTML}{../../src/index.html}
+
+    \subsection{input.css}
+        \label{appendix:input.css}
+        \inputminted[
+            linenos,
+            bgcolor=codeback,
+            breaklines=true,
+            breakafter={\{,}
+        ]{scss}{../../src/input.css}
+
+    \addappendixcode{}{index.ts}
+    \addappendixcode{}{vector2.ts}
 
 \section{Model}
-    \addappendixcode{model/model.ts}
-    \addappendixcode{model/roadNetwork.ts}
-    \addappendixcode{model/simulation.ts}
-    \addappendixcode{model/cubicBezier.ts}
-    \addappendixcode{model/graph.ts}
-    \addappendixcode{model/agent.ts}
-    \addappendixcode{model/agentRecorder.ts}
-    \addappendixcode{model/trafficSequencer.ts}
-    \addappendixcode{model/simulationRecorder.ts}
+    \addappendixcode{model/}{model.ts}
+    \addappendixcode{model/}{roadNetwork.ts}
+    \addappendixcode{model/}{simulation.ts}
+    \addappendixcode{model/}{cubicBezier.ts}
+    \addappendixcode{model/}{graph.ts}
+    \addappendixcode{model/}{agent.ts}
+    \addappendixcode{model/}{agentRecorder.ts}
+    \addappendixcode{model/}{simulationRecorder.ts}
+    \addappendixcode{model/}{stack.ts}
 
 \section{View}
-    \addappendixcode{view/view.ts}
-    \addappendixcode{view/canvas.ts}
-    \addappendixcode{view/transform.ts}
-    \addappendixcode{view/roadNetworkPainter.ts}
-    \addappendixcode{view/simulationPainter.ts}
-    \addappendixcode{view/outputPainter.ts}
+    \addappendixcode{view/}{view.ts}
+    \addappendixcode{view/}{canvas.ts}
+    \addappendixcode{view/}{transform.ts}
+    \addappendixcode{view/}{roadNetworkPainter.ts}
+    \addappendixcode{view/}{simulationPainter.ts}
+    \addappendixcode{view/}{outputPainter.ts}
 
 \section{Controller}
-    \addappendixcode{controller/controller.ts}
-    \addappendixcode{controller/stateMachine.ts}
-    \addappendixcode{controller/ioManager.ts}
-    \addappendixcode{controller/roadNetworkController.ts}
-    \addappendixcode{controller/simulationController.ts}
+    \addappendixcode{controller/}{controller.ts}
+    \addappendixcode{controller/}{stateMachine.ts}
+    \addappendixcode{controller/}{ioManager.ts}
+    \addappendixcode{controller/}{roadNetworkController.ts}
+    \addappendixcode{controller/}{simulationController.ts}
+
+\section{Tests}
+    \addappendixcode{../tests/model/}{cubicBezier.test.ts}
+    \addappendixcode{../tests/model/}{graph.test.ts}
+    \addappendixcode{../tests/model/}{roadNetwork.test.ts}
+    \addappendixcode{../tests/model/}{simulation.test.ts}
+    \addappendixcode{../tests/}{stateMachine.test.ts}

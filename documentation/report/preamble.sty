@@ -89,14 +89,11 @@
     ]{Typescript}{#1}
 }
 
-\newcommand{\addappendixcode}[1]{
-    \subsection{#1}
-    \label{appendix:#1}
-    \insertcodefile{../../src/lib/#1}
+\newcommand{\addappendixcode}[2]{
+    \subsection{#2}
+    \label{appendix:#2}
+    \insertcodefile{../../src/lib/#1#2}
 }
-
-% Type keywords:
-% number, string, Map, Model, RoadNetwork, CubicBezier, Vector2, void, Simulation, Edge, Vertex, StateMachine
 
 \usepackage{algpseudocode}
 \usepackage{algorithm}
