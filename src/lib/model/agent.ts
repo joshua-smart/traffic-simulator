@@ -89,7 +89,7 @@ export default class Agent {
         });
 
         // Calculate target speed for each other agent and return the minimum, capped at roadSpeed
-        const targetAgentSpeed = min(visibleAgents.map(agent => this.get_target_speed_from_agent(position, agent, roadSpeed, separationDistance)));
+        const targetAgentSpeed = min([...visibleAgents.map(agent => this.get_target_speed_from_agent(position, agent, roadSpeed, separationDistance)), roadSpeed]);
 
         const targetSpeed = clamp(targetAgentSpeed, 0, roadSpeed);
 
