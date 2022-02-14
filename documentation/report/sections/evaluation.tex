@@ -6,6 +6,16 @@
 
     During the development process I hit an unknown bug. In short my implementation of Dijkstra's algorithm would not correctly detect when a path between two vertices did not exist, causing the agents to take invalid paths across the network. I had spent a while trying to locate the source of this issue when I decided to implement unit tests. Writing a suite of unit tests to validate the functionality of the graph class allowed me to quickly pinpoint the source of this error as well as spot a few potential future problems in other parts of the program.
 
+\section{Third Party Feedback}
+
+    For this section I requested one of my peers to use and make comments on my program, below is a transcript of their response:
+
+    \begin{quote}
+        Visually, the program is lovely, soft colours and clear buttons that are positioned neatly on the screen to be out of the way but clearly present. Design is powerful but not overwhelming, customisation options are massive, with panning and zoom allowing for complex and large simulations yet none seems overbearing and all is intuitive and feels comfortable to use. Overall, this is a wonderful program that is clean, highly functional and yet incredibly intuitive.
+    \end{quote}
+
+    These generous comments highlight a few of the main objectives I intended to hit in this project. Namely the design of the user interface, which my client described as "powerful but not overwhelming". This mirrors my own objective listed in \autoref{analysis:objectives}. Similarly the client talked about an "incredibly intuitive [program]", highlighting my intention to make an easy-to-use interface, and it appears that my focus on this in researching existing solutions has paid off.
+
 \section{Objective Evaluation}
 
     In this section I will go through each objective listed in \autoref{analysis:objectives} and evaluate to what extent I have achieved this in my technical solution.
@@ -16,7 +26,7 @@
             \textbf{The program should be capable of procedurally drawing a road network to the UI using point vertices and cubic Bezier curves to model roads.}
         \end{quote}
 
-        As demonstrated in \autoref{testing:t1}, the program is fully capable of rendering a road network structure to the UI. This forms the basis of the user interaction allowing them to visualise the underlying graph data structure.
+        As demonstrated in \autoref{testing:t1}, the program is fully capable of rendering a road network structure to the UI. This forms the basis of the user interaction allowing them to visualise the underlying graph data structure. The road visualisation also gives the user an obvious impression of direction with a small direction arrow at the midpoint of the edge.
 
     \subsection{Vertex Limit}
 
@@ -24,13 +34,15 @@
             \textbf{The number of vertices should be limited to 50 to prevent slowing down the simulation.}
         \end{quote}
 
-        I have successfully implemented a limit of 50 vertices to the road network, this prevents the route finding algorithm from becoming a performance issue. As seen in all my video tests, there is no noticeable lag spike when agents are spawned.
+        I have successfully implemented a limit of 50 vertices to the road network, this prevents the route finding algorithm from becoming a performance issue. As seen in the video tests, there is no noticeable lag spike when agents are spawned.
 
     \subsection{Save \& Load}
 
         \begin{quote}
             \textbf{The user should be able to save and load road networks in and out of the program.}
         \end{quote}
+
+        This I believe is an essential feature for a program of this kind. Allowing the user to import and export projects, I have thoroughly tested this functionality and it all gives expected behaviour. I implemented this using JavaScript's native JSON processing and a package to interface with the browser's file save API. Loading the files followed a similar procedure, but in reverse. This was a useful exercise in file handling
 
     \subsection{Road Network Builder}
 
@@ -106,6 +118,6 @@
 
         On reflection, it would have improved the system to isolate the state machine responsibility to just the network builder, using more traditional methods of control flow to manage the main framework of the application.
 
-\section{Feedback}
-
 \section{Conclusion}
+
+    Overall I have enjoyed this project and I am pleased with the solutions ability to meet the objectives I had set. In order to develop this program further I would add support for vertical height differences between road sections (bridges and underpasses), as well as more road features such as parking lots or traffic lights. My proudest achievement within this process was my focus on program design and architecture, designing what I believe is quite an elegant solution to the problem.

@@ -1,5 +1,4 @@
 \ProvidesPackage{preamble}
-
 \usepackage[utf8]{inputenc}
 
 % MATHS
@@ -117,4 +116,10 @@
         \caption{#1 class diagram}
         \label{UML:#1}
     \end{table}
+}
+
+% args -> description, path, filename, line, description
+\newcommand{\codeindexline}[5]{
+    \textbf{#1} & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/#2#3}{#3} & \ref{appendix:#3} & #4 \\\hline
+    \multicolumn{4}{|p{\textwidth}|}{#5}\\\hline
 }

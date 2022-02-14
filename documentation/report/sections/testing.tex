@@ -204,12 +204,19 @@
     During the development process I wrote a series of unit tests to validate the major parts of the system, leading to less error-prone and maintainable code. The following index (\autoref{tests-index}) points to the test files in my code base. All the tests pass when executed.
 
     \begin{table}[ht]
-        \begin{tabular}{|p{0.45\textwidth}|p{0.45\textwidth}|}
+        \begin{tabular}{|l|l|p{0.15\textwidth}|p{0.1\textwidth}|}
             \hline
-            \textbf{Test target} & \textbf{Link}\\\hline
-            Graph & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/tests/model/graph.test.ts}{src/tests/model/graph.test.ts}\\\hline
-            RoadNetwork & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/tests/model/roadNetwork.test.ts}{src/tests/model/roadNetwork.test.ts}\\\hline
-            Simulation & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/src/tests/model/simulation.test.ts}{src/tests/model/simulation.test.ts}\\\hline
+            \textbf{Test Class} & \textbf{Github Link} & \textbf{Appendix Reference} & \textbf{Line Number}\\\hline
+
+            \codeindexline{CubicBezier}{src/tests/model/}{cubicBezier.test.ts}{}{CubicBezier test Suite}
+
+            \codeindexline{Graph}{src/tests/model/}{graph.test.ts}{}{Graph test suite}
+
+            \codeindexline{RoadNetwork}{src/tests/model/}{roadNetwork.test.ts}{}{RoadNetwork test suite}
+
+            \codeindexline{Simulation}{src/tests/model}{simulation.test.ts}{}{Simulation test suite}
+
+            \codeindexline{StateMachine}{src/tests/}{stateMachine.test.ts}{}{StateMachine test suite}
         \end{tabular}
         \caption{Unit tests index}
         \label{tests-index}

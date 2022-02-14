@@ -6,34 +6,29 @@
 
     \autoref{solution:code-index} links to some relevant algorithms and implementations present in my code base.
 
-    % args -> description, path, filename, line
-    \newcommand{\codeindexline}[4]{
-        #1 & \href{https://github.com/joshua-smart/traffic-simulator/blob/main/#2#3}{#3} & \ref{appendix:#3} & #4 \\\hline
-    }
-
     \begin{table}[ht]
         \centering
         \begin{tabular}{|l|l|p{0.15\textwidth}|p{0.1\textwidth}|}
             \hline
             \textbf{Feature} & \textbf{Github Link} & \textbf{Appendix Reference} & \textbf{Line Number}\\\hline
 
-            \codeindexline{Dijkstra's shortest path algorithm}{src/lib/model/}{roadNetwork.ts}{38}
+            \codeindexline{Dijkstra's shortest path algorithm}{src/lib/model/}{roadNetwork.ts}{38}{This is used to generate the routes that agents follow across the road network, it also correctly exits when no complete route is found. This is a method of the \mintTS{RoadNetwork} class and the algorithm operates on its graph data structure.}
 
-            \codeindexline{Graph data structure}{src/lib/model/}{graph.ts}{}
+            \codeindexline{Graph data structure}{src/lib/model/}{graph.ts}{}{This class uses an adjacency matrix to implement the graph abstract data structure, providing a series of method used to interact with it.}
 
-            \codeindexline{Bredth-first graph traversal}{src/lib/model}{graph.ts}{}
+            \codeindexline{Bredth-first graph traversal}{src/lib/model}{graph.ts}{}{This method, which is part of the \mintTS{Graph} class is used to find all connected exits from a given source vertex and is part of the algorithm that ensures cars can only be assigned valid routes.}
 
-            \codeindexline{Stack data structure}{src/lib/}{stack.ts}{}
+            \codeindexline{Stack data structure}{src/lib/}{stack.ts}{}{}
 
-            \codeindexline{File save and load procedures}{src/lib/controller/}{ioManager.ts}{}
+            \codeindexline{File save and load procedures}{src/lib/controller/}{ioManager.ts}{}{}
 
-            \codeindexline{Object based agent model}{src/lib/model/}{agent.ts}{}
+            \codeindexline{Object based agent model}{src/lib/model/}{agent.ts}{}{}
 
-            \codeindexline{Bezier curve implementation}{src/lib/model/}{cubicBezier.ts}
+            \codeindexline{Bezier curve implementation}{src/lib/model/}{cubicBezier.ts}{}
 
-            \codeindexline{Lookup table approximation of Bezier arc length}{src/lib/model/}{cubicBezier.ts}{74}
+            \codeindexline{Lookup table approximation of Bezier arc length}{src/lib/model/}{cubicBezier.ts}{74}{}
 
-            \codeindexline{State machine implementation}{src/lib/controller/}{stateMachine.ts}{}
+            \codeindexline{State machine implementation}{src/lib/controller/}{stateMachine.ts}{}{}
         \end{tabular}
         \caption{Summary of relevant algorithms and implementations}
         \label{solution:code-index}

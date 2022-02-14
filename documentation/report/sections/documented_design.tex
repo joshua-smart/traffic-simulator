@@ -46,6 +46,12 @@
             \item \mintTS{element.addEventListener(<event>, <callback>);} This will be a vital part of my program, allowing code to respond to document events such as clicks, keypresses and scrolls.
         \end{itemize}
 
+        \subsubsection{Tailwindcss}
+
+            In order to aid my css designing in this project I will be using the \href{https://tailwindcss.com/}{tailwindcss} framework, this provides a wide range of utility classes while maintaining support for custom classes.
+
+            It functions by taking an input stylesheet containing the user defined classes, along with the target html file, and compiles a new css stylesheet containing all the necessary classes that can then be linked to my html. The result of this is that my source code will contain an \mintTS{input.css} file that contains only my custom defined classes and the html will utilise tailwind provided utility classes to style elements.
+
 \section{Program overview}
 
     This program will consist largely of three major components: A road network model; a framework for testing the road model; and a system to handle the display as well as user interaction.
@@ -191,8 +197,6 @@
         \label{bezier-interpolation-comparison-on-curves}
     \end{figure}
 
-    \subsection{GUI}
-
 \section{Network Testing}
 
     \subsection{Traffic Behaviour Modelling}
@@ -302,6 +306,22 @@
         \end{figure}
 
         It is important to update the positions of the agents syncronously as this ensures every update happens in the same timestep instead of taking data from the next timestep for previously updated agents.
+
+\section{GUI}
+\label{design:GUI}
+
+    \autoref{design:gui-sketch} shows a brief sketch of the proposed layout of the GUI. This figure meets the objectives stated but I expect there will be alterations made during the design process.
+
+    It consists of a top toolbar containing simulation controlls, undo/redo and save/load functions. As well as a main canvas containing the road network visualisation, a text overlay panel is placed on top of this section to display simulation data as it is runnning.
+
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.9\textwidth]{gui-sketch.jpg}
+        \caption{Initial sketch of the program GUI}
+        \label{design:gui-sketch}
+    \end{figure}
+
+    \clearpage
 
 \section{Class structure}
 
