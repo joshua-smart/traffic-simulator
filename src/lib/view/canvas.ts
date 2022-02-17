@@ -2,6 +2,7 @@ import CubicBezier from '../model/cubicBezier';
 import Vector2 from '../vector2';
 import Transform from './transform';
 
+// Type definition for object representing the style of a line render
 type LineStyle = {
     color?: string,
     width?: number,
@@ -9,6 +10,7 @@ type LineStyle = {
     join?: CanvasLineJoin
 };
 
+// Type definition for object representing the style of a shape render
 type ShapeStyle = {
     color?: string,
     line?: LineStyle
@@ -25,6 +27,7 @@ export default class Canvas {
         // Get context object from HTML element
         this.ctx = this.domElement.getContext('2d');
 
+        // Set dimensions of the canvas to match the dimensions of its containing domElement
         this.domElement.width = this.domElement.parentElement.offsetWidth;
         this.domElement.height = this.domElement.parentElement.offsetHeight;
     }
@@ -33,6 +36,7 @@ export default class Canvas {
         this.transform = transform;
     }
 
+    // Getters for width and height of the canvas
     public get width(): number { return this.domElement.width; }
     public get height(): number { return this.domElement.height; }
 
@@ -50,8 +54,10 @@ export default class Canvas {
             let distance = 0;
             let currentPoint = b.get_point_at_distance(distance);
 
+            // Move to start of bezier curve
             this.move_to(currentPoint);
 
+            // Draw a series of small lines to approximate the curve
             while (distance < b.get_arc_length()) {
                 this.line_to(currentPoint);
                 distance += b.get_arc_length() / 100;
@@ -61,15 +67,19 @@ export default class Canvas {
         this.shape_draw_wrapper(shapeStyle, () => {
             const arrowSize = 0.75;
 
+            // Get position and tangent of midpoint arrow indicator
             const midPoint = b.get_point_at_distance(b.get_arc_length() / 2);
             const tangent = b.get_tangent_at_distance(b.get_arc_length() / 2);
+            // Normalise tangent vector and calculate a vector perpendicular to it
             const t = tangent.normalise();
             const n = new Vector2(t.y, -t.x);
 
+            // Use these vectors to compute the vertices of the triangle
             const v0 = midPoint.add(t.mult(arrowSize));
             const v1 = midPoint.add(t.mult(-arrowSize)).add(n.mult(arrowSize));
             const v2 = midPoint.add(t.mult(-arrowSize)).add(n.mult(-arrowSize));
 
+            // Draw the triangle to the canvas
             this.move_to(v0);
             this.line_to(v1);
             this.line_to(v2);

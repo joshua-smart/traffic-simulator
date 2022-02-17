@@ -9,6 +9,7 @@ export default class Model {
     private simulation: Simulation;
 
     constructor() {
+        // Use the default_network on startup to replace the empty screen
         this.roadNetwork = create_default_network();
     }
 
@@ -39,10 +40,12 @@ export default class Model {
     public toggle_edge(srcId: number, dstId: number): void {
         // No self-connecting vertices
         if (srcId === dstId) return;
+        // If an edge in the same direction already exists, remove edge and exit function
         if (this.roadNetwork.get_edge(srcId, dstId)) {
             this.roadNetwork.remove_edge(srcId, dstId);
             return;
         }
+        // If neither edge case, remove edge in other direction and add edge in this direction
         this.roadNetwork.remove_edge(dstId, srcId);
         this.roadNetwork.add_edge(srcId, dstId);
     }
@@ -65,6 +68,7 @@ export default class Model {
     }
 
     public start_simulation() {
+        // Instantiate a new simulation using the current road network
         this.simulation = new Simulation(this.roadNetwork);
     }
 

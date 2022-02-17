@@ -15,8 +15,9 @@ export default class RoadNetworkController {
     private previousStates: Stack<RoadNetwork>;
     private futureStates: Stack<RoadNetwork>;
 
-    // Mouse interaction attributes
+    // Id of vertex targeted by a mouse event
     private targetedVertex: number;
+    // Ids of edge along with start/end flag representing the reference of a handle of the graph
     private targetedHandle: {srcId: number, dstId: number, position: 'start' | 'end'};
 
     constructor(model: Model, view: View) {
@@ -40,6 +41,7 @@ export default class RoadNetworkController {
             const shift = e.shiftKey;
             const targetClass = (<HTMLElement>e.target).className;
 
+            // Differentiate between clicks on canvas, verticies or handles. As well as whether shift was pressed or not
             switch (targetClass) {
                 case ('canvas'): {
                     if (!shift) stateMachine.transition(E.leftClickEmpty, e);
@@ -58,13 +60,16 @@ export default class RoadNetworkController {
             }
         });
 
+        // Bind transitions for generic mouse events
         element.addEventListener('mouseup', (e) => stateMachine.transition(E.mouseUp, e));
         element.addEventListener('mousemove', (e) => stateMachine.transition(E.mouseMove, e));
         element.addEventListener('wheel', (e) => stateMachine.transition(E.scroll, e));
 
+        // Detect clicks on undo/redo buttons
         document.querySelector('#undo-button').addEventListener('click', () => stateMachine.transition(E.undo, null));
         document.querySelector('#redo-button').addEventListener('click', () => stateMachine.transition(E.redo, null));
 
+        // Detect clicks on save/load buttons
         document.querySelector('#save-button').addEventListener('click', () => stateMachine.transition(E.save, null));
         document.querySelector('#load-button').addEventListener('click', () => stateMachine.transition(E.load, null));
     }

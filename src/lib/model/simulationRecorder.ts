@@ -22,7 +22,9 @@ export default class SimulationRecorder {
 
     // getOutput is passed as a function parameter to avoid calculating summary data in frames where it is not saved
     public track(time: number, getOutput: (time: number, dataPoints: number) => SimulationOutput): void {
+        // If less than a second has passed since the last record, exit the function
         if (time - this.lastSaveTime <= 1) return;
+        // Otherwise, get the data and push it to the data array
         this.data.push(getOutput(time, this.data.length + 1));
         this.lastSaveTime = time;
     }

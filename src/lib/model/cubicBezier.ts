@@ -25,6 +25,7 @@ export default class CubicBezier {
     }
 
     // Implementation of cubic bezier curve equation with respect to parameter t
+    // This equation is described in my research section 1.5.3
     private interpolate(t: number): Vector2 {
         return new Vector2(0, 0).add(
             this.vertices[0].mult((1 - t)**3)
@@ -38,6 +39,7 @@ export default class CubicBezier {
     }
 
     // Implementation of cubic bezier derivative with respect to parameter t
+    // This equation is described in my research section 1.5.3
     private tangent(t: number): Vector2 {
         return new Vector2(0, 0).add(
             this.vertices[0].mult(-3*t**2 + 6*t - 3)
@@ -51,6 +53,7 @@ export default class CubicBezier {
     }
 
     // Implementation of the second cubic bezier derivative with respect to t
+    // This equation is described in my research section 1.5.3
     private second_derivative(t: number): Vector2 {
         return new Vector2(0, 0).add(
             this.vertices[0].mult(-6*t + 6)
@@ -64,6 +67,7 @@ export default class CubicBezier {
     }
 
     // Calculate curvature of the curve at a given t, tighter curve equates to larger curvature
+    // This equation is described in my research section 1.5.3
     private curvature(t: number): number {
         const d = this.tangent(t);
         const d2 = this.second_derivative(t);
@@ -71,6 +75,7 @@ export default class CubicBezier {
     }
 
     // Create distanceLookup by cumulatively evaluating small straight line distances, setting arclength to final distance
+    // This algorithm is described in Algorithm 2.1
     private generate_lookup(): void {
         const map = new Map<number, number>();
         let distance = 0;
@@ -88,6 +93,7 @@ export default class CubicBezier {
     }
 
     // Find first t such that distance is greater than the target, else return null
+    // This algorithm is described in Algorithm 2.2
     private get_t_at_distance(targetDistance: number): number {
         for(const [t, distance] of this.distanceLookup) {
             if (distance >= targetDistance) return t;

@@ -24,18 +24,23 @@ export default class Graph<Vertex, Edge> {
 
     // Adds vertex to vertices array and ads a row and column to adjacencyMatrix
     public add_vertex(vertex: Vertex): number {
+        // Add vertex to vertex array
         this.vertices.push(vertex);
+        // Push an extra empty element to each row of the adjacency matrix
         this.adjacencyMatrix.forEach(row => row.push(this.empty));
+        // Add a new row filled with empty elements to the bottom of the adjacency matrix
         this.adjacencyMatrix.push(new Array(this.vertices.length).fill(this.empty));
         // Return index of added vertex
         return this.vertices.length - 1;
     }
 
+    // If vertexId is valid, set vertex to vertices array
     public set_vertex(vertexId: number, value: Vertex): void {
         this.check_vertex_index(vertexId);
         this.vertices[vertexId] = value;
     }
 
+    // If vertexId is valid, get vertex from array
     public get_vertex(vertexId: number): Vertex {
         this.check_vertex_index(vertexId);
         return this.vertices[vertexId];
@@ -51,16 +56,19 @@ export default class Graph<Vertex, Edge> {
         return removedVertex;
     }
 
+    // If srcId,dstId represents a valid edge, set the value of the edge 
     public set_edge(srcId: number, dstId: number, value: Edge): void {
         this.check_edge_index(srcId, dstId);
         this.adjacencyMatrix[srcId][dstId] = value;
     }
 
+    // If srcId,dstId represents a valid edge, get the value of the edge
     public get_edge(srcId: number, dstId: number): Edge {
         this.check_edge_index(srcId, dstId);
         return this.adjacencyMatrix[srcId][dstId];
     }
 
+    // // If srcId,dstId represents a valid edge, set the value of the edge in the adjecency matrix to empty
     public remove_edge(srcId: number, dstId: number): Edge {
         this.check_edge_index(srcId, dstId);
         const removedEdge = this.adjacencyMatrix[srcId][dstId];
@@ -84,22 +92,26 @@ export default class Graph<Vertex, Edge> {
 
     // Bredth-first graph traversal
     public traverse(srcId: number): number[] {
+        // Throw error if srcId is invalid
         this.check_vertex_index(srcId);
         const visited = [];
         const searchable = [srcId];
 
         while (searchable.length > 0) {
+	    // Remove and store first element of searchable array, and set as visited
             const current = searchable.shift();
             visited.push(current);
 
             for(let neighbourId = 0; neighbourId < this.size(); neighbourId++) {
+                // If no edge exists, skip neighbour
                 if (this.get_edge(current, neighbourId) === this.empty) continue;
+                // If neighbour is already visited, skip
                 if (visited.includes(neighbourId)) continue;
-
+                // If both tests pass, add neighbour to searchable queue
                 searchable.push(neighbourId);
             }
         }
-
+        // Return the array of vertices that have been visited by the traversal
         return visited;
     }
 }

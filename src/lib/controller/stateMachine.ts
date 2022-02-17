@@ -1,3 +1,4 @@
+// Generic state machine class that calls a specified callback function when a transition occurs, along with a generically typed payload value
 export default class StateMachine<Payload> {
     private transitions: Map<number, {newStateId: number, callback: (payload: Payload) => void}>;
     private currentStateId: number;

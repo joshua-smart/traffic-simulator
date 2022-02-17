@@ -31,6 +31,7 @@ export default class AgentRecorder {
         this.maximumSpeed = speed > this.maximumSpeed ? speed : this.maximumSpeed;
         this.minimumSpeed = speed < this.minimumSpeed ? speed : this.minimumSpeed;
 
+        // If speed is sufficiently slow, take agent as stationary and add to stoppedTime
         if (speed < 0.01) this.stoppedTime += timeStep;
     }
 

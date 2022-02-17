@@ -21,7 +21,7 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         super();
     }
 
-    // Override allowing handles to be placed along linear edge by default
+    // Method override allowing handles to be placed along linear edge by default
     public add_edge(srcId: number, dstId: number): void {
         const srcVertex = this.get_vertex(srcId);
         const dstVertex = this.get_vertex(dstId);
@@ -31,9 +31,10 @@ export default class RoadNetwork extends Graph<Vertex, Edge>{
         super.set_edge(srcId, dstId, {t1, t2});
     }
 
-    // Create the bezier curve between two vertices in the network
+    // Create and return the bezier curve between two vertices in the network
     public get_bezier(srcId: number, dstId: number): CubicBezier {
         const edge = this.get_edge(srcId, dstId);
+        // Throw error if the edge is empty
         if (edge === this.empty) throw new RoadNetworkError(`Cannot get bezier at empty edge srcId (${srcId}), dstId (${dstId})`);
         const { t1, t2 } = edge;
         const srcVertex = this.get_vertex(srcId);

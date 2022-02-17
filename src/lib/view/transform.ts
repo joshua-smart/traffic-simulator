@@ -15,6 +15,7 @@ export default class Transform {
         this.position = this.position.add(delta);
     }
 
+    // Modify the translatation to zoom from center with specified factor
     public zoom(center: Vector2, factor: number): void {
         this.position = Vector2.add(
             center.mult(1 - factor),

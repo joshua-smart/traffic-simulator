@@ -38,6 +38,7 @@ export enum E {
     load
 }
 
+// This class will ensapsulate the state machine that manages the majority of the control structure as well as 2 sub-controllers responsible for specific parts of the program
 export default class Controller {
     private view: View;
 
@@ -61,6 +62,7 @@ export default class Controller {
         this.assign_key_listeners();
     }
 
+    // null values in the table below show the absense of a transition callback
     private initialise_state_machine(): void {
         // [previousStateId, eventId, nextStateId, callback]
         const transitions: [S, E, S, (e: Event) => void][] = [
@@ -94,6 +96,7 @@ export default class Controller {
             [S.movingHandle,           E.mouseUp,              S.idle,                   null]
         ];
 
+        // Assign transitions from above table to state machine
         transitions.forEach(([previousStateId, eventId, nextStateId, callback]) => {
             this.stateMachine.add_rule(previousStateId, eventId, nextStateId, callback);
         });
@@ -134,6 +137,7 @@ export default class Controller {
         });
     }
 
+    // Separate zoom method specifically for key input (+, -)
     private key_zoom(factor: number): void {
         const center = this.view.get_screen_center();
         this.view.zoom_display(center, factor);

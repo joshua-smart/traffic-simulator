@@ -14,10 +14,12 @@ export default class Agent {
     private route: Stack<number>;
     private currentSrcVertex: number;
 
+    // Distance along current edge, speed in m/s and acceleration during current frame
     private distance: number;
     private speed: number;
     private acceleration: number;
 
+    // Whether this object should be removed from the simulation in the next frame
     public kill: boolean = false;
 
     private agentRecorder: AgentRecorder;
@@ -39,10 +41,12 @@ export default class Agent {
 
     // Called when agent has reached the end of the current edge
     public move_to_next_edge(): void {
+        // If agent has reached the end of its last edge then set it to be destroyed
         if (this.on_last_edge()) {
             this.kill = true;
             return;
         }
+        // Shift through the vertices in route, moving the agent to the start of the next edge
         this.currentSrcVertex = this.route.pop();
         this.distance = 0;
     }
@@ -51,6 +55,7 @@ export default class Agent {
         return this.route.get_size() === 1;
     }
 
+    // Return the src and dst ids of the edge the agent is currently travelling across
     public get_edge(): {srcId: number, dstId: number} {
         return {
             srcId: this.currentSrcVertex,
@@ -100,12 +105,14 @@ export default class Agent {
 
     // Get targetSpeed based on square distance to other agent
     private get_target_speed_from_agent(position: Vector2, {position: agentPos, direction: agentDir, speed: agentSpeed}: AgentValue, roadSpeed: number, separationDistance: number) {
+        // Agent is 'behind' if angle between them is > 90deg
         const behind = agentDir.dot(position.sub(agentPos)) < 0;
 
         let targetSpeed = roadSpeed;
+        // If agent is behind this or agent is faster than this, slow down for the other agent
         if (behind || agentSpeed > this.speed) {
-            const nearestDistance = position.sub(agentPos).square_magnitude();
-            targetSpeed = 0.01*(nearestDistance - separationDistance**2) * agentSpeed;
+            const distance = position.sub(agentPos).square_magnitude();
+            targetSpeed = 0.01*(distance - separationDistance**2) * agentSpeed;
         }
         return targetSpeed;
     }
