@@ -12,23 +12,24 @@
             \hline
             \textbf{Feature} & \textbf{Github Link} & \textbf{Appendix Reference} & \textbf{Line Number}\\\hline
 
-            \codeindexline{Dijkstra's shortest path algorithm}{src/lib/model/}{roadNetwork.ts}{38}{This is used to generate the routes that agents follow across the road network, it also correctly exits when no complete route is found. This is a method of the \mintTS{RoadNetwork} class and the algorithm operates on its graph data structure.}
+            \codeindexline{Dijkstra's shortest path algorithm}{src/lib/model/}{roadNetwork.ts}{60}{This is used to generate the routes that agents follow across the road network, it also correctly exits when no complete route is found. This is a method of the \mintTS{RoadNetwork} class and the algorithm operates on its graph data structure.}
 
             \codeindexline{Graph data structure}{src/lib/model/}{graph.ts}{}{This class uses an adjacency matrix to implement the graph abstract data structure, providing a series of method used to interact with it.}
 
-            \codeindexline{Bredth-first graph traversal}{src/lib/model}{graph.ts}{}{This method, which is part of the \mintTS{Graph} class is used to find all connected exits from a given source vertex and is part of the algorithm that ensures cars can only be assigned valid routes.}
+            \codeindexline{Bredth-first graph traversal}{src/lib/model}{graph.ts}{94}{This method, which is part of the \mintTS{Graph} class is used to find all connected exits from a given source vertex and is part of the algorithm that ensures cars can only be assigned valid routes.}
 
-            \codeindexline{Stack data structure}{src/lib/}{stack.ts}{}{}
+            \codeindexline{Stack data structure}{src/lib/}{stack.ts}{}{A stack is used to represent a route through the network, the values are Id of the vertices such that the first vertex is on the top of the stack and the last vertex is on the bottom. The agent then pops the vertices from the stack when it reaches the end of its current edge until it reaches the end of the route.}
 
-            \codeindexline{File save and load procedures}{src/lib/controller/}{ioManager.ts}{}{}
+            \codeindexline{File save and load procedures}{src/lib/controller/}{ioManager.ts}{}{These functions manage the IO of the program, for the network save procedure I have utilised the `file save' package from npm. For network load I have used the native file input available in the document object model (DOM). In order to output data to \mintTS{.csv} and \mintTS{.xlsx} files I have used another npm package called `xlsx', which takes in an array of formatted objects form which to generate the output file.}
 
-            \codeindexline{Object based agent model}{src/lib/model/}{agent.ts}{}{}
+            \codeindexline{Object based agent model}{src/lib/model/}{agent.ts}{}{Each agent in the simulation is represented by an instance of the Agent class, this class holds information about its current distance and speed. Each frame each agent will calculate its own acceleration based on the other agents around it and update its own attributes accordingly.}
 
-            \codeindexline{Bezier curve implementation}{src/lib/model/}{cubicBezier.ts}{}
+            \codeindexline{Bezier curve implementation}{src/lib/model/}{cubicBezier.ts}{}{The roads of the network are modelled by Bezier curves, allowing them to curve in different directions as to more accurately model a real life system. This class encapsulates the logic of calculating points along the curve as well as tangents to it into its own object, allowing it to be easily used throughout the program.}
 
-            \codeindexline{Lookup table approximation of Bezier arc length}{src/lib/model/}{cubicBezier.ts}{74}{}
+            \codeindexline{Lookup table approximation of Bezier arc length}{src/lib/model/}{cubicBezier.ts}{79}{As described in \autoref{design:linear-interpolation-bezier}; In order to calculate a point at a given distance along a Bezier curve I implemented this method to generate a lookup table for a point at a given distance, ensuring that the expensive square root calculations are performed the minimum number of times.}
 
-            \codeindexline{State machine implementation}{src/lib/controller/}{stateMachine.ts}{}{}
+            \codeindexline{State machine implementation}{src/lib/controller/}{stateMachine.ts}{}{The state machine is an essential part of my program as it makes up the majority of the control logic. When a transition is performed the state machine will also call its associated callback function, allowing it to interact with other parts of the program.}
+            \codeindexline{State machine transition table}{src/lib/controller/}{controller.ts}{66}{Shown here is the transition table supplied to the program's state machine, its entries are in the order: previous state, event, next state, callback.}
         \end{tabular}
         \caption{Summary of relevant algorithms and implementations}
         \label{solution:code-index}
