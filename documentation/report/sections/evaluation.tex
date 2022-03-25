@@ -50,11 +50,15 @@
             \textbf{The program should support a click-and-drag based interaction, allowing the creation of vertices and connections and further editing of the network.}
         \end{quote}
 
+        This feature was inspired by the control scheme of mini-motorways, as I found it to be intuitive and easy to memorise. My implementation of this uses the left mouse button as well as the shift key to modify the action, allowing many different actions to be performed with few controls.
+
     \subsection{Undo \& Redo}
 
         \begin{quote}
             \textbf{The user should also be able to undo and redo actions to the road network.}
         \end{quote}
+
+        Each edit the user makes to the graph is logged as a user action and they are able to navigate through the past states of the graph with the undo feature. Similarly, the user is able to restore actions that have been undone with redo. This is an essential feature for this category of program and makes the developement of a netwrok by the user a much friendlier experience.
 
     \subsection{Agent Simulation}
 
