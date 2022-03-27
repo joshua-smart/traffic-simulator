@@ -66,11 +66,15 @@
             \textbf{The program should be able to simulate cars driving sensibly across the road network.}
         \end{quote}
 
+        Implemented in the agent class I have created an algorithm that allows each agent to asses the position and movement of the other agents in the network and calculate how much it should accelerate or decelerate in a given frame. Applying this algorithm at each timestep and updating the positions accordingly produces and emergent behaviour of the traffic: cars will give way to each other when merging at a junction, cars will maintain a sensible distance from the vehicle ahead, and they will also accelerate up to but not exceed a set speed limit.
+
     \subsection{Agent Limit}
 
         \begin{quote}
             \textbf{The maximum number of agents active at any time should be limited to 60.}
         \end{quote}
+
+        This was a necessary limitation as the complexity of the acceleration algorithm scales with the square of the number of agents in the network, a maximum agent count of 60 ensures that this does not affect the framerate of the simulation.
 
     \subsection{Data Output}
 
@@ -78,11 +82,15 @@
             \textbf{Relevant output data described in \autoref{analysis} should be outputted to both the UI and downloadable files.}
         \end{quote}
 
+        As shown in the testing section, the screen displays a summary of the current simulation statistics as it is running. Similarly, at any point in the simulation a complete table of data over time can be downloaded by using the buttons at the bottom of the summary GUI.
+
     \subsection{Interface Design}
 
         \begin{quote}
             \textbf{There should be a minimalist interface with the majority of screen real-estate allocated to the network visualisation.}
         \end{quote}
+
+        Also visible in the testing section are many instances of the GUI design, this shows a top toolbar containing the controls for the simulation, and a large canvas containing the road network visualisation. Providing a large interface for interacting with it.
 
     \subsection{Desktop Compatibility}
 
@@ -90,11 +98,15 @@
             \textbf{This program should support desktop size displays.}
         \end{quote}
 
+        As shown in many testing images, this program supports a desktop browser (most were recorded using firefox with a 1920x1080 display). This allows plenty of space for the elements to be displayed on the screen. This program is also intended to be used most commonly on this kind of platform.
+
     \subsection{UI Scaling}
 
         \begin{quote}
             \textbf{It should also be compatible with variable aspect ratios, resizing UI elements to fit the screen.}
         \end{quote}
+
+        In the final entry of my testing section, I used the developement tools provided by my browser to test the compatibility with many different sizes of window. The elements in the toolbar are capable of sliding laterally to fit the available space and the main canvas will stretch or compress to fill the rest of the window.
 
 \section{Technical Evaluation}
 
